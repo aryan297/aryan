@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { soundEngine } from '../utils/soundEngine';
 
@@ -41,7 +41,20 @@ const AnimatedIcon = () => (
 );
 
 const SoundToggle = () => {
-  const [on, setOn] = useState(false);
+  const [on, setOn] = useState(true);
+
+  useEffect(() => {
+    soundEngine.setEnabled(true);
+    const start = () => {
+      soundEngine.startMusic();
+      document.removeEventListener('click', start);
+      document.removeEventListener('keydown', start);
+      document.removeEventListener('scroll', start);
+    };
+    document.addEventListener('click', start, { once: true });
+    document.addEventListener('keydown', start, { once: true });
+    document.addEventListener('scroll', start, { once: true });
+  }, []);
 
   const toggle = () => {
     const next = !on;
