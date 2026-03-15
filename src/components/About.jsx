@@ -3,6 +3,7 @@ import { useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { FaGraduationCap, FaMapMarkerAlt, FaCode, FaRocket } from 'react-icons/fa';
 import { useScrollSound } from '../hooks/useScrollSound';
+import TronLetters from './TronLetters';
 
 const stats = [
   { value: '6+', label: 'Years Experience', icon: '⚡' },
@@ -41,11 +42,17 @@ const About = () => {
           animate={isInView ? 'visible' : 'hidden'}
           className="text-center mb-16"
         >
-          <span className="font-mono text-indigo-400 text-sm tracking-widest uppercase">Get to know me</span>
+          <span className="tron-label font-mono text-indigo-400 text-sm tracking-widest uppercase">Get to know me</span>
           <h2 className="text-4xl md:text-5xl font-black text-white mt-2">
-            About <span className="gradient-text">Me</span>
+            <TronLetters text="About " inView={isInView} delay={0.1} />
+            <TronLetters text="Me" className="gradient-text" inView={isInView} delay={0.44} />
           </h2>
-          <div className="w-20 h-1 bg-gradient-to-r from-indigo-500 to-cyan-500 rounded-full mx-auto mt-4" />
+          <motion.div
+            className="w-20 h-1 bg-gradient-to-r from-indigo-500 to-cyan-500 rounded-full mx-auto mt-4"
+            initial={{ scaleX: 0 }} animate={isInView ? { scaleX: 1 } : {}}
+            transition={{ delay: 0.7, duration: 0.5, ease: 'easeOut' }}
+            style={{ transformOrigin: 'left' }}
+          />
         </motion.div>
 
         <div className="grid md:grid-cols-2 gap-12 items-center">
@@ -116,11 +123,17 @@ const About = () => {
                 animate={isInView ? { opacity: 1, scale: 1 } : {}}
                 transition={{ delay: 0.4 + i * 0.1, type: 'spring', stiffness: 200 }}
                 whileHover={{ scale: 1.05, y: -4 }}
-                className="glow-border rounded-2xl p-6 bg-[var(--bg-card)]/80 border border-indigo-500/20 text-center card-hover"
+                className="tron-card glow-border rounded-2xl p-6 bg-[var(--bg-card)]/80 border border-indigo-500/20 text-center"
               >
-                <div className="text-3xl mb-2">{icon}</div>
-                <div className="text-3xl font-black gradient-text">{value}</div>
-                <div className="text-slate-400 text-sm mt-1">{label}</div>
+                <motion.div
+                  className="text-3xl mb-2"
+                  animate={{ rotate: [0, 8, -8, 0] }}
+                  transition={{ duration: 3 + Math.random(), repeat: Infinity, ease: 'easeInOut' }}
+                >
+                  {icon}
+                </motion.div>
+                <div className="text-3xl font-black gradient-text tron-counter">{value}</div>
+                <div className="text-slate-400 text-xs mt-1 font-mono tracking-wider uppercase">{label}</div>
               </motion.div>
             ))}
 
@@ -133,13 +146,16 @@ const About = () => {
             >
               <div className="text-xs text-slate-400 mb-3 font-mono uppercase tracking-wider">Core Tech Pillars</div>
               <div className="flex flex-wrap gap-2">
-                {['GoLang', 'Node.js', 'NestJS', 'Angular', 'PostgreSQL', 'Redis', 'Kafka', 'Docker', 'AWS'].map((tech) => (
-                  <span
+                {['GoLang', 'Node.js', 'NestJS', 'Angular', 'PostgreSQL', 'Redis', 'Kafka', 'Docker', 'AWS'].map((tech, i) => (
+                  <motion.span
                     key={tech}
-                    className="px-3 py-1 rounded-full text-xs font-medium bg-indigo-500/20 text-indigo-300 border border-indigo-500/30"
+                    initial={{ opacity: 0, scale: 0.7 }}
+                    animate={isInView ? { opacity: 1, scale: 1 } : {}}
+                    transition={{ delay: 0.9 + i * 0.06, type: 'spring', stiffness: 300 }}
+                    className="tron-badge px-3 py-1 rounded-full text-xs font-medium bg-indigo-500/20 text-indigo-300 border border-indigo-500/30"
                   >
                     {tech}
-                  </span>
+                  </motion.span>
                 ))}
               </div>
             </motion.div>

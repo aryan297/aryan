@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { useScrollSound } from '../hooks/useScrollSound';
+import TronLetters from './TronLetters';
 
 const skillCategories = [
   {
@@ -116,11 +117,17 @@ const Skills = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <span className="font-mono text-indigo-400 text-sm tracking-widest uppercase">What I work with</span>
+          <span className="tron-label font-mono text-indigo-400 text-sm tracking-widest uppercase">What I work with</span>
           <h2 className="text-4xl md:text-5xl font-black text-white mt-2">
-            Technical <span className="gradient-text">Skills</span>
+            <TronLetters text="Technical " inView={isInView} delay={0.1} />
+            <TronLetters text="Skills" className="gradient-text" inView={isInView} delay={0.55} />
           </h2>
-          <div className="w-20 h-1 bg-gradient-to-r from-indigo-500 to-cyan-500 rounded-full mx-auto mt-4" />
+          <motion.div
+            className="w-20 h-1 bg-gradient-to-r from-indigo-500 to-cyan-500 rounded-full mx-auto mt-4"
+            initial={{ scaleX: 0 }} animate={isInView ? { scaleX: 1 } : {}}
+            transition={{ delay: 0.8, duration: 0.5, ease: 'easeOut' }}
+            style={{ transformOrigin: 'left' }}
+          />
         </motion.div>
 
         {/* Skills grid */}
@@ -132,10 +139,14 @@ const Skills = () => {
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: catIndex * 0.1 }}
               whileHover={{ y: -6 }}
-              className="rounded-2xl p-6 bg-[var(--bg-card)]/80 border border-white/5 glow-border backdrop-blur-sm"
+              className="tron-card glow-border rounded-2xl p-6 bg-[var(--bg-card)]/80 border border-white/5 backdrop-blur-sm"
             >
               <div className="flex items-center gap-3 mb-5">
-                <span className="text-2xl">{cat.emoji}</span>
+                <motion.span
+                  className="text-2xl"
+                  animate={{ rotate: [0, 10, -10, 0] }}
+                  transition={{ duration: 3 + catIndex * 0.4, repeat: Infinity, ease: 'easeInOut' }}
+                >{cat.emoji}</motion.span>
                 <h3 className={`font-bold text-transparent bg-clip-text bg-gradient-to-r ${cat.color}`}>
                   {cat.category}
                 </h3>
@@ -170,7 +181,7 @@ const Skills = () => {
                 animate={isInView ? { opacity: 1, scale: 1 } : {}}
                 transition={{ delay: 0.6 + i * 0.03, type: 'spring', stiffness: 200 }}
                 whileHover={{ scale: 1.1, y: -3 }}
-                className="px-4 py-2 rounded-xl text-sm font-semibold bg-[var(--bg-card)] border border-indigo-500/20 text-slate-300 hover:border-indigo-500/50 hover:text-indigo-300 cursor-default transition-all"
+                className="tron-badge px-4 py-2 rounded-xl text-sm font-semibold bg-[var(--bg-card)] border border-indigo-500/20 text-slate-300 cursor-default"
               >
                 {tech}
               </motion.span>

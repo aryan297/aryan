@@ -3,6 +3,7 @@ import { motion, useInView } from 'framer-motion';
 import { FaBriefcase } from 'react-icons/fa';
 import { HiChevronRight } from 'react-icons/hi';
 import { useScrollSound } from '../hooks/useScrollSound';
+import TronLetters from './TronLetters';
 
 const experiences = [
   {
@@ -95,14 +96,20 @@ const ExperienceCard = ({ exp, index, isInView }) => (
         initial={{ scale: 0 }}
         animate={isInView ? { scale: 1 } : {}}
         transition={{ delay: index * 0.15 + 0.3, type: 'spring', stiffness: 300 }}
-        className={`w-5 h-5 rounded-full bg-gradient-to-br ${exp.color} shadow-lg`}
-      />
+        className={`relative w-5 h-5 rounded-full bg-gradient-to-br ${exp.color} shadow-lg`}
+      >
+        <motion.div
+          className={`absolute inset-0 rounded-full bg-gradient-to-br ${exp.color}`}
+          animate={{ scale: [1, 2, 1], opacity: [0.5, 0, 0.5] }}
+          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut', delay: index * 0.3 }}
+        />
+      </motion.div>
     </div>
 
     <div className={`md:w-[calc(50%-2rem)] ${index % 2 === 0 ? 'md:mr-auto md:pr-8' : 'md:ml-auto md:pl-8'}`}>
       <motion.div
         whileHover={{ y: -6 }}
-        className="glow-border rounded-2xl p-6 bg-[var(--bg-card)]/80 border border-white/5 backdrop-blur-sm transition-all duration-300"
+        className="tron-card tron-data-border glow-border rounded-2xl p-6 bg-[var(--bg-card)]/80 border border-white/5 backdrop-blur-sm transition-all duration-300"
       >
         {/* Header */}
         <div className="flex items-start justify-between gap-3 mb-3">
@@ -117,7 +124,7 @@ const ExperienceCard = ({ exp, index, isInView }) => (
               <span className="text-slate-500 text-sm">· {exp.location}</span>
             </div>
           </div>
-          <span className="text-xs text-slate-500 font-mono shrink-0 mt-1">{exp.period}</span>
+          <span className="text-xs text-slate-500 font-mono shrink-0 mt-1 tracking-wider">{exp.period}</span>
         </div>
 
         {/* Project */}
@@ -140,12 +147,13 @@ const ExperienceCard = ({ exp, index, isInView }) => (
         {/* Tech stack */}
         <div className="flex flex-wrap gap-1.5">
           {exp.tech.map((t) => (
-            <span
+            <motion.span
               key={t}
-              className="text-xs px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 font-mono"
+              whileHover={{ scale: 1.1, y: -2 }}
+              className="tron-badge text-xs px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 font-mono"
             >
               {t}
-            </span>
+            </motion.span>
           ))}
         </div>
       </motion.div>
@@ -173,11 +181,17 @@ const Experience = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <span className="font-mono text-indigo-400 text-sm tracking-widest uppercase">Career Journey</span>
+          <span className="tron-label font-mono text-indigo-400 text-sm tracking-widest uppercase">Career Journey</span>
           <h2 className="text-4xl md:text-5xl font-black text-white mt-2">
-            Work <span className="gradient-text">Experience</span>
+            <TronLetters text="Work " inView={isInView} delay={0.1} />
+            <TronLetters text="Experience" className="gradient-text" inView={isInView} delay={0.44} />
           </h2>
-          <div className="w-20 h-1 bg-gradient-to-r from-indigo-500 to-cyan-500 rounded-full mx-auto mt-4" />
+          <motion.div
+            className="w-20 h-1 bg-gradient-to-r from-indigo-500 to-cyan-500 rounded-full mx-auto mt-4"
+            initial={{ scaleX: 0 }} animate={isInView ? { scaleX: 1 } : {}}
+            transition={{ delay: 0.9, duration: 0.5, ease: 'easeOut' }}
+            style={{ transformOrigin: 'left' }}
+          />
         </motion.div>
 
         {/* Timeline */}

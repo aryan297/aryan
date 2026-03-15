@@ -43,7 +43,7 @@ const Hero = () => {
   }, [displayed, isDeleting, roleIndex]);
 
   return (
-    <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden grid-bg tron-scan">
+    <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden grid-bg">
       {/* Boot scan line — sweeps down once on load */}
       <motion.div
         initial={{ top: 0, opacity: 0 }}
@@ -87,24 +87,12 @@ const Hero = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="text-5xl md:text-6xl lg:text-7xl font-black text-white mb-4 leading-tight tron-flicker"
+            className="text-5xl md:text-6xl lg:text-7xl font-black text-white mb-4 leading-tight"
           >
             {'Hi, I\'m '}
-            <motion.span
-              className="gradient-text tron-glow"
-              animate={{ filter: ['brightness(1)', 'brightness(1.3)', 'brightness(1)'] }}
-              transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-            >
-              Aryan
-            </motion.span>
+            <span className="gradient-text">Aryan</span>
             <br />
-            <motion.span
-              className="gradient-text tron-glow"
-              animate={{ filter: ['brightness(1)', 'brightness(1.4)', 'brightness(1)'] }}
-              transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut', delay: 1.5 }}
-            >
-              Aman
-            </motion.span>
+            <span className="gradient-text">Aman</span>
           </motion.h1>
 
           {/* Typewriter with glowing cursor */}
