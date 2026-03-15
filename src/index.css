@@ -1,0 +1,319 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Fira+Code:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Tron × Ghibli CSS variables ─── */
+:root {
+  --bg-primary:  #07101c;
+  --bg-surface:  #0d1a28;
+  --bg-card:     #101f2e;
+  --mint:        #7ecba1;
+  --lav:         #c4b4e8;
+  --gold:        #f5c87a;
+  --peach:       #f0a888;
+  --text-bright: #e4ede8;
+  --text-mid:    #a8c4b0;
+  --text-muted:  #6a9080;
+  --border:      rgba(126,203,161,0.12);
+  --glow-mint:   rgba(126,203,161,0.25);
+  --glow-lav:    rgba(196,180,232,0.20);
+  --glow-gold:   rgba(245,200,122,0.20);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-bright);
+  font-family: 'Inter', system-ui, sans-serif;
+  overflow-x: hidden;
+}
+
+::-webkit-scrollbar       { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg-primary); }
+::-webkit-scrollbar-thumb { background: var(--mint); border-radius: 3px; opacity: .5; }
+
+.section-padding { padding: 80px 0; }
+@media (max-width:768px) { .section-padding { padding: 60px 0; } }
+
+/* ── Ghibli-Tron gradient text ── */
+.gradient-text {
+  background: linear-gradient(135deg, #7ecba1 0%, #c4b4e8 50%, #f5c87a 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient 5s ease infinite;
+}
+@keyframes gradient {
+  0%,100% { background-position: 0% 50%;  }
+  50%     { background-position: 100% 50%; }
+}
+
+/* ── Card glow ── */
+.glow-border {
+  box-shadow:
+    0 0 0 1px var(--border),
+    0 0 22px rgba(126,203,161,0.07),
+    inset 0 0 18px rgba(126,203,161,0.02);
+  transition: box-shadow .35s ease;
+}
+.glow-border:hover {
+  box-shadow:
+    0 0 0 1px rgba(126,203,161,0.22),
+    0 0 40px rgba(126,203,161,0.16),
+    0 0 80px rgba(196,180,232,0.08),
+    inset 0 0 30px rgba(126,203,161,0.04);
+}
+
+/* ── Subtle grid overlay ── */
+.grid-bg {
+  background-image:
+    linear-gradient(rgba(126,203,161,0.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(126,203,161,0.022) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* ── Skill bar shimmer ── */
+.skill-bar { position:relative; overflow:hidden; }
+.skill-bar::after {
+  content:''; position:absolute; top:0; left:-100%;
+  width:100%; height:100%;
+  background: linear-gradient(90deg,transparent,rgba(255,255,255,0.12),transparent);
+  animation: shimmer 2.5s infinite;
+}
+@keyframes shimmer { 100% { left:100%; } }
+
+/* ── Nav link underline ── */
+.nav-link { position:relative; transition:color .3s; }
+.nav-link::after {
+  content:''; position:absolute; bottom:-4px; left:0;
+  width:0; height:1.5px;
+  background: linear-gradient(90deg, var(--mint), var(--lav));
+  transition: width .3s ease; border-radius:2px;
+}
+.nav-link:hover::after,
+.nav-link.active::after { width:100%; }
+
+/* ── Tron corner brackets ── */
+.tron-corner { position:absolute; width:56px; height:56px; pointer-events:none; }
+.tron-corner::before, .tron-corner::after {
+  content:''; position:absolute; background:var(--mint); opacity:.22; border-radius:1px;
+}
+.corner-tl { top:0; left:0; }
+.corner-tl::before { top:0; left:0; width:42px; height:1px; }
+.corner-tl::after  { top:0; left:0; width:1px;  height:42px; }
+.corner-tr { top:0; right:0; }
+.corner-tr::before { top:0; right:0; width:42px; height:1px; }
+.corner-tr::after  { top:0; right:0; width:1px;  height:42px; }
+.corner-bl { bottom:0; left:0; }
+.corner-bl::before { bottom:0; left:0; width:42px; height:1px; }
+.corner-bl::after  { bottom:0; left:0; width:1px;  height:42px; }
+.corner-br { bottom:0; right:0; }
+.corner-br::before { bottom:0; right:0; width:42px; height:1px; }
+.corner-br::after  { bottom:0; right:0; width:1px;  height:42px; }
+
+/* ── Disc/identity ring (Tron conic) ── */
+.disc-ring {
+  border-radius:50%;
+  background: conic-gradient(
+    from 0deg,
+    rgba(126,203,161,.65),
+    rgba(196,180,232,.45),
+    rgba(245,200,122,.45),
+    rgba(126,203,161,.65)
+  );
+}
+
+/* ── Blob morph ── */
+.blob { animation: blob-morph 9s ease-in-out infinite; }
+@keyframes blob-morph {
+  0%,100% { border-radius:30% 70% 70% 30%/30% 30% 70% 70%; }
+  25%     { border-radius:70% 30% 30% 70%/70% 70% 30% 30%; }
+  50%     { border-radius:50% 50% 70% 30%/30% 70% 70% 50%; }
+  75%     { border-radius:30% 70% 50% 50%/70% 30% 50% 70%; }
+}
+
+/* ══════════════════════════════════════════════════════════
+   TRON ANIMATION SUITE
+══════════════════════════════════════════════════════════ */
+
+/* ── Flicker — subtle identity disc power fluctuation ── */
+.tron-flicker {
+  animation: tron-flicker 7s infinite;
+}
+@keyframes tron-flicker {
+  0%,88%,100% { opacity:1; }
+  89%  { opacity:.75; }
+  90%  { opacity:1;   }
+  92%  { opacity:.55; }
+  93%  { opacity:1;   }
+  95%  { opacity:.80; }
+  96%  { opacity:1;   }
+}
+
+/* ── Glow pulse — text neon glow breathe ── */
+.tron-glow {
+  animation: tron-glow 2.8s ease-in-out infinite;
+}
+@keyframes tron-glow {
+  0%,100% { text-shadow: 0 0 8px rgba(126,203,161,.45), 0 0 22px rgba(126,203,161,.15); }
+  50%     { text-shadow: 0 0 18px rgba(126,203,161,.90), 0 0 50px rgba(196,180,232,.35), 0 0 80px rgba(126,203,161,.12); }
+}
+
+/* ── Scan line — horizontal light sweep ── */
+.tron-scan {
+  position: relative;
+  overflow: hidden;
+}
+.tron-scan::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent 0%, rgba(126,203,161,.7) 30%, rgba(196,180,232,.9) 50%, rgba(245,200,122,.7) 70%, transparent 100%);
+  box-shadow: 0 0 10px rgba(126,203,161,.5);
+  animation: scan-sweep 4s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 10;
+}
+@keyframes scan-sweep {
+  0%   { top: -2px;   opacity: 0; }
+  5%   { opacity: 1;  }
+  95%  { opacity: .6; }
+  100% { top: 100%;   opacity: 0; }
+}
+
+/* ── Data stream — vertical digit rain on borders ── */
+.tron-data-border {
+  position: relative;
+}
+.tron-data-border::before {
+  content: '';
+  position: absolute;
+  left: -1px; top: 0; bottom: 0;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, rgba(126,203,161,.8), transparent);
+  animation: data-stream-v 2.5s ease-in-out infinite;
+}
+@keyframes data-stream-v {
+  0%   { top:100%; bottom:-2px; opacity:0; }
+  20%  { opacity:1; }
+  80%  { opacity:.8; }
+  100% { top:-2px; bottom:100%; opacity:0; }
+}
+
+/* ── Badge hover — Tron highlight sweep on tech pills ── */
+.tron-badge {
+  position: relative;
+  overflow: hidden;
+  cursor: default;
+  transition: color .25s, border-color .25s, box-shadow .25s;
+}
+.tron-badge::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%; width: 60%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(126,203,161,.18), transparent);
+  transition: none;
+}
+.tron-badge:hover::before {
+  animation: badge-sweep .5s ease forwards;
+}
+@keyframes badge-sweep {
+  from { left: -60%; }
+  to   { left: 130%;  }
+}
+.tron-badge:hover {
+  color: #7ecba1;
+  border-color: rgba(126,203,161,.5);
+  box-shadow: 0 0 14px rgba(126,203,161,.22), inset 0 0 8px rgba(126,203,161,.05);
+}
+
+/* ── Card scan — light line sweeps across card on hover ── */
+.tron-card {
+  position: relative;
+  overflow: hidden;
+}
+.tron-card::after {
+  content: '';
+  position: absolute;
+  top: -100%; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(126,203,161,.6), rgba(196,180,232,.4), transparent);
+  transition: none;
+  pointer-events: none;
+}
+.tron-card:hover::after {
+  animation: card-scan .6s ease forwards;
+}
+@keyframes card-scan {
+  from { top: -2px;   opacity: 1; }
+  to   { top: 102%;  opacity: 0; }
+}
+
+/* ── Corner brackets animate in ── */
+.tron-corner-animated::before {
+  animation: corner-h .6s ease forwards;
+}
+.tron-corner-animated::after {
+  animation: corner-v .6s ease .1s forwards;
+}
+@keyframes corner-h { from { width: 0; } to { width: 42px; } }
+@keyframes corner-v { from { height: 0; } to { height: 42px; } }
+
+/* ── Section label — monospace char-by-char blink ── */
+.tron-label {
+  font-family: 'Fira Code', monospace;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  position: relative;
+}
+.tron-label::after {
+  content: '▋';
+  animation: cursor-blink .9s step-end infinite;
+  margin-left: 3px;
+  opacity: .7;
+}
+@keyframes cursor-blink {
+  0%,100% { opacity:.7; }
+  50%     { opacity:0;  }
+}
+
+/* ── Section divider line animated grow ── */
+.tron-divider {
+  position: relative;
+  overflow: hidden;
+}
+.tron-divider::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: inherit;
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: divider-grow .8s ease forwards;
+}
+@keyframes divider-grow {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+/* ── Number counter — digital feel ── */
+.tron-counter {
+  font-family: 'Fira Code', monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Icon glow on hover ── */
+.tron-icon {
+  transition: color .25s, filter .25s, transform .25s;
+}
+.tron-icon:hover {
+  color: #7ecba1;
+  filter: drop-shadow(0 0 6px rgba(126,203,161,.7));
+  transform: scale(1.15) translateY(-2px);
+}
