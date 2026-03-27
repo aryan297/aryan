@@ -117,7 +117,7 @@ const Hero = () => {
             transition={{ delay: 0.6 }}
             className="text-slate-400 text-lg leading-relaxed mb-8 max-w-lg"
           >
-            Versatile Senior Software Engineer with <span className="text-indigo-400 font-semibold">6+ years</span> of experience
+            Results-driven Senior Software Engineer with <span className="text-indigo-400 font-semibold">6+ years</span> of experience
             crafting high-performance, scalable systems using{' '}
             <span className="text-cyan-400 font-semibold">GoLang</span>,{' '}
             <span className="text-emerald-400 font-semibold">Node.js</span>, and{' '}

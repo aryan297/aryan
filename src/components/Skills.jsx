@@ -9,10 +9,10 @@ const skillCategories = [
     emoji: '💻',
     color: 'from-indigo-500 to-purple-500',
     skills: [
-      { name: 'JavaScript', level: 98 },
-      { name: 'TypeScript', level: 95 },
+      { name: 'JavaScript / TypeScript', level: 98 },
       { name: 'GoLang', level: 93 },
-      { name: 'Java', level: 90 },
+      { name: 'Python', level: 88 },
+      { name: 'Java', level: 85 },
     ],
   },
   {
@@ -56,10 +56,10 @@ const skillCategories = [
     emoji: '☁️',
     color: 'from-orange-500 to-amber-500',
     skills: [
-      { name: 'AWS (EC2, S3, SQS)', level: 92 },
+      { name: 'AWS (EC2, S3, SQS, Lambda)', level: 92 },
+      { name: 'Kubernetes', level: 88 },
       { name: 'Docker', level: 94 },
       { name: 'CI/CD Pipelines', level: 91 },
-      { name: 'PM2', level: 93 },
     ],
   },
   {
@@ -77,7 +77,8 @@ const skillCategories = [
 
 const techBadges = [
   'GoLang', 'NestJS', 'Node.js', 'Angular', 'React', 'TypeScript',
-  'PostgreSQL', 'Redis', 'MongoDB', 'Kafka', 'Docker', 'AWS',
+  'Python', 'PostgreSQL', 'Redis', 'MongoDB', 'MySQL', 'Kafka', 'Docker', 'Kubernetes',
+  'AWS EC2', 'AWS S3', 'AWS SQS', 'AWS Lambda', 'Route 53', 'CloudWatch',
   'gRPC', 'RxJS', 'NgRx', 'Gin', 'Firebase', 'CI/CD',
   'Grafana', 'Kibana', 'Git', 'Bitbucket', 'PM2', 'BunJS',
 ];

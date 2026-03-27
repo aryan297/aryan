@@ -65,20 +65,21 @@ const About = () => {
           >
             <div className="space-y-5 text-slate-300 text-lg leading-relaxed">
               <p>
-                I'm a <span className="text-indigo-400 font-semibold">Versatile Senior Software Engineer</span> with 6+ years
-                of end-to-end product development experience, currently working as{' '}
-                <span className="text-cyan-400 font-semibold">SDE-3 at Vola Finance</span>, Bengaluru.
+                I'm a <span className="text-indigo-400 font-semibold">Results-driven Senior Software Engineer (SDE-3)</span> with 6+ years
+                of experience designing and delivering high-performance, scalable backend systems and full-stack applications, currently at{' '}
+                <span className="text-cyan-400 font-semibold">Vola Finance</span>, Bengaluru.
               </p>
               <p>
                 My expertise spans building <span className="text-emerald-400 font-semibold">microfinance platforms</span>,
                 high-concurrency schedulers, event-driven architectures, and real-time dashboards — from backend
                 APIs in <span className="text-indigo-400 font-semibold">GoLang (Gin)</span> and{' '}
-                <span className="text-cyan-400 font-semibold">NestJS</span> to beautiful frontend experiences
+                <span className="text-cyan-400 font-semibold">NestJS</span> to powerful frontend experiences
                 in <span className="text-purple-400 font-semibold">Angular</span>.
               </p>
               <p>
-                I thrive on solving complex distributed systems problems, integrating fintech infrastructure
-                (Intergiro, Visa/Tink), and shipping products that scale to millions of users.
+                Proven track record across fintech, mobility, and e-commerce domains — integrating BaaS providers
+                (ConnectPay, Bank of Lithuania), building event-driven systems with Kafka & Redis, and shipping
+                distributed products that scale to 10,000+ daily active users.
               </p>
             </div>
 

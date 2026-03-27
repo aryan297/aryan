@@ -15,12 +15,13 @@ const experiences = [
     color: 'from-indigo-500 to-cyan-500',
     badge: 'Current',
     project: 'Gentoo App – Microfinance Platform (Spain)',
-    tech: ['NestJS', 'Node.js', 'Go (Gin)', 'Intergiro', 'Visa/Tink', 'PostgreSQL', 'Redis'],
+    tech: ['NestJS', 'Node.js', 'Go (Gin)', 'ConnectPay', 'Bank of Lithuania', 'PostgreSQL', 'Redis', 'AWS S3', 'AWS Lambda', 'CloudWatch', 'Docker', 'Kubernetes'],
     highlights: [
-      'Built a modular, scalable microfinance platform using NestJS and Node.js for secure financial services.',
-      'Integrated Intergiro and Visa (Tink) for BaaS features: IBAN creation, KYC, and real-time payments.',
-      'Designed event-driven architecture with Redis caching, transaction-safe workflows, and multi-language support.',
-      'Developed a high-concurrency scheduler service in Go (Gin) for reconciliation, reports, and audits.',
+      'Architected a modular microfinance platform using NestJS and Node.js serving 10,000+ daily active users, enabling secure end-to-end financial services for the Spanish market.',
+      'Integrated ConnectPay and Bank of Lithuania APIs for full BaaS capabilities — IBAN provisioning, KYC identity verification, card issuance, and real-time SEPA payment processing, reducing onboarding time by 60%.',
+      'Designed event-driven architecture leveraging Redis pub/sub with transaction-safe workflows, retry mechanisms, and idempotency guarantees, achieving 99.9% payment flow reliability.',
+      'Built i18n multi-language support with dynamic content resolution for EU regulatory compliance; reduced compliance review cycles by 40%.',
+      'Developed a high-concurrency Go (Gin) scheduler handling 500+ daily reconciliation jobs and audit trail generation with fault-tolerant error handling and zero data loss.',
     ],
   },
   {
@@ -31,12 +32,12 @@ const experiences = [
     type: 'Full-time',
     color: 'from-cyan-500 to-emerald-500',
     badge: '2.4 yrs',
-    tech: ['Go (Gin)', 'Node.js', 'Angular 17', 'Angular 15', 'Redis', 'PostgreSQL'],
+    tech: ['Go (Gin)', 'Node.js', 'Angular 17', 'Angular 15', 'Redis', 'PostgreSQL', 'Kubernetes', 'AWS EC2', 'AWS S3', 'Route 53', 'CloudWatch', 'Kafka', 'Docker'],
     highlights: [
-      'Driver App (Gin, GoLang, Node.js): Scalable TMS module with dynamic forms, multilingual support, and modular ticket management.',
-      'Hub Dashboard (Angular 17): Web app for hub operations, driver cashbook, financial tracking, and regional localization with lazy-loading.',
-      'Hub Backend (Gin, GoLang, Node.js): Efficient APIs with pagination, modular backend supporting microservices.',
-      'Incident Dashboard (Angular 15, Node.js): Ticket workflows with urgency-based color coding, seasonal adjustments, cost-optimized resolutions.',
+      'Driver Application (TMS Module): Built a scalable Transport Management System in Go (Gin) and Node.js serving 8,000+ drivers, with dynamic form rendering, multilingual support, and role-based access control.',
+      'Hub Dashboard (Angular 17): Engineered an operations web app for 50+ hubs covering cashbook, financial tracking, and regional localization; OnPush change detection reduced page load time by 35%.',
+      'Hub Backend (Gin/GoLang): Designed high-performance paginated REST APIs sustaining 5,000+ concurrent requests with a modular architecture supporting independent microservice deployments.',
+      'Incident Dashboard (Angular 15/Node.js): Delivered an operations workflow tool with urgency-based ticket prioritization and resolution analytics, cutting average incident resolution time by 25%.',
     ],
   },
   {
@@ -49,8 +50,9 @@ const experiences = [
     badge: '1 yr',
     tech: ['NestJS', 'MongoDB', 'Ag-Grid', 'XLSX', 'Angular'],
     highlights: [
-      'Developed BD application admin panel with NestJS and MongoDB to onboard stores and manage dynamic forms, workflows, and ACL.',
-      'Integrated data export with Ag-Grid and XLSX with optimized APIs supporting pagination, filtering, and searching.',
+      'Developed a BD admin panel with NestJS and MongoDB to onboard 200+ retail stores, manage dynamic forms, multi-step approval workflows, and enforce ACL-based route security.',
+      'Integrated Ag-Grid with server-side XLSX export and optimized REST APIs with cursor-based pagination and multi-field filtering, reducing data retrieval latency by 50%.',
+      'Designed reusable NestJS interceptors and guards for request validation, audit logging, and role-based permission enforcement across all admin panel endpoints.',
     ],
   },
   {
@@ -63,8 +65,8 @@ const experiences = [
     badge: '1.5 yrs',
     tech: ['Angular', 'NgRx', 'RxJS', 'NestJS', 'Node.js'],
     highlights: [
-      "Built P&G Japan's internal tool using Angular, NgRx, RxJS with real-time logic and NestJS-backed API integrations.",
-      'Implemented Excel export, dynamic PDF generation, and pricing logic using Node.js and NestJS for retail and wholesale data workflows.',
+      "Built P&G Japan's internal retail management tool using Angular, NgRx, and RxJS with real-time inventory and pricing logic; reactive state management reduced UI re-render overhead by 30%.",
+      'Implemented server-side Excel export, dynamic PDF generation, and retail/wholesale tiered pricing services with multi-currency conversions, supporting 15+ product categories across 3 markets.',
     ],
   },
   {
