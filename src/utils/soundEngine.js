@@ -195,6 +195,21 @@ export const soundEngine = {
   isEnabled: () => enabled,
 
   startMusic() { if (enabled) startEncom(); },
+  startMusicAsync() {
+    if (!enabled) return Promise.resolve();
+    try {
+      _initBg();
+      const ctx = ac();
+      _bgAudio.currentTime = 0;
+      const now = ctx.currentTime;
+      _bgGain.gain.cancelScheduledValues(now);
+      _bgGain.gain.setValueAtTime(0, now);
+      _bgGain.gain.linearRampToValueAtTime(0.85, now + 2.0);
+      return _bgAudio.play();
+    } catch (_) {
+      return Promise.reject(_);
+    }
+  },
   stopMusic()  { stopEncom(); },
 
   /* ── Tron UI hover ── */

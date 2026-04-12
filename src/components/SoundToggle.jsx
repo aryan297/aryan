@@ -45,15 +45,16 @@ const SoundToggle = () => {
 
   useEffect(() => {
     soundEngine.setEnabled(true);
-    const start = () => {
-      soundEngine.startMusic();
-      document.removeEventListener('click', start);
-      document.removeEventListener('keydown', start);
-      document.removeEventListener('scroll', start);
-    };
-    document.addEventListener('click', start, { once: true });
-    document.addEventListener('keydown', start, { once: true });
-    document.addEventListener('scroll', start, { once: true });
+
+    const onInteraction = () => soundEngine.startMusic();
+
+    // Attempt autoplay immediately; browsers may allow it.
+    // If blocked (NotAllowedError), wait for first user gesture.
+    soundEngine.startMusicAsync().catch(() => {
+      document.addEventListener('click',   onInteraction, { once: true });
+      document.addEventListener('keydown', onInteraction, { once: true });
+      document.addEventListener('scroll',  onInteraction, { once: true });
+    });
   }, []);
 
   const toggle = () => {
