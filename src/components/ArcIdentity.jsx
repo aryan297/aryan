@@ -4,7 +4,7 @@ import { soundEngine } from '../utils/soundEngine';
 /* ═══════════════════════════════════════════════════════════
    Arc Identity — Iron Man arc reactor × Tron identity disc
    Pure CSS + SVG + Framer Motion
-   Palette: Ghibli-Tron (mint #7ecba1 / lavender #c4b4e8 / gold #f5c87a)
+   Palette: Ghibli-Tron (mint #00d4c8 / lavender #a78bfa / gold #f5c87a)
 ═══════════════════════════════════════════════════════════ */
 
 const SIZE   = 300;          // outer container px
@@ -62,12 +62,13 @@ const ArcIdentity = () => (
   >
     {/* ── Deep space ambient glow ── */}
     <motion.div
-      animate={{ opacity: [0.3, 0.6, 0.3], scale: [1, 1.06, 1] }}
+      animate={{ opacity: [0.3, 0.55, 0.3] }}
       transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
       style={{
         position: 'absolute', inset: -24, borderRadius: '50%',
-        background: 'radial-gradient(circle, rgba(126,203,161,0.18) 0%, rgba(196,180,232,0.10) 40%, transparent 70%)',
+        background: 'radial-gradient(circle, rgba(0,212,200,0.15) 0%, rgba(167,139,250,0.08) 40%, transparent 70%)',
         filter: 'blur(16px)',
+        willChange: 'opacity',
       }}
     />
 
@@ -79,8 +80,9 @@ const ArcIdentity = () => (
         position: 'absolute',
         width: SIZE - 4, height: SIZE - 4,
         borderRadius: '50%',
-        background: 'conic-gradient(from 0deg, rgba(126,203,161,0.7), rgba(196,180,232,0.5), rgba(245,200,122,0.5), rgba(126,203,161,0.7))',
+        background: 'conic-gradient(from 0deg, rgba(0,212,200,0.7), rgba(167,139,250,0.5), rgba(245,200,122,0.4), rgba(0,212,200,0.7))',
         padding: 2,
+        willChange: 'transform',
       }}
     >
       <div style={{ width: '100%', height: '100%', borderRadius: '50%', background: 'var(--bg-primary)' }} />
@@ -110,36 +112,36 @@ const ArcIdentity = () => (
       </defs>
 
       {/* Ring 2: major tick marks at 16 positions */}
-      {ticks(CX, CY, 128, 32, 8, '#7ecba1', 0.35)}
+      {ticks(CX, CY, 128, 32, 8, '#00d4c8', 0.35)}
 
       {/* Ring 3: counter-rotating segmented ring (16 segs) */}
       <motion.g
         animate={{ rotate: -360 }}
         transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
-        style={{ originX: `${CX}px`, originY: `${CY}px` }}
+        style={{ originX: `${CX}px`, originY: `${CY}px`, willChange: 'transform' }}
       >
-        {segRing(CX, CY, 116, 16, 6, '#c4b4e8', 1.8, 0.5)}
+        {segRing(CX, CY, 116, 16, 6, '#a78bfa', 1.8, 0.5)}
       </motion.g>
 
       {/* Ring 4: fast spin arc segments (Iron Man) */}
       <motion.g
         animate={{ rotate: 360 }}
-        transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
-        style={{ originX: `${CX}px`, originY: `${CY}px` }}
+        transition={{ duration: 9, repeat: Infinity, ease: 'linear' }}
+        style={{ originX: `${CX}px`, originY: `${CY}px`, willChange: 'transform' }}
       >
-        {segRing(CX, CY, 104, 6, 22, '#7ecba1', 2.5, 0.65)}
+        {segRing(CX, CY, 104, 6, 22, '#00d4c8', 2.5, 0.65)}
       </motion.g>
 
       {/* Ring 5: pulsing static ring */}
       <motion.circle
         cx={CX} cy={CY} r={90}
         stroke="#f5c87a" strokeWidth={0.8} fill="none"
-        animate={{ opacity: [0.2, 0.5, 0.2], r: [90, 91, 90] }}
+        animate={{ opacity: [0.2, 0.45, 0.2] }}
         transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
       />
 
       {/* Ring 6: circuit arc segments */}
-      {segRing(CX, CY, 80, 8, 12, '#7ecba1', 1.2, 0.4)}
+      {segRing(CX, CY, 80, 8, 12, '#00d4c8', 1.2, 0.4)}
 
       {/* Radial circuit lines (Iron Man spokes) */}
       {[0, 45, 90, 135, 180, 225, 270, 315].map((deg, i) => {
@@ -150,7 +152,7 @@ const ArcIdentity = () => (
             key={i}
             x1={CX + r1 * Math.cos(a)} y1={CY + r1 * Math.sin(a)}
             x2={CX + r2 * Math.cos(a)} y2={CY + r2 * Math.sin(a)}
-            stroke={i % 2 === 0 ? '#7ecba1' : '#c4b4e8'}
+            stroke={i % 2 === 0 ? '#00d4c8' : '#a78bfa'}
             strokeWidth={i % 2 === 0 ? 1.5 : 0.8}
             opacity={0.6}
           />
@@ -161,7 +163,7 @@ const ArcIdentity = () => (
       <circle cx={CX} cy={CY} r={58} fill="url(#coreGrad)" />
       <motion.circle
         cx={CX} cy={CY} r={57}
-        stroke="#7ecba1" strokeWidth={1.2} fill="none"
+        stroke="#00d4c8" strokeWidth={1.2} fill="none"
         animate={{ opacity: [0.3, 0.7, 0.3] }}
         transition={{ duration: 2, repeat: Infinity }}
       />
@@ -169,17 +171,17 @@ const ArcIdentity = () => (
       {/* Inner glow pulse behind "AA" */}
       <motion.circle
         cx={CX} cy={CY} r={48}
-        fill="#7ecba1"
+        fill="#00d4c8"
         filter="url(#arcGlow)"
-        animate={{ opacity: [0.03, 0.12, 0.03], r: [48, 52, 48] }}
+        animate={{ opacity: [0.03, 0.10, 0.03] }}
         transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
       />
 
       {/* "AA" monogram — gradient stroke text */}
       <defs>
         <linearGradient id="aaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%"   stopColor="#7ecba1" />
-          <stop offset="50%"  stopColor="#c4b4e8" />
+          <stop offset="0%"   stopColor="#00d4c8" />
+          <stop offset="50%"  stopColor="#a78bfa" />
           <stop offset="100%" stopColor="#f5c87a" />
         </linearGradient>
       </defs>
@@ -191,7 +193,7 @@ const ArcIdentity = () => (
         fontSize="52"
         fontWeight="900"
         fontFamily="Inter, sans-serif"
-        fill="#7ecba1"
+        fill="#00d4c8"
         opacity="0.12"
         filter="url(#textGlow)"
         animate={{ opacity: [0.08, 0.18, 0.08] }}
@@ -219,7 +221,7 @@ const ArcIdentity = () => (
         textAnchor="middle"
         fontSize="7.5"
         fontFamily="Fira Code, monospace"
-        fill="#7ecba1"
+        fill="#00d4c8"
         opacity="0.55"
         letterSpacing="4"
       >
@@ -248,7 +250,7 @@ const ArcIdentity = () => (
       })}
 
       {/* Outer ring fine ticks (48 ticks) */}
-      {ticks(CX, CY, 138, 48, 4, '#c4b4e8', 0.2)}
+      {ticks(CX, CY, 138, 48, 4, '#a78bfa', 0.2)}
     </svg>
 
     {/* ── Floating info badges ── */}
@@ -259,12 +261,13 @@ const ArcIdentity = () => (
       style={{
         top: 10, right: -10,
         background: 'var(--bg-card)',
-        border: '1px solid rgba(126,203,161,0.28)',
-        boxShadow: '0 0 16px rgba(126,203,161,0.14)',
+        border: '1px solid rgba(0,212,200,0.25)',
+        boxShadow: '0 0 12px rgba(0,212,200,0.12)',
+        willChange: 'transform',
       }}
     >
       <div className="text-xs" style={{ color: 'var(--text-muted)' }}>Experience</div>
-      <div className="font-bold text-base" style={{ color: 'var(--mint)' }}>6+ yrs</div>
+      <div className="font-bold text-base" style={{ color: 'var(--teal)' }}>6+ yrs</div>
     </motion.div>
 
     <motion.div
@@ -274,8 +277,9 @@ const ArcIdentity = () => (
       style={{
         bottom: 10, left: -10,
         background: 'var(--bg-card)',
-        border: '1px solid rgba(196,180,232,0.28)',
-        boxShadow: '0 0 16px rgba(196,180,232,0.12)',
+        border: '1px solid rgba(167,139,250,0.25)',
+        boxShadow: '0 0 12px rgba(167,139,250,0.10)',
+        willChange: 'transform',
       }}
     >
       <div className="text-xs" style={{ color: 'var(--text-muted)' }}>Current</div>
@@ -289,8 +293,9 @@ const ArcIdentity = () => (
       style={{
         top: '42%', right: -16,
         background: 'var(--bg-card)',
-        border: '1px solid rgba(245,200,122,0.28)',
-        boxShadow: '0 0 16px rgba(245,200,122,0.10)',
+        border: '1px solid rgba(245,200,122,0.25)',
+        boxShadow: '0 0 12px rgba(245,200,122,0.08)',
+        willChange: 'transform',
       }}
     >
       <div className="text-xs" style={{ color: 'var(--text-muted)' }}>Stack</div>
