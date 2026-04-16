@@ -5,6 +5,7 @@ import { FaGithub, FaLinkedin, FaNpm, FaMedium } from 'react-icons/fa';
 import { HiArrowDown } from 'react-icons/hi';
 import ArcIdentity from './ArcIdentity';
 import { soundEngine } from '../utils/soundEngine';
+import { isLowEnd } from '../utils/deviceUtils';
 
 const roles = [
   'Senior Software Engineer',
@@ -45,7 +46,7 @@ const Hero = () => {
   return (
     <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden grid-bg">
       {/* Boot scan line */}
-      <motion.div
+      {!isLowEnd && <motion.div
         initial={{ top: 0, opacity: 0 }}
         animate={{ top: '100%', opacity: [0, 1, 1, 0] }}
         transition={{ delay: 0.3, duration: 1.6, ease: 'linear' }}
@@ -54,7 +55,7 @@ const Hero = () => {
           background: 'linear-gradient(90deg,transparent,rgba(0,212,200,.9) 20%,rgba(167,139,250,1) 50%,rgba(0,180,216,.9) 80%,transparent)',
           boxShadow: '0 0 16px rgba(0,212,200,.7)',
         }}
-      />
+      />}
 
       {/* Ambient glow orbs */}
       <div className="absolute top-1/4 left-1/6 w-[500px] h-[500px] rounded-full blur-3xl pointer-events-none"
@@ -70,13 +71,13 @@ const Hero = () => {
 
         {/* ── Left: text ── */}
         <motion.div
-          initial={{ opacity: 0, x: -60 }}
+          initial={isLowEnd ? false : { opacity: 0, x: -60 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.9, ease: 'easeOut' }}
         >
           {/* Status badge */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={isLowEnd ? false : { opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
             className="inline-flex items-center gap-2.5 mb-8"
@@ -92,7 +93,7 @@ const Hero = () => {
 
           {/* Display heading — editorial large */}
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
+            initial={isLowEnd ? false : { opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.8 }}
           >
@@ -109,7 +110,7 @@ const Hero = () => {
 
           {/* Typewriter */}
           <motion.div
-            initial={{ opacity: 0 }}
+            initial={isLowEnd ? false : { opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.55 }}
             className="font-space-mono text-sm text-[#00d4c8]/80 mb-6 h-6 flex items-center gap-2"
@@ -126,7 +127,7 @@ const Hero = () => {
 
           {/* Description */}
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
+            initial={isLowEnd ? false : { opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.65 }}
             className="font-grotesk text-[var(--text-mid)] text-lg leading-relaxed mb-10 max-w-lg"
@@ -141,7 +142,7 @@ const Hero = () => {
 
           {/* CTA Buttons */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={isLowEnd ? false : { opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.75 }}
             className="flex flex-wrap gap-4 mb-12"
@@ -172,7 +173,7 @@ const Hero = () => {
 
           {/* Social Links + Location */}
           <motion.div
-            initial={{ opacity: 0 }}
+            initial={isLowEnd ? false : { opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.9 }}
             className="flex items-center gap-4"
@@ -185,7 +186,7 @@ const Hero = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   onHoverStart={() => soundEngine.hover()}
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={isLowEnd ? false : { opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.9 + i * 0.08 }}
                   whileHover={{ scale: 1.2, y: -3,
@@ -209,7 +210,7 @@ const Hero = () => {
 
         {/* ── Right: Arc Identity ── */}
         <motion.div
-          initial={{ opacity: 0, x: 60 }}
+          initial={isLowEnd ? false : { opacity: 0, x: 60 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.9, delay: 0.3, ease: 'easeOut' }}
           className="flex justify-center items-center py-10"

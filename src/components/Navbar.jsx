@@ -4,6 +4,7 @@ import { Link } from 'react-scroll';
 import { HiMenuAlt3, HiX } from 'react-icons/hi';
 import SoundToggle from './SoundToggle';
 import { soundEngine } from '../utils/soundEngine';
+import { isLowEnd } from '../utils/deviceUtils';
 
 const navLinks = [
   { name: 'HOME',       to: 'hero'       },
@@ -25,7 +26,7 @@ const Navbar = () => {
 
   return (
     <motion.nav
-      initial={{ y: -80, opacity: 0 }}
+      initial={isLowEnd ? false : { y: -80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: 'easeOut' }}
       style={scrolled ? {
