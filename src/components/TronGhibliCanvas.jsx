@@ -6,18 +6,11 @@ const GOLD = [245, 200, 122];
 
 const c = ([r, g, b], a) => `rgba(${r},${g},${b},${a.toFixed(2)})`;
 
-/* ── Detect weak / in-app browsers ── */
-const ua = typeof navigator !== 'undefined' ? navigator.userAgent : '';
-const isInApp   = /FBAN|FBAV|Instagram|Line|Twitter|MicroMessenger/i.test(ua);
-const isSafari  = /^((?!chrome|android).)*safari/i.test(ua);
-const isLowEnd  = isInApp || isSafari;
-
-/* ── Particle counts ── */
-const N_SPORES = isLowEnd ? 10 : 20;
-const N_TRAILS = isLowEnd ? 2  : 4;
-const N_NODES  = isLowEnd ? 4  : 8;
-const FPS_CAP  = isLowEnd ? 24 : 40;
-const FRAME_MS = 1000 / FPS_CAP;
+/* ── Uniform settings for all devices ── */
+const N_SPORES = 16;
+const N_TRAILS = 4;
+const N_NODES  = 6;
+const FRAME_MS = 1000 / 40; // 40fps cap — smooth on all screens
 
 const rnd = () => Math.random();
 
@@ -152,7 +145,7 @@ const TronGhibliCanvas = () => {
       ctx.clearRect(0, 0, cw, ch);
 
       drawTrails(ts);
-      if (!isLowEnd) drawNodes(t);
+      drawNodes(t);
       drawSpores(t);
     };
 

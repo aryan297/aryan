@@ -306,6 +306,14 @@ body {
 @keyframes corner-h { from { width: 0; } to { width: 42px; } }
 @keyframes corner-v { from { height: 0; } to { height: 42px; } }
 
+/* ── Arc Identity CSS spin animations (compositor thread) ── */
+@keyframes arc-cw  { to { transform: rotate(360deg);  } }
+@keyframes arc-ccw { to { transform: rotate(-360deg); } }
+@keyframes arc-pulse-opacity {
+  0%,100% { opacity: 0.3; }
+  50%     { opacity: 0.55; }
+}
+
 /* ── Section label — monospace char-by-char blink ── */
 .tron-label {
   font-family: 'Fira Code', monospace;

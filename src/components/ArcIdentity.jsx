@@ -1,62 +1,45 @@
 import { motion } from 'framer-motion';
 import { soundEngine } from '../utils/soundEngine';
 
-/* ═══════════════════════════════════════════════════════════
-   Arc Identity — Iron Man arc reactor × Tron identity disc
-   Pure CSS + SVG + Framer Motion
-   Palette: Ghibli-Tron (mint #00d4c8 / lavender #a78bfa / gold #f5c87a)
-═══════════════════════════════════════════════════════════ */
+const SIZE = 300;
+const CX   = SIZE / 2;
+const CY   = SIZE / 2;
+const PI2  = Math.PI * 2;
 
-const SIZE   = 300;          // outer container px
-const CX     = SIZE / 2;
-const CY     = SIZE / 2;
-const TWO_PI = Math.PI * 2;
-
-/* Build SVG arc path */
 const arcPath = (cx, cy, r, startDeg, endDeg) => {
-  const s = (startDeg * Math.PI) / 180;
-  const e = (endDeg   * Math.PI) / 180;
+  const s  = (startDeg * Math.PI) / 180;
+  const e  = (endDeg   * Math.PI) / 180;
   const x1 = cx + r * Math.cos(s);
   const y1 = cy + r * Math.sin(s);
   const x2 = cx + r * Math.cos(e);
   const y2 = cy + r * Math.sin(e);
-  const large = endDeg - startDeg > 180 ? 1 : 0;
-  return `M ${x1} ${y1} A ${r} ${r} 0 ${large} 1 ${x2} ${y2}`;
+  return `M ${x1} ${y1} A ${r} ${r} 0 ${endDeg - startDeg > 180 ? 1 : 0} 1 ${x2} ${y2}`;
 };
 
-/* Tick marks at N/S/E/W + 45° diagonals */
 const ticks = (cx, cy, r, count, len, color, opacity) =>
   Array.from({ length: count }, (_, i) => {
-    const a = (i / count) * TWO_PI - Math.PI / 2;
+    const a  = (i / count) * PI2 - Math.PI / 2;
     const x1 = cx + r * Math.cos(a);
     const y1 = cy + r * Math.sin(a);
     const x2 = cx + (r + len) * Math.cos(a);
     const y2 = cy + (r + len) * Math.sin(a);
-    return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke={color} strokeWidth={i % (count / 4) === 0 ? 2 : 0.8} opacity={i % (count / 4) === 0 ? opacity * 1.6 : opacity} />;
+    const major = i % (count / 4) === 0;
+    return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2}
+      stroke={color} strokeWidth={major ? 2 : 0.8} opacity={major ? opacity * 1.6 : opacity} />;
   });
 
-/* Segmented ring — Tron-style gaps */
 const segRing = (cx, cy, r, segments, gap, color, width, opacity) =>
   Array.from({ length: segments }, (_, i) => {
-    const segSize = 360 / segments;
-    const start   = i * segSize + gap / 2;
-    const end     = (i + 1) * segSize - gap / 2;
-    return (
-      <path
-        key={i}
-        d={arcPath(cx, cy, r, start, end)}
-        stroke={color}
-        strokeWidth={width}
-        strokeLinecap="round"
-        fill="none"
-        opacity={opacity}
-      />
-    );
+    const seg   = 360 / segments;
+    const start = i * seg + gap / 2;
+    const end   = (i + 1) * seg - gap / 2;
+    return <path key={i} d={arcPath(cx, cy, r, start, end)}
+      stroke={color} strokeWidth={width} strokeLinecap="round" fill="none" opacity={opacity} />;
   });
 
-const ua2 = typeof navigator !== 'undefined' ? navigator.userAgent : '';
-const isWeakBrowser = /FBAN|FBAV|Instagram|Line|Twitter/i.test(ua2) ||
-  /^((?!chrome|android).)*safari/i.test(ua2);
+/* Shared spin style — uses CSS keyframes, runs on compositor thread */
+const spinCW  = (dur) => ({ animation: `arc-cw ${dur}s linear infinite`,  willChange: 'transform' });
+const spinCCW = (dur) => ({ animation: `arc-ccw ${dur}s linear infinite`, willChange: 'transform' });
 
 const ArcIdentity = () => (
   <div
@@ -64,200 +47,170 @@ const ArcIdentity = () => (
     style={{ width: SIZE, height: SIZE }}
     onClick={() => soundEngine.boop()}
   >
-    {/* ── Deep space ambient glow ── */}
-    <motion.div
-      animate={{ opacity: [0.3, 0.55, 0.3] }}
-      transition={{ duration: isWeakBrowser ? 5 : 4, repeat: Infinity, ease: 'easeInOut' }}
-      style={{
-        position: 'absolute', inset: -24, borderRadius: '50%',
-        background: 'radial-gradient(circle, rgba(0,212,200,0.15) 0%, rgba(167,139,250,0.08) 40%, transparent 70%)',
-        filter: 'blur(16px)',
-        willChange: 'opacity',
-      }}
-    />
+    {/* Ambient glow — CSS animation via motion (lightweight opacity only) */}
+    <div style={{
+      position: 'absolute', inset: -24, borderRadius: '50%',
+      background: 'radial-gradient(circle, rgba(0,212,200,0.14) 0%, rgba(167,139,250,0.07) 40%, transparent 70%)',
+      filter: 'blur(16px)',
+      animation: 'arc-pulse-opacity 4s ease-in-out infinite',
+      willChange: 'opacity',
+    }} />
 
-    {/* ── Ring 1: outer slow-spin conic (Tron disc) ── */}
-    <motion.div
-      animate={{ rotate: 360 }}
-      transition={{ duration: isWeakBrowser ? 26 : 22, repeat: Infinity, ease: 'linear' }}
-      style={{
-        position: 'absolute',
-        width: SIZE - 4, height: SIZE - 4,
-        borderRadius: '50%',
-        background: 'conic-gradient(from 0deg, rgba(0,212,200,0.7), rgba(167,139,250,0.5), rgba(245,200,122,0.4), rgba(0,212,200,0.7))',
-        padding: 2,
-        willChange: 'transform',
-      }}
-    >
+    {/* Ring 1 — outer conic spinner (CSS, compositor thread) */}
+    <div style={{
+      position: 'absolute',
+      width: SIZE - 4, height: SIZE - 4,
+      borderRadius: '50%',
+      background: 'conic-gradient(from 0deg, rgba(0,212,200,0.7), rgba(167,139,250,0.5), rgba(245,200,122,0.4), rgba(0,212,200,0.7))',
+      padding: 2,
+      ...spinCW(22),
+    }}>
       <div style={{ width: '100%', height: '100%', borderRadius: '50%', background: 'var(--bg-primary)' }} />
-    </motion.div>
+    </div>
 
-    {/* ── SVG layer ── */}
-    <svg
-      viewBox={`0 0 ${SIZE} ${SIZE}`}
-      width={SIZE}
-      height={SIZE}
-      style={{ position: 'absolute', top: 0, left: 0 }}
-      xmlns="http://www.w3.org/2000/svg"
-    >
+    {/* SVG layer */}
+    <svg viewBox={`0 0 ${SIZE} ${SIZE}`} width={SIZE} height={SIZE}
+      style={{ position: 'absolute', top: 0, left: 0 }}>
       <defs>
         <radialGradient id="coreGrad" cx="50%" cy="50%" r="50%">
-          <stop offset="0%"   stopColor="#1a2e28" />
-          <stop offset="100%" stopColor="#07101c" />
+          <stop offset="0%"   stopColor="#0d1828" />
+          <stop offset="100%" stopColor="#060c14" />
         </radialGradient>
         <filter id="arcGlow">
-          <feGaussianBlur stdDeviation="2.5" result="blur" />
-          <feComposite in="SourceGraphic" in2="blur" operator="over" />
+          <feGaussianBlur stdDeviation="2.5" result="b" />
+          <feComposite in="SourceGraphic" in2="b" operator="over" />
         </filter>
-        <filter id="textGlow">
-          <feGaussianBlur stdDeviation="4" result="blur" />
-          <feComposite in="SourceGraphic" in2="blur" operator="over" />
+        <filter id="coreGlow">
+          <feGaussianBlur stdDeviation="5" result="b" />
+          <feComposite in="SourceGraphic" in2="b" operator="over" />
         </filter>
-      </defs>
-
-      {/* Ring 2: major tick marks at 16 positions */}
-      {ticks(CX, CY, 128, 32, 8, '#00d4c8', 0.35)}
-
-      {/* Ring 3: counter-rotating segmented ring */}
-      <motion.g
-        animate={{ rotate: -360 }}
-        transition={{ duration: isWeakBrowser ? 36 : 30, repeat: Infinity, ease: 'linear' }}
-        style={{ originX: `${CX}px`, originY: `${CY}px`, willChange: 'transform' }}
-      >
-        {segRing(CX, CY, 116, 16, 6, '#a78bfa', 1.8, 0.5)}
-      </motion.g>
-
-      {/* Ring 4: fast spin arc segments */}
-      <motion.g
-        animate={{ rotate: 360 }}
-        transition={{ duration: isWeakBrowser ? 11 : 9, repeat: Infinity, ease: 'linear' }}
-        style={{ originX: `${CX}px`, originY: `${CY}px`, willChange: 'transform' }}
-      >
-        {segRing(CX, CY, 104, 6, 22, '#00d4c8', 2.5, 0.65)}
-      </motion.g>
-
-      {/* Ring 5: pulsing static ring */}
-      <motion.circle
-        cx={CX} cy={CY} r={90}
-        stroke="#f5c87a" strokeWidth={0.8} fill="none"
-        animate={{ opacity: [0.2, 0.45, 0.2] }}
-        transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-      />
-
-      {/* Ring 6: circuit arc segments */}
-      {segRing(CX, CY, 80, 8, 12, '#00d4c8', 1.2, 0.4)}
-
-      {/* Radial circuit lines (Iron Man spokes) */}
-      {[0, 45, 90, 135, 180, 225, 270, 315].map((deg, i) => {
-        const a  = (deg * Math.PI) / 180;
-        const r1 = 60, r2 = 76;
-        return (
-          <line
-            key={i}
-            x1={CX + r1 * Math.cos(a)} y1={CY + r1 * Math.sin(a)}
-            x2={CX + r2 * Math.cos(a)} y2={CY + r2 * Math.sin(a)}
-            stroke={i % 2 === 0 ? '#00d4c8' : '#a78bfa'}
-            strokeWidth={i % 2 === 0 ? 1.5 : 0.8}
-            opacity={0.6}
-          />
-        );
-      })}
-
-      {/* Inner core circle */}
-      <circle cx={CX} cy={CY} r={58} fill="url(#coreGrad)" />
-      <motion.circle
-        cx={CX} cy={CY} r={57}
-        stroke="#00d4c8" strokeWidth={1.2} fill="none"
-        animate={{ opacity: [0.3, 0.7, 0.3] }}
-        transition={{ duration: 2, repeat: Infinity }}
-      />
-
-      {/* Inner glow pulse behind "AA" */}
-      <motion.circle
-        cx={CX} cy={CY} r={48}
-        fill="#00d4c8"
-        filter="url(#arcGlow)"
-        animate={{ opacity: [0.03, 0.10, 0.03] }}
-        transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
-      />
-
-      {/* "AA" monogram — gradient stroke text */}
-      <defs>
+        <filter id="rimGlow">
+          <feGaussianBlur stdDeviation="3" result="b" />
+          <feComposite in="SourceGraphic" in2="b" operator="over" />
+        </filter>
         <linearGradient id="aaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%"   stopColor="#00d4c8" />
           <stop offset="50%"  stopColor="#a78bfa" />
           <stop offset="100%" stopColor="#f5c87a" />
         </linearGradient>
+        <radialGradient id="reactorFill" cx="50%" cy="40%" r="60%">
+          <stop offset="0%"   stopColor="#0a2535" />
+          <stop offset="60%"  stopColor="#061220" />
+          <stop offset="100%" stopColor="#030a12" />
+        </radialGradient>
+        <radialGradient id="innerGlow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%"   stopColor="#00d4c8" stopOpacity="0.25" />
+          <stop offset="100%" stopColor="#00d4c8" stopOpacity="0" />
+        </radialGradient>
       </defs>
 
-      {/* Soft glow layer */}
-      <motion.text
-        x={CX} y={CY + 14}
-        textAnchor="middle"
-        fontSize="52"
-        fontWeight="900"
-        fontFamily="Inter, sans-serif"
-        fill="#00d4c8"
-        opacity="0.12"
-        filter="url(#textGlow)"
-        animate={{ opacity: [0.08, 0.18, 0.08] }}
-        transition={{ duration: 2, repeat: Infinity }}
-      >
-        AA
-      </motion.text>
+      {/* Static tick marks */}
+      {ticks(CX, CY, 128, 32, 8, '#00d4c8', 0.30)}
 
-      {/* Crisp foreground text */}
-      <text
-        x={CX} y={CY + 14}
-        textAnchor="middle"
-        fontSize="52"
-        fontWeight="900"
-        fontFamily="Inter, sans-serif"
-        fill="url(#aaGrad)"
-        letterSpacing="-2"
-      >
-        AA
-      </text>
+      {/* Ring 3 — counter-spin (CSS on <g> via foreignObject workaround: use transform-box) */}
+      <g style={{ transformBox: 'fill-box', transformOrigin: 'center', ...spinCCW(30) }}>
+        {segRing(CX, CY, 116, 16, 6, '#a78bfa', 1.8, 0.5)}
+      </g>
 
-      {/* Sub-label */}
-      <text
-        x={CX} y={CY + 34}
-        textAnchor="middle"
-        fontSize="7.5"
-        fontFamily="Fira Code, monospace"
-        fill="#00d4c8"
-        opacity="0.55"
-        letterSpacing="4"
-      >
+      {/* Ring 4 — fast spin */}
+      <g style={{ transformBox: 'fill-box', transformOrigin: 'center', ...spinCW(9) }}>
+        {segRing(CX, CY, 104, 6, 22, '#00d4c8', 2.5, 0.65)}
+      </g>
+
+      {/* Ring 5 — static gold ring with CSS pulse */}
+      <circle cx={CX} cy={CY} r={90}
+        stroke="#f5c87a" strokeWidth={0.8} fill="none"
+        style={{ animation: 'arc-pulse-opacity 3s ease-in-out infinite', willChange: 'opacity' }} />
+
+      {/* ── IRON MAN REACTOR CORE ── */}
+
+      {/* Outer reactor rim — thick glowing ring */}
+      <circle cx={CX} cy={CY} r={78} fill="none"
+        stroke="#00d4c8" strokeWidth={6} opacity={0.15} />
+      <circle cx={CX} cy={CY} r={78} fill="none"
+        stroke="#00d4c8" strokeWidth={2} opacity={0.7}
+        filter="url(#rimGlow)"
+        style={{ animation: 'arc-pulse-opacity 2.5s ease-in-out infinite', willChange: 'opacity' }} />
+
+      {/* Segmented reactor band */}
+      {segRing(CX, CY, 78, 12, 4, '#00d4c8', 3.5, 0.5)}
+
+      {/* Spokes — thick Iron Man style */}
+      {[0,45,90,135,180,225,270,315].map((deg, i) => {
+        const a = (deg * Math.PI) / 180;
+        const main = i % 2 === 0;
+        return <g key={i}>
+          <line
+            x1={CX + 55 * Math.cos(a)} y1={CY + 55 * Math.sin(a)}
+            x2={CX + 72 * Math.cos(a)} y2={CY + 72 * Math.sin(a)}
+            stroke={main ? '#00d4c8' : '#a78bfa'}
+            strokeWidth={main ? 3 : 1.5} opacity={main ? 0.8 : 0.5}
+            strokeLinecap="round" />
+          {main && <circle
+            cx={CX + 72 * Math.cos(a)} cy={CY + 72 * Math.sin(a)}
+            r={2.5} fill="#00d4c8" opacity={0.9} />}
+        </g>;
+      })}
+
+      {/* Core base — deep reactor fill */}
+      <circle cx={CX} cy={CY} r={52} fill="url(#reactorFill)" />
+
+      {/* Inner radial glow bloom */}
+      <circle cx={CX} cy={CY} r={48} fill="url(#innerGlow)"
+        style={{ animation: 'arc-pulse-opacity 2s ease-in-out infinite', willChange: 'opacity' }} />
+
+      {/* Thick outer reactor wall */}
+      <circle cx={CX} cy={CY} r={52} fill="none"
+        stroke="#00d4c8" strokeWidth={5} opacity={0.12} />
+      <circle cx={CX} cy={CY} r={52} fill="none"
+        stroke="#00d4c8" strokeWidth={1.5} opacity={0.9}
+        filter="url(#rimGlow)"
+        style={{ animation: 'arc-pulse-opacity 1.8s ease-in-out infinite', willChange: 'opacity' }} />
+
+      {/* Inner accent ring */}
+      <circle cx={CX} cy={CY} r={40} fill="none"
+        stroke="#a78bfa" strokeWidth={3} opacity={0.08} />
+      <circle cx={CX} cy={CY} r={40} fill="none"
+        stroke="#a78bfa" strokeWidth={1} opacity={0.55}
+        style={{ animation: 'arc-pulse-opacity 3s ease-in-out infinite 0.5s', willChange: 'opacity' }} />
+
+      {/* Innermost ring */}
+      <circle cx={CX} cy={CY} r={30} fill="none"
+        stroke="#00d4c8" strokeWidth={4} opacity={0.10} />
+      <circle cx={CX} cy={CY} r={30} fill="none"
+        stroke="#00d4c8" strokeWidth={1.2} opacity={0.6}
+        filter="url(#arcGlow)"
+        style={{ animation: 'arc-pulse-opacity 2.2s ease-in-out infinite 0.3s', willChange: 'opacity' }} />
+
+      {/* AA monogram — larger, bolder */}
+      <text x={CX} y={CY + 10} textAnchor="middle" fontSize="46" fontWeight="900"
+        fontFamily="Inter, sans-serif" fill="url(#aaGrad)" letterSpacing="-2"
+        filter="url(#coreGlow)">AA</text>
+      <text x={CX} y={CY + 10} textAnchor="middle" fontSize="46" fontWeight="900"
+        fontFamily="Inter, sans-serif" fill="url(#aaGrad)" letterSpacing="-2">AA</text>
+
+      <text x={CX} y={CY + 28} textAnchor="middle" fontSize="7"
+        fontFamily="Space Mono, monospace" fill="#00d4c8" opacity="0.55" letterSpacing="4">
         ARYAN AMAN
       </text>
 
-      {/* Cardinal tick accents (N/S/E/W longer marks) */}
-      {[0, 90, 180, 270].map((deg, i) => {
+      {/* Cardinal marks */}
+      {[0,90,180,270].map((deg, i) => {
         const a  = ((deg - 90) * Math.PI) / 180;
-        const r1 = 128, r2 = 140;
-        return (
-          <g key={i}>
-            <line
-              x1={CX + r1 * Math.cos(a)} y1={CY + r1 * Math.sin(a)}
-              x2={CX + r2 * Math.cos(a)} y2={CY + r2 * Math.sin(a)}
-              stroke="#f5c87a" strokeWidth={2.5} strokeLinecap="round" opacity={0.7}
-            />
-            {/* Small diamond at tip */}
-            <circle
-              cx={CX + (r2 + 5) * Math.cos(a)}
-              cy={CY + (r2 + 5) * Math.sin(a)}
-              r={2.5} fill="#f5c87a" opacity={0.6}
-            />
-          </g>
-        );
+        return <g key={i}>
+          <line x1={CX + 128 * Math.cos(a)} y1={CY + 128 * Math.sin(a)}
+            x2={CX + 140 * Math.cos(a)} y2={CY + 140 * Math.sin(a)}
+            stroke="#f5c87a" strokeWidth={2.5} strokeLinecap="round" opacity={0.7} />
+          <circle cx={CX + 145 * Math.cos(a)} cy={CY + 145 * Math.sin(a)}
+            r={2.5} fill="#f5c87a" opacity={0.6} />
+        </g>;
       })}
 
-      {/* Outer ring fine ticks (48 ticks) */}
-      {ticks(CX, CY, 138, 48, 4, '#a78bfa', 0.2)}
+      {/* Outer fine ticks */}
+      {ticks(CX, CY, 138, 48, 4, '#a78bfa', 0.18)}
     </svg>
 
-    {/* ── Floating info badges ── */}
+    {/* Floating badges — Framer Motion for easeInOut float (lightweight) */}
     <motion.div
       animate={{ y: [-5, 5, -5] }}
       transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
@@ -265,8 +218,8 @@ const ArcIdentity = () => (
       style={{
         top: 10, right: -10,
         background: 'var(--bg-card)',
-        border: '1px solid rgba(0,212,200,0.25)',
-        boxShadow: '0 0 12px rgba(0,212,200,0.12)',
+        border: '1px solid rgba(0,212,200,0.22)',
+        boxShadow: '0 0 12px rgba(0,212,200,0.10)',
         willChange: 'transform',
       }}
     >
@@ -281,8 +234,8 @@ const ArcIdentity = () => (
       style={{
         bottom: 10, left: -10,
         background: 'var(--bg-card)',
-        border: '1px solid rgba(167,139,250,0.25)',
-        boxShadow: '0 0 12px rgba(167,139,250,0.10)',
+        border: '1px solid rgba(167,139,250,0.22)',
+        boxShadow: '0 0 12px rgba(167,139,250,0.08)',
         willChange: 'transform',
       }}
     >
@@ -297,8 +250,8 @@ const ArcIdentity = () => (
       style={{
         top: '42%', right: -16,
         background: 'var(--bg-card)',
-        border: '1px solid rgba(245,200,122,0.25)',
-        boxShadow: '0 0 12px rgba(245,200,122,0.08)',
+        border: '1px solid rgba(245,200,122,0.22)',
+        boxShadow: '0 0 12px rgba(245,200,122,0.07)',
         willChange: 'transform',
       }}
     >
