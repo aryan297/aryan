@@ -86,8 +86,8 @@ const techBadges = [
 const SkillBar = ({ name, level, color, delay, isInView }) => (
   <div className="mb-4">
     <div className="flex justify-between items-center mb-1.5">
-      <span className="text-sm text-slate-300 font-medium">{name}</span>
-      <span className="text-xs text-slate-500 font-mono">{level}%</span>
+      <span className="font-grotesk text-sm text-[var(--text-mid)]">{name}</span>
+      <span className="font-space-mono text-[10px] text-[var(--text-muted)]">{level}%</span>
     </div>
     <div className="h-2 bg-[var(--bg-surface)] rounded-full overflow-hidden">
       <motion.div
@@ -118,13 +118,13 @@ const Skills = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <span className="tron-label font-mono text-indigo-400 text-sm tracking-widest uppercase">What I work with</span>
-          <h2 className="text-4xl md:text-5xl font-black text-white mt-2">
-            <TronLetters text="Technical " inView={isInView} delay={0.1} />
-            <TronLetters text="Skills" className="gradient-text" inView={isInView} delay={0.55} />
+          <span className="terminal-label">What I work with</span>
+          <h2 className="display-heading text-5xl md:text-7xl text-white mt-3">
+            <TronLetters text="TECHNICAL " inView={isInView} delay={0.1} />
+            <TronLetters text="SKILLS" className="gradient-text" inView={isInView} delay={0.55} />
           </h2>
           <motion.div
-            className="w-20 h-1 bg-gradient-to-r from-indigo-500 to-cyan-500 rounded-full mx-auto mt-4"
+            className="w-20 h-0.5 bg-gradient-to-r from-[#00d4c8] to-[#a78bfa] rounded-full mx-auto mt-5"
             initial={{ scaleX: 0 }} animate={isInView ? { scaleX: 1 } : {}}
             transition={{ delay: 0.8, duration: 0.5, ease: 'easeOut' }}
             style={{ transformOrigin: 'left' }}
@@ -140,7 +140,7 @@ const Skills = () => {
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: catIndex * 0.1 }}
               whileHover={{ y: -6 }}
-              className="tron-card glow-border rounded-2xl p-6 bg-[var(--bg-card)]/80 border border-white/5 backdrop-blur-sm"
+              className="tron-card glow-border rounded-sm p-6 bg-[var(--bg-card)]/80 border border-[#00d4c8]/8 backdrop-blur-sm"
             >
               <div className="flex items-center gap-3 mb-5">
                 <motion.span
@@ -173,7 +173,7 @@ const Skills = () => {
           transition={{ duration: 0.6, delay: 0.6 }}
           className="text-center"
         >
-          <h3 className="text-lg font-bold text-slate-300 mb-6">Full Technology Stack</h3>
+          <h3 className="font-space-mono text-xs text-[var(--text-muted)] mb-6 tracking-[0.25em] uppercase">Full Technology Stack</h3>
           <div className="flex flex-wrap justify-center gap-3">
             {techBadges.map((tech, i) => (
               <motion.span
@@ -182,7 +182,7 @@ const Skills = () => {
                 animate={isInView ? { opacity: 1, scale: 1 } : {}}
                 transition={{ delay: 0.6 + i * 0.03, type: 'spring', stiffness: 200 }}
                 whileHover={{ scale: 1.1, y: -3 }}
-                className="tron-badge px-4 py-2 rounded-xl text-sm font-semibold bg-[var(--bg-card)] border border-indigo-500/20 text-slate-300 cursor-default"
+                className="tron-badge font-space-mono px-4 py-2 rounded-sm text-[10px] font-bold bg-[var(--bg-card)] border border-[#00d4c8]/15 text-[var(--text-mid)] cursor-default tracking-wider"
               >
                 {tech}
               </motion.span>

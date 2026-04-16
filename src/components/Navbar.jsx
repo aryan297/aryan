@@ -6,11 +6,11 @@ import SoundToggle from './SoundToggle';
 import { soundEngine } from '../utils/soundEngine';
 
 const navLinks = [
-  { name: 'Home',       to: 'hero'       },
-  { name: 'About',      to: 'about'      },
-  { name: 'Experience', to: 'experience' },
-  { name: 'Skills',     to: 'skills'     },
-  { name: 'Contact',    to: 'contact'    },
+  { name: 'HOME',       to: 'hero'       },
+  { name: 'ABOUT',      to: 'about'      },
+  { name: 'EXPERIENCE', to: 'experience' },
+  { name: 'SKILLS',     to: 'skills'     },
+  { name: 'CONTACT',    to: 'contact'    },
 ];
 
 const Navbar = () => {
@@ -28,31 +28,42 @@ const Navbar = () => {
       initial={{ y: -80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: 'easeOut' }}
-      style={scrolled ? { background: 'rgba(7,16,28,0.88)', borderColor: 'rgba(126,203,161,0.12)' } : {}}
+      style={scrolled ? {
+        background: 'rgba(6,12,20,0.92)',
+        borderColor: 'rgba(0,212,200,0.10)',
+        backdropFilter: 'blur(20px)',
+      } : {}}
       className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
-        scrolled ? 'backdrop-blur-xl border-b shadow-2xl' : 'bg-transparent'
+        scrolled ? 'border-b shadow-2xl' : 'bg-transparent'
       }`}
     >
-      <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
 
-        {/* Logo */}
+        {/* Logo — terminal style */}
         <Link to="hero" smooth duration={600} className="cursor-pointer">
           <motion.div
-            whileHover={{ scale: 1.05 }}
+            whileHover={{ scale: 1.03 }}
             onHoverStart={() => soundEngine.hover()}
-            className="flex items-center gap-2"
+            className="flex items-center gap-3"
           >
-            <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-indigo-500 to-cyan-400 flex items-center justify-center font-bold text-white text-lg shadow-lg">
-              A
+            {/* Bracket mark */}
+            <div className="relative w-9 h-9 flex items-center justify-center">
+              <div className="absolute inset-0 border border-[#00d4c8]/40 rounded-sm" />
+              <div className="absolute top-0 left-0 w-2 h-0.5 bg-[#00d4c8]" />
+              <div className="absolute top-0 left-0 w-0.5 h-2 bg-[#00d4c8]" />
+              <div className="absolute bottom-0 right-0 w-2 h-0.5 bg-[#00d4c8]" />
+              <div className="absolute bottom-0 right-0 w-0.5 h-2 bg-[#00d4c8]" />
+              <span className="font-space-mono text-[#00d4c8] text-sm font-bold">A</span>
             </div>
-            <span className="font-bold text-lg text-white">
-              Aryan<span className="text-indigo-400">.</span>
-            </span>
+            <div className="flex flex-col leading-none">
+              <span className="font-space-mono text-white text-sm font-bold tracking-widest uppercase">ARYAN_AMAN</span>
+              <span className="font-space-mono text-[#00d4c8]/60 text-[9px] tracking-[0.3em] uppercase">SDE-3 // ENGINEER</span>
+            </div>
           </motion.div>
         </Link>
 
         {/* Desktop Links */}
-        <div className="hidden md:flex items-center gap-6">
+        <div className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
             <Link
               key={link.name}
@@ -63,7 +74,7 @@ const Navbar = () => {
               spy
               activeClass="active"
               onMouseEnter={() => soundEngine.hover()}
-              className="nav-link text-sm font-medium text-slate-300 hover:text-indigo-400 cursor-pointer transition-colors"
+              className="nav-link font-space-mono text-[10px] font-bold text-[var(--text-mid)] hover:text-[#00d4c8] cursor-pointer transition-colors tracking-[0.2em]"
             >
               {link.name}
             </Link>
@@ -76,19 +87,19 @@ const Navbar = () => {
             href="mailto:aryanaman97@gmail.com"
             onHoverStart={() => soundEngine.hover()}
             onClick={() => soundEngine.click()}
-            whileHover={{ scale: 1.05 }}
+            whileHover={{ scale: 1.04, boxShadow: '0 0 24px rgba(0,212,200,0.35)' }}
             whileTap={{ scale: 0.97 }}
-            className="px-4 py-2 text-sm font-semibold rounded-lg bg-gradient-to-r from-indigo-500 to-cyan-500 text-white shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/40 transition-shadow"
+            className="font-space-mono text-[10px] font-bold tracking-[0.2em] px-5 py-2.5 border border-[#00d4c8]/60 text-[#00d4c8] hover:bg-[#00d4c8]/10 transition-all uppercase rounded-sm"
           >
-            Hire Me
+            HIRE_ME
           </motion.a>
         </div>
 
-        {/* Mobile row: sound toggle + hamburger */}
+        {/* Mobile row */}
         <div className="md:hidden flex items-center gap-3">
           <SoundToggle />
           <button
-            className="text-white text-2xl"
+            className="text-[#00d4c8] text-2xl"
             onClick={() => { setMenuOpen(!menuOpen); soundEngine.click(); }}
           >
             {menuOpen ? <HiX /> : <HiMenuAlt3 />}
@@ -103,7 +114,7 @@ const Navbar = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            style={{ background: 'rgba(7,16,28,0.96)', borderColor: 'rgba(126,203,161,0.10)' }}
+            style={{ background: 'rgba(6,12,20,0.97)', borderColor: 'rgba(0,212,200,0.10)' }}
             className="md:hidden backdrop-blur-md border-t"
           >
             <div className="flex flex-col px-6 py-4 gap-4">
@@ -116,7 +127,7 @@ const Navbar = () => {
                   offset={-70}
                   onClick={() => { setMenuOpen(false); soundEngine.click(); }}
                   onMouseEnter={() => soundEngine.hover()}
-                  className="text-slate-300 hover:text-indigo-400 font-medium py-2 cursor-pointer transition-colors border-b border-white/5"
+                  className="font-space-mono text-xs text-[var(--text-mid)] hover:text-[#00d4c8] font-bold py-2 cursor-pointer transition-colors border-b border-white/5 tracking-[0.2em]"
                 >
                   {link.name}
                 </Link>

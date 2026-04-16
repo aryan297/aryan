@@ -121,8 +121,8 @@ const ExperienceCard = ({ exp, index, isInView }) => (
             </span>
             <h3 className="text-lg font-bold text-white">{exp.role}</h3>
             <div className="flex items-center gap-2 mt-1">
-              <FaBriefcase className="text-indigo-400" size={12} />
-              <span className="text-indigo-400 font-semibold text-sm">{exp.company}</span>
+              <FaBriefcase className="text-[#00d4c8]" size={12} />
+              <span className="text-[#00d4c8] font-semibold text-sm font-grotesk">{exp.company}</span>
               <span className="text-slate-500 text-sm">· {exp.location}</span>
             </div>
           </div>
@@ -140,7 +140,7 @@ const ExperienceCard = ({ exp, index, isInView }) => (
         <ul className="space-y-2 mb-4">
           {exp.highlights.map((h, i) => (
             <li key={i} className="flex items-start gap-2 text-sm text-slate-300">
-              <HiChevronRight className="text-indigo-400 mt-0.5 shrink-0" size={16} />
+              <HiChevronRight className="text-[#00d4c8] mt-0.5 shrink-0" size={16} />
               <span>{h}</span>
             </li>
           ))}
@@ -152,7 +152,7 @@ const ExperienceCard = ({ exp, index, isInView }) => (
             <motion.span
               key={t}
               whileHover={{ scale: 1.1, y: -2 }}
-              className="tron-badge text-xs px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 font-mono"
+              className="tron-badge font-space-mono text-[9px] px-2 py-0.5 rounded-sm bg-[#00d4c8]/8 text-[#00d4c8]/80 border border-[#00d4c8]/20"
             >
               {t}
             </motion.span>
@@ -183,13 +183,13 @@ const Experience = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <span className="tron-label font-mono text-indigo-400 text-sm tracking-widest uppercase">Career Journey</span>
-          <h2 className="text-4xl md:text-5xl font-black text-white mt-2">
-            <TronLetters text="Work " inView={isInView} delay={0.1} />
-            <TronLetters text="Experience" className="gradient-text" inView={isInView} delay={0.44} />
+          <span className="terminal-label">Career Journey</span>
+          <h2 className="display-heading text-5xl md:text-7xl text-white mt-3">
+            <TronLetters text="WORK " inView={isInView} delay={0.1} />
+            <TronLetters text="EXPERIENCE" className="gradient-text" inView={isInView} delay={0.44} />
           </h2>
           <motion.div
-            className="w-20 h-1 bg-gradient-to-r from-indigo-500 to-cyan-500 rounded-full mx-auto mt-4"
+            className="w-20 h-0.5 bg-gradient-to-r from-[#00d4c8] to-[#a78bfa] rounded-full mx-auto mt-5"
             initial={{ scaleX: 0 }} animate={isInView ? { scaleX: 1 } : {}}
             transition={{ delay: 0.9, duration: 0.5, ease: 'easeOut' }}
             style={{ transformOrigin: 'left' }}
@@ -199,7 +199,7 @@ const Experience = () => {
         {/* Timeline */}
         <div className="relative space-y-8">
           {/* Center line */}
-          <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-indigo-500/50 via-cyan-500/30 to-transparent -translate-x-1/2" />
+          <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-[#00d4c8]/50 via-[#a78bfa]/30 to-transparent -translate-x-1/2" />
 
           {experiences.map((exp, i) => (
             <ExperienceCard key={i} exp={exp} index={i} isInView={isInView} />

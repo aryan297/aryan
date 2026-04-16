@@ -42,13 +42,13 @@ const About = () => {
           animate={isInView ? 'visible' : 'hidden'}
           className="text-center mb-16"
         >
-          <span className="tron-label font-mono text-indigo-400 text-sm tracking-widest uppercase">Get to know me</span>
-          <h2 className="text-4xl md:text-5xl font-black text-white mt-2">
-            <TronLetters text="About " inView={isInView} delay={0.1} />
-            <TronLetters text="Me" className="gradient-text" inView={isInView} delay={0.44} />
+          <span className="terminal-label">Get to know me</span>
+          <h2 className="display-heading text-5xl md:text-7xl text-white mt-3">
+            <TronLetters text="ABOUT " inView={isInView} delay={0.1} />
+            <TronLetters text="ME" className="gradient-text" inView={isInView} delay={0.44} />
           </h2>
           <motion.div
-            className="w-20 h-1 bg-gradient-to-r from-indigo-500 to-cyan-500 rounded-full mx-auto mt-4"
+            className="w-20 h-0.5 bg-gradient-to-r from-[#00d4c8] to-[#a78bfa] rounded-full mx-auto mt-5"
             initial={{ scaleX: 0 }} animate={isInView ? { scaleX: 1 } : {}}
             transition={{ delay: 0.7, duration: 0.5, ease: 'easeOut' }}
             style={{ transformOrigin: 'left' }}
@@ -63,18 +63,18 @@ const About = () => {
             animate={isInView ? 'visible' : 'hidden'}
             transition={{ delay: 0.2 }}
           >
-            <div className="space-y-5 text-slate-300 text-lg leading-relaxed">
+            <div className="space-y-5 font-grotesk text-[var(--text-mid)] text-lg leading-relaxed">
               <p>
-                I'm a <span className="text-indigo-400 font-semibold">Results-driven Senior Software Engineer (SDE-3)</span> with 6+ years
+                I'm a <span className="text-white font-semibold">Results-driven Senior Software Engineer (SDE-3)</span> with 6+ years
                 of experience designing and delivering high-performance, scalable backend systems and full-stack applications, currently at{' '}
-                <span className="text-cyan-400 font-semibold">Vola Finance</span>, Bengaluru.
+                <span className="text-[#00d4c8] font-semibold">Vola Finance</span>, Bengaluru.
               </p>
               <p>
-                My expertise spans building <span className="text-emerald-400 font-semibold">microfinance platforms</span>,
+                My expertise spans building <span className="text-[#00d4c8] font-semibold">microfinance platforms</span>,
                 high-concurrency schedulers, event-driven architectures, and real-time dashboards — from backend
-                APIs in <span className="text-indigo-400 font-semibold">GoLang (Gin)</span> and{' '}
-                <span className="text-cyan-400 font-semibold">NestJS</span> to powerful frontend experiences
-                in <span className="text-purple-400 font-semibold">Angular</span>.
+                APIs in <span className="text-white font-semibold">GoLang (Gin)</span> and{' '}
+                <span className="text-[#00b4d8] font-semibold">NestJS</span> to powerful frontend experiences
+                in <span className="text-[#a78bfa] font-semibold">Angular</span>.
               </p>
               <p>
                 Proven track record across fintech, mobility, and e-commerce domains — integrating BaaS providers
@@ -96,13 +96,13 @@ const About = () => {
             <motion.div className="mt-8 flex gap-4 flex-wrap">
               <a
                 href="mailto:aryanaman97@gmail.com"
-                className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-indigo-500 to-cyan-500 text-white font-semibold shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 transition-shadow"
+                className="font-space-mono text-[10px] tracking-[0.2em] px-6 py-3 bg-[#00d4c8] text-[#060c14] font-bold uppercase hover:bg-[#00e5d4] transition-colors rounded-sm"
               >
-                Email Me
+                EMAIL_ME
               </a>
               <a
                 href="tel:+917528800424"
-                className="px-6 py-2.5 rounded-xl border border-indigo-500/40 text-indigo-300 font-semibold hover:bg-indigo-500/10 transition-colors"
+                className="font-space-mono text-[10px] tracking-[0.2em] px-6 py-3 border border-[#00d4c8]/40 text-[#00d4c8] font-bold uppercase hover:bg-[#00d4c8]/10 transition-colors rounded-sm"
               >
                 +91 7528800424
               </a>
@@ -124,7 +124,7 @@ const About = () => {
                 animate={isInView ? { opacity: 1, scale: 1 } : {}}
                 transition={{ delay: 0.4 + i * 0.1, type: 'spring', stiffness: 200 }}
                 whileHover={{ scale: 1.05, y: -4 }}
-                className="tron-card glow-border rounded-2xl p-6 bg-[var(--bg-card)]/80 border border-indigo-500/20 text-center"
+                className="tron-card glow-border rounded-sm p-6 bg-[var(--bg-card)]/80 border border-[#00d4c8]/10 text-center"
               >
                 <motion.div
                   className="text-3xl mb-2"
@@ -133,8 +133,8 @@ const About = () => {
                 >
                   {icon}
                 </motion.div>
-                <div className="text-3xl font-black gradient-text tron-counter">{value}</div>
-                <div className="text-slate-400 text-xs mt-1 font-mono tracking-wider uppercase">{label}</div>
+                <div className="display-heading text-3xl gradient-text tron-counter">{value}</div>
+                <div className="font-space-mono text-[var(--text-muted)] text-[9px] mt-2 tracking-[0.2em] uppercase">{label}</div>
               </motion.div>
             ))}
 
@@ -143,9 +143,9 @@ const About = () => {
               initial={{ opacity: 0, scale: 0.8 }}
               animate={isInView ? { opacity: 1, scale: 1 } : {}}
               transition={{ delay: 0.8, type: 'spring' }}
-              className="col-span-2 rounded-2xl p-5 bg-gradient-to-br from-indigo-900/20 to-cyan-900/10 border border-indigo-500/20"
+              className="col-span-2 rounded-sm p-5 bg-gradient-to-br from-[#00d4c8]/5 to-[#a78bfa]/5 border border-[#00d4c8]/15"
             >
-              <div className="text-xs text-slate-400 mb-3 font-mono uppercase tracking-wider">Core Tech Pillars</div>
+              <div className="font-space-mono text-[9px] text-[var(--text-muted)] mb-4 uppercase tracking-[0.25em]">Core Tech Pillars</div>
               <div className="flex flex-wrap gap-2">
                 {['GoLang', 'Node.js', 'NestJS', 'Angular', 'PostgreSQL', 'Redis', 'Kafka', 'Docker', 'AWS'].map((tech, i) => (
                   <motion.span
@@ -153,7 +153,7 @@ const About = () => {
                     initial={{ opacity: 0, scale: 0.7 }}
                     animate={isInView ? { opacity: 1, scale: 1 } : {}}
                     transition={{ delay: 0.9 + i * 0.06, type: 'spring', stiffness: 300 }}
-                    className="tron-badge px-3 py-1 rounded-full text-xs font-medium bg-indigo-500/20 text-indigo-300 border border-indigo-500/30"
+                    className="tron-badge font-space-mono px-3 py-1 rounded-sm text-[10px] font-bold bg-[#00d4c8]/10 text-[#00d4c8] border border-[#00d4c8]/25"
                   >
                     {tech}
                   </motion.span>

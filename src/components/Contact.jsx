@@ -49,12 +49,12 @@ const Contact = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <span className="font-mono text-indigo-400 text-sm tracking-widest uppercase">Let's collaborate</span>
-          <h2 className="text-4xl md:text-5xl font-black text-white mt-2">
-            Get In <span className="gradient-text">Touch</span>
+          <span className="terminal-label">Let's collaborate</span>
+          <h2 className="display-heading text-5xl md:text-7xl text-white mt-3">
+            GET IN <span className="gradient-text">TOUCH</span>
           </h2>
-          <div className="w-20 h-1 bg-gradient-to-r from-indigo-500 to-cyan-500 rounded-full mx-auto mt-4" />
-          <p className="text-slate-400 mt-4 max-w-xl mx-auto">
+          <div className="w-20 h-0.5 bg-gradient-to-r from-[#00d4c8] to-[#a78bfa] rounded-full mx-auto mt-5" />
+          <p className="font-grotesk text-[var(--text-mid)] mt-5 max-w-xl mx-auto">
             I'm currently open to new opportunities. Whether you have a project in mind or just want to chat — my inbox is always open!
           </p>
         </motion.div>
@@ -72,19 +72,19 @@ const Contact = () => {
               <motion.div
                 key={label}
                 whileHover={{ x: 6 }}
-                className="flex items-center gap-4 p-4 rounded-xl bg-[var(--bg-card)]/80 border border-white/5 glow-border"
+                className="flex items-center gap-4 p-4 rounded-sm bg-[var(--bg-card)]/80 border border-[#00d4c8]/8 glow-border"
               >
                 <div className={`w-12 h-12 rounded-xl bg-slate-800 flex items-center justify-center ${color}`}>
                   <Icon size={20} />
                 </div>
                 <div>
-                  <div className="text-xs text-slate-500 font-mono uppercase tracking-wider">{label}</div>
+                  <div className="font-space-mono text-[9px] text-[var(--text-muted)] uppercase tracking-[0.25em] mb-0.5">{label}</div>
                   {href ? (
-                    <a href={href} className="text-slate-200 font-medium hover:text-indigo-400 transition-colors">
+                    <a href={href} className="font-grotesk text-[var(--text-bright)] font-medium hover:text-[#00d4c8] transition-colors">
                       {value}
                     </a>
                   ) : (
-                    <span className="text-slate-200 font-medium">{value}</span>
+                    <span className="font-grotesk text-[var(--text-bright)] font-medium">{value}</span>
                   )}
                 </div>
               </motion.div>
@@ -92,7 +92,7 @@ const Contact = () => {
 
             {/* Socials */}
             <div>
-              <p className="text-slate-400 text-sm mb-4 font-mono">// Find me online</p>
+              <p className="font-space-mono text-[9px] text-[var(--text-muted)] mb-4 tracking-[0.2em] uppercase">// Find me online</p>
               <div className="flex gap-3">
                 {socials.map(({ icon: Icon, href, label, color }) => (
                   <motion.a
@@ -114,7 +114,7 @@ const Contact = () => {
             {/* Status */}
             <motion.div
               whileHover={{ scale: 1.02 }}
-              className="p-5 rounded-2xl bg-gradient-to-br from-indigo-900/40 to-cyan-900/20 border border-indigo-500/20"
+              className="p-5 rounded-sm bg-gradient-to-br from-[#00d4c8]/5 to-[#a78bfa]/5 border border-[#00d4c8]/15"
             >
               <div className="flex items-center gap-2 mb-2">
                 <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
@@ -135,7 +135,7 @@ const Contact = () => {
           >
             <form
               onSubmit={handleSubmit}
-              className="rounded-2xl p-8 bg-[var(--bg-card)]/80 border border-white/5 glow-border space-y-5"
+              className="rounded-sm p-8 bg-[var(--bg-card)]/80 border border-[#00d4c8]/10 glow-border space-y-5"
             >
               <div className="grid grid-cols-2 gap-4">
                 {[
@@ -150,7 +150,7 @@ const Contact = () => {
                       onChange={handleChange}
                       placeholder={placeholder}
                       required
-                      className="w-full px-4 py-3 rounded-xl bg-[var(--bg-surface)]/80 border border-white/10 text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/30 transition-all text-sm"
+                      className="w-full px-4 py-3 rounded-xl bg-[var(--bg-surface)]/80 border border-white/10 text-slate-200 placeholder-slate-500 focus:outline-none focus:border-[#00d4c8]/40 focus:ring-1 focus:ring-[#00d4c8]/20 transition-all text-sm"
                     />
                   </div>
                 ))}
@@ -162,7 +162,7 @@ const Contact = () => {
                 value={form.subject}
                 onChange={handleChange}
                 placeholder="Subject"
-                className="w-full px-4 py-3 rounded-xl bg-[var(--bg-surface)]/80 border border-white/10 text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/30 transition-all text-sm"
+                className="w-full px-4 py-3 rounded-xl bg-[var(--bg-surface)]/80 border border-white/10 text-slate-200 placeholder-slate-500 focus:outline-none focus:border-[#00d4c8]/40 focus:ring-1 focus:ring-[#00d4c8]/20 transition-all text-sm"
               />
 
               <textarea
@@ -172,14 +172,14 @@ const Contact = () => {
                 rows={5}
                 placeholder="Tell me about your project or opportunity..."
                 required
-                className="w-full px-4 py-3 rounded-xl bg-[var(--bg-surface)]/80 border border-white/10 text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/30 transition-all resize-none text-sm"
+                className="w-full px-4 py-3 rounded-xl bg-[var(--bg-surface)]/80 border border-white/10 text-slate-200 placeholder-slate-500 focus:outline-none focus:border-[#00d4c8]/40 focus:ring-1 focus:ring-[#00d4c8]/20 transition-all resize-none text-sm"
               />
 
               <motion.button
                 type="submit"
                 whileHover={{ scale: 1.02, boxShadow: '0 0 30px rgba(99,102,241,0.4)' }}
                 whileTap={{ scale: 0.98 }}
-                className="w-full py-3.5 rounded-xl bg-gradient-to-r from-indigo-500 to-cyan-500 text-white font-semibold text-base flex items-center justify-center gap-2 shadow-lg shadow-indigo-500/25 transition-all"
+                className="w-full py-4 rounded-sm bg-[#00d4c8] text-[#060c14] font-space-mono font-bold text-[11px] tracking-[0.2em] uppercase flex items-center justify-center gap-2 hover:bg-[#00e5d4] transition-all"
               >
                 {sent ? '✓ Message Sent!' : (
                   <>

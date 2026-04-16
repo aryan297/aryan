@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Fira+Code:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,20 +6,24 @@
 
 /* ─── Tron × Ghibli CSS variables ─── */
 :root {
-  --bg-primary:  #07101c;
-  --bg-surface:  #0d1a28;
-  --bg-card:     #101f2e;
-  --mint:        #7ecba1;
-  --lav:         #c4b4e8;
+  --bg-primary:  #060c14;
+  --bg-surface:  #0a1220;
+  --bg-card:     #0d1828;
+  --mint:        #00d4c8;
+  --lav:         #a78bfa;
   --gold:        #f5c87a;
   --peach:       #f0a888;
-  --text-bright: #e4ede8;
-  --text-mid:    #a8c4b0;
-  --text-muted:  #6a9080;
-  --border:      rgba(126,203,161,0.12);
-  --glow-mint:   rgba(126,203,161,0.25);
-  --glow-lav:    rgba(196,180,232,0.20);
+  --teal:        #00e5d4;
+  --cyan:        #00b4d8;
+  --text-bright: #e8f4f8;
+  --text-mid:    #94b8cc;
+  --text-muted:  #4a7a94;
+  --border:      rgba(0,212,200,0.10);
+  --glow-mint:   rgba(0,212,200,0.25);
+  --glow-lav:    rgba(167,139,250,0.20);
   --glow-gold:   rgba(245,200,122,0.20);
+  --accent:      #00d4c8;
+  --accent2:     #a78bfa;
 }
 
 * { margin:0; padding:0; box-sizing:border-box; }
@@ -32,6 +36,17 @@ body {
   overflow-x: hidden;
 }
 
+/* ── Display/heading font ── */
+.font-display {
+  font-family: 'Bebas Neue', 'Space Grotesk', system-ui, sans-serif;
+}
+.font-grotesk {
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+}
+.font-space-mono {
+  font-family: 'Space Mono', 'Fira Code', monospace;
+}
+
 ::-webkit-scrollbar       { width: 5px; }
 ::-webkit-scrollbar-track { background: var(--bg-primary); }
 ::-webkit-scrollbar-thumb { background: var(--mint); border-radius: 3px; opacity: .5; }
@@ -39,41 +54,67 @@ body {
 .section-padding { padding: 80px 0; }
 @media (max-width:768px) { .section-padding { padding: 60px 0; } }
 
-/* ── Ghibli-Tron gradient text ── */
+/* ── Tron-Architect gradient text ── */
 .gradient-text {
-  background: linear-gradient(135deg, #7ecba1 0%, #c4b4e8 50%, #f5c87a 100%);
+  background: linear-gradient(135deg, #00d4c8 0%, #a78bfa 50%, #00b4d8 100%);
   background-size: 200% 200%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   animation: gradient 5s ease infinite;
 }
+.gradient-text-warm {
+  background: linear-gradient(135deg, #f5c87a 0%, #f0a888 50%, #a78bfa 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient 6s ease infinite;
+}
 @keyframes gradient {
   0%,100% { background-position: 0% 50%;  }
   50%     { background-position: 100% 50%; }
+}
+
+/* ── Editorial display heading ── */
+.display-heading {
+  font-family: 'Bebas Neue', 'Space Grotesk', system-ui, sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  line-height: 0.95;
+}
+
+/* ── Terminal label uppercase ── */
+.terminal-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--accent);
+  opacity: 0.85;
 }
 
 /* ── Card glow ── */
 .glow-border {
   box-shadow:
     0 0 0 1px var(--border),
-    0 0 22px rgba(126,203,161,0.07),
-    inset 0 0 18px rgba(126,203,161,0.02);
+    0 0 22px rgba(0,212,200,0.06),
+    inset 0 0 18px rgba(0,212,200,0.02);
   transition: box-shadow .35s ease;
 }
 .glow-border:hover {
   box-shadow:
-    0 0 0 1px rgba(126,203,161,0.22),
-    0 0 40px rgba(126,203,161,0.16),
-    0 0 80px rgba(196,180,232,0.08),
-    inset 0 0 30px rgba(126,203,161,0.04);
+    0 0 0 1px rgba(0,212,200,0.20),
+    0 0 40px rgba(0,212,200,0.14),
+    0 0 80px rgba(167,139,250,0.08),
+    inset 0 0 30px rgba(0,212,200,0.03);
 }
 
 /* ── Subtle grid overlay ── */
 .grid-bg {
   background-image:
-    linear-gradient(rgba(126,203,161,0.022) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(126,203,161,0.022) 1px, transparent 1px);
+    linear-gradient(rgba(0,212,200,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,212,200,0.025) 1px, transparent 1px);
   background-size: 60px 60px;
 }
 
@@ -92,7 +133,7 @@ body {
 .nav-link::after {
   content:''; position:absolute; bottom:-4px; left:0;
   width:0; height:1.5px;
-  background: linear-gradient(90deg, var(--mint), var(--lav));
+  background: linear-gradient(90deg, var(--teal), var(--lav));
   transition: width .3s ease; border-radius:2px;
 }
 .nav-link:hover::after,
@@ -101,7 +142,7 @@ body {
 /* ── Tron corner brackets ── */
 .tron-corner { position:absolute; width:56px; height:56px; pointer-events:none; }
 .tron-corner::before, .tron-corner::after {
-  content:''; position:absolute; background:var(--mint); opacity:.22; border-radius:1px;
+  content:''; position:absolute; background:var(--teal); opacity:.30; border-radius:1px;
 }
 .corner-tl { top:0; left:0; }
 .corner-tl::before { top:0; left:0; width:42px; height:1px; }
@@ -121,10 +162,10 @@ body {
   border-radius:50%;
   background: conic-gradient(
     from 0deg,
-    rgba(126,203,161,.65),
-    rgba(196,180,232,.45),
+    rgba(0,212,200,.65),
+    rgba(167,139,250,.45),
     rgba(245,200,122,.45),
-    rgba(126,203,161,.65)
+    rgba(0,212,200,.65)
   );
 }
 
@@ -160,8 +201,8 @@ body {
   animation: tron-glow 2.8s ease-in-out infinite;
 }
 @keyframes tron-glow {
-  0%,100% { text-shadow: 0 0 8px rgba(126,203,161,.45), 0 0 22px rgba(126,203,161,.15); }
-  50%     { text-shadow: 0 0 18px rgba(126,203,161,.90), 0 0 50px rgba(196,180,232,.35), 0 0 80px rgba(126,203,161,.12); }
+  0%,100% { text-shadow: 0 0 8px rgba(0,212,200,.45), 0 0 22px rgba(0,212,200,.15); }
+  50%     { text-shadow: 0 0 18px rgba(0,212,200,.90), 0 0 50px rgba(167,139,250,.35), 0 0 80px rgba(0,212,200,.12); }
 }
 
 /* ── Scan line — horizontal light sweep ── */
@@ -174,8 +215,8 @@ body {
   position: absolute;
   left: 0; right: 0;
   height: 1.5px;
-  background: linear-gradient(90deg, transparent 0%, rgba(126,203,161,.7) 30%, rgba(196,180,232,.9) 50%, rgba(245,200,122,.7) 70%, transparent 100%);
-  box-shadow: 0 0 10px rgba(126,203,161,.5);
+  background: linear-gradient(90deg, transparent 0%, rgba(0,212,200,.7) 30%, rgba(167,139,250,.9) 50%, rgba(245,200,122,.7) 70%, transparent 100%);
+  box-shadow: 0 0 10px rgba(0,212,200,.5);
   animation: scan-sweep 4s ease-in-out infinite;
   pointer-events: none;
   z-index: 10;
@@ -196,7 +237,7 @@ body {
   position: absolute;
   left: -1px; top: 0; bottom: 0;
   width: 1px;
-  background: linear-gradient(to bottom, transparent, rgba(126,203,161,.8), transparent);
+  background: linear-gradient(to bottom, transparent, rgba(0,212,200,.8), transparent);
   animation: data-stream-v 2.5s ease-in-out infinite;
 }
 @keyframes data-stream-v {
@@ -217,7 +258,7 @@ body {
   content: '';
   position: absolute;
   top: 0; left: -100%; width: 60%; height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(126,203,161,.18), transparent);
+  background: linear-gradient(90deg, transparent, rgba(0,212,200,.18), transparent);
   transition: none;
 }
 .tron-badge:hover::before {
@@ -228,9 +269,9 @@ body {
   to   { left: 130%;  }
 }
 .tron-badge:hover {
-  color: #7ecba1;
-  border-color: rgba(126,203,161,.5);
-  box-shadow: 0 0 14px rgba(126,203,161,.22), inset 0 0 8px rgba(126,203,161,.05);
+  color: #00e5d4;
+  border-color: rgba(0,212,200,.5);
+  box-shadow: 0 0 14px rgba(0,212,200,.22), inset 0 0 8px rgba(0,212,200,.05);
 }
 
 /* ── Card scan — light line sweeps across card on hover ── */
@@ -243,7 +284,7 @@ body {
   position: absolute;
   top: -100%; left: 0; right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(126,203,161,.6), rgba(196,180,232,.4), transparent);
+  background: linear-gradient(90deg, transparent, rgba(0,212,200,.6), rgba(167,139,250,.4), transparent);
   transition: none;
   pointer-events: none;
 }
@@ -313,7 +354,7 @@ body {
   transition: color .25s, filter .25s, transform .25s;
 }
 .tron-icon:hover {
-  color: #7ecba1;
-  filter: drop-shadow(0 0 6px rgba(126,203,161,.7));
+  color: #00e5d4;
+  filter: drop-shadow(0 0 6px rgba(0,212,200,.7));
   transform: scale(1.15) translateY(-2px);
 }

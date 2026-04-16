@@ -44,152 +44,166 @@ const Hero = () => {
 
   return (
     <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden grid-bg">
-      {/* Boot scan line — sweeps down once on load */}
+      {/* Boot scan line */}
       <motion.div
         initial={{ top: 0, opacity: 0 }}
         animate={{ top: '100%', opacity: [0, 1, 1, 0] }}
         transition={{ delay: 0.3, duration: 1.6, ease: 'linear' }}
         className="absolute left-0 right-0 h-px z-30 pointer-events-none"
-        style={{ background: 'linear-gradient(90deg,transparent,rgba(126,203,161,.9) 20%,rgba(196,180,232,1) 50%,rgba(245,200,122,.9) 80%,transparent)', boxShadow: '0 0 16px rgba(126,203,161,.7)' }}
+        style={{
+          background: 'linear-gradient(90deg,transparent,rgba(0,212,200,.9) 20%,rgba(167,139,250,1) 50%,rgba(0,180,216,.9) 80%,transparent)',
+          boxShadow: '0 0 16px rgba(0,212,200,.7)',
+        }}
       />
-      {/* Ghibli-warm orbs */}
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full blur-3xl animate-pulse-slow" style={{ background: 'radial-gradient(circle, rgba(126,203,161,0.08) 0%, transparent 70%)' }} />
-      <div className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full blur-3xl animate-pulse-slow" style={{ background: 'radial-gradient(circle, rgba(196,180,232,0.07) 0%, transparent 70%)', animationDelay: '2s' }} />
-      <div className="absolute top-1/2 left-1/2 w-64 h-64 rounded-full blur-3xl animate-pulse-slow" style={{ background: 'radial-gradient(circle, rgba(245,200,122,0.05) 0%, transparent 70%)', animationDelay: '4s' }} />
-      {/* Tron corner brackets */}
-      <div className="tron-corner corner-tl tron-corner-animated" /><div className="tron-corner corner-tr tron-corner-animated" />
 
-      <div className="relative z-10 max-w-6xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-12 items-center">
+      {/* Ambient glow orbs */}
+      <div className="absolute top-1/4 left-1/6 w-[500px] h-[500px] rounded-full blur-3xl pointer-events-none"
+        style={{ background: 'radial-gradient(circle, rgba(0,212,200,0.06) 0%, transparent 65%)' }} />
+      <div className="absolute bottom-1/4 right-1/6 w-96 h-96 rounded-full blur-3xl pointer-events-none"
+        style={{ background: 'radial-gradient(circle, rgba(167,139,250,0.07) 0%, transparent 65%)' }} />
+
+      {/* Tron corner brackets */}
+      <div className="tron-corner corner-tl tron-corner-animated" />
+      <div className="tron-corner corner-tr tron-corner-animated" />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-16 items-center">
 
         {/* ── Left: text ── */}
         <motion.div
           initial={{ opacity: 0, x: -60 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, ease: 'easeOut' }}
+          transition={{ duration: 0.9, ease: 'easeOut' }}
         >
-          {/* Status badge with scan shimmer */}
+          {/* Status badge */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="tron-badge inline-flex items-center gap-2 px-4 py-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 text-indigo-300 text-sm font-medium mb-6"
+            className="inline-flex items-center gap-2.5 mb-8"
           >
             <motion.span
-              className="w-2 h-2 rounded-full bg-emerald-400"
-              animate={{ scale: [1, 1.4, 1], opacity: [1, 0.5, 1], boxShadow: ['0 0 0px #7ecba1', '0 0 8px #7ecba1', '0 0 0px #7ecba1'] }}
-              transition={{ duration: 1.8, repeat: Infinity }}
+              className="w-2 h-2 rounded-full bg-[#00d4c8]"
+              animate={{ scale: [1, 1.5, 1], opacity: [1, 0.5, 1], boxShadow: ['0 0 0px #00d4c8', '0 0 10px #00d4c8', '0 0 0px #00d4c8'] }}
+              transition={{ duration: 2, repeat: Infinity }}
             />
-            Available for opportunities
+            <span className="font-space-mono text-[10px] tracking-[0.3em] text-[#00d4c8] uppercase">Available for opportunities</span>
+            <span className="w-8 h-px bg-[#00d4c8]/40" />
           </motion.div>
 
-          {/* Name with flicker + letter-by-letter */}
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
+          {/* Display heading — editorial large */}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="text-5xl md:text-6xl lg:text-7xl font-black text-white mb-4 leading-tight"
+            transition={{ delay: 0.3, duration: 0.8 }}
           >
-            {'Hi, I\'m '}
-            <span className="gradient-text">Aryan</span>
-            <br />
-            <span className="gradient-text">Aman</span>
-          </motion.h1>
+            <p className="font-space-mono text-[10px] text-[var(--text-muted)] tracking-[0.3em] uppercase mb-3">Hi, I'm</p>
+            <h1 className="display-heading text-[clamp(4.5rem,10vw,8rem)] leading-none mb-3">
+              <span className="text-white">ARYAN </span>
+              <span className="gradient-text">AMAN</span>
+            </h1>
+            <div className="flex items-center gap-3 mb-6">
+              <span className="w-8 h-px bg-[#00d4c8]/50" />
+              <p className="font-grotesk text-[var(--text-mid)] text-base font-medium tracking-wide">Senior Software Engineer · SDE-3</p>
+            </div>
+          </motion.div>
 
-          {/* Typewriter with glowing cursor */}
+          {/* Typewriter */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-            className="text-xl md:text-2xl font-mono text-cyan-400 mb-6 h-8"
+            transition={{ delay: 0.55 }}
+            className="font-space-mono text-sm text-[#00d4c8]/80 mb-6 h-6 flex items-center gap-2"
           >
+            <span className="text-[#00d4c8]/40">~/</span>
             {displayed}
             <motion.span
-              className="inline-block w-0.5 h-6 ml-1"
-              style={{ background: '#c4b4e8', boxShadow: '0 0 8px #c4b4e8' }}
+              className="inline-block w-0.5 h-4"
+              style={{ background: '#a78bfa', boxShadow: '0 0 8px #a78bfa' }}
               animate={{ opacity: [1, 0, 1] }}
               transition={{ duration: 0.9, repeat: Infinity }}
             />
           </motion.div>
 
+          {/* Description */}
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-            className="text-slate-400 text-lg leading-relaxed mb-8 max-w-lg"
+            transition={{ delay: 0.65 }}
+            className="font-grotesk text-[var(--text-mid)] text-lg leading-relaxed mb-10 max-w-lg"
           >
-            Results-driven Senior Software Engineer with <span className="text-indigo-400 font-semibold">6+ years</span> of experience
-            crafting high-performance, scalable systems using{' '}
-            <span className="text-cyan-400 font-semibold">GoLang</span>,{' '}
-            <span className="text-emerald-400 font-semibold">Node.js</span>, and{' '}
-            <span className="text-purple-400 font-semibold">Angular</span>.
+            A results-driven Senior Software Engineer with{' '}
+            <span className="text-white font-semibold">6+ years</span> of experience
+            building high-performance, distributed systems in{' '}
+            <span className="text-[#00d4c8] font-semibold">GoLang</span>,{' '}
+            <span className="text-[#a78bfa] font-semibold">Node.js</span>, and{' '}
+            <span className="text-[#00b4d8] font-semibold">Angular</span>.
           </motion.p>
 
+          {/* CTA Buttons */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.7 }}
-            className="flex flex-wrap gap-4 mb-10"
+            transition={{ delay: 0.75 }}
+            className="flex flex-wrap gap-4 mb-12"
           >
             <Link to="contact" smooth duration={600} offset={-70}>
               <motion.button
                 onHoverStart={() => soundEngine.hover()}
                 onClick={() => soundEngine.click()}
-                whileHover={{ scale: 1.05, boxShadow: '0 0 30px rgba(99,102,241,0.5)' }}
+                whileHover={{ scale: 1.04, boxShadow: '0 0 32px rgba(0,212,200,0.40)' }}
                 whileTap={{ scale: 0.97 }}
-                className="px-8 py-3 rounded-xl bg-gradient-to-r from-indigo-500 to-cyan-500 text-white font-semibold text-lg shadow-lg shadow-indigo-500/25 cursor-pointer transition-all"
+                className="font-space-mono text-[11px] tracking-[0.2em] px-8 py-4 bg-[#00d4c8] text-[#060c14] font-bold uppercase cursor-pointer transition-all rounded-sm hover:bg-[#00e5d4]"
               >
-                Get In Touch
+                GET IN TOUCH
               </motion.button>
             </Link>
             <Link to="experience" smooth duration={600} offset={-70}>
               <motion.button
                 onHoverStart={() => soundEngine.hover()}
                 onClick={() => soundEngine.click()}
-                whileHover={{ scale: 1.05 }}
+                whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.97 }}
-                className="px-8 py-3 rounded-xl border border-indigo-500/40 text-indigo-300 font-semibold text-lg hover:bg-indigo-500/10 cursor-pointer transition-all"
+                className="font-space-mono text-[11px] tracking-[0.2em] px-8 py-4 border border-white/20 text-white/80 font-bold uppercase cursor-pointer transition-all rounded-sm hover:border-[#00d4c8]/50 hover:text-[#00d4c8]"
               >
-                View Work
+                VIEW WORK
               </motion.button>
             </Link>
           </motion.div>
 
-          {/* Social Links */}
+          {/* Social Links + Location */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.9 }}
-            className="flex items-center gap-5"
+            className="flex items-center gap-4"
           >
-            {socialLinks.map(({ icon: Icon, href, label }, i) => (
-              <motion.a
-                key={label}
-                href={href}
-                target="_blank"
-                rel="noopener noreferrer"
-                onHoverStart={() => soundEngine.hover()}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.9 + i * 0.08 }}
-                whileHover={{ scale: 1.25, y: -4,
-                  boxShadow: '0 0 16px rgba(126,203,161,0.55), 0 0 30px rgba(126,203,161,0.2)',
-                  borderColor: 'rgba(126,203,161,0.6)',
-                }}
-                whileTap={{ scale: 0.9 }}
-                className="tron-icon w-10 h-10 rounded-lg border border-white/10 bg-white/5 flex items-center justify-center text-slate-400 transition-all"
-                title={label}
-              >
-                <Icon size={18} />
-              </motion.a>
-            ))}
-            <motion.span
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1.3 }}
-              className="text-slate-600 text-sm ml-2 font-mono"
-            >
-              Bengaluru, India 🇮🇳
-            </motion.span>
+            <div className="flex items-center gap-3">
+              {socialLinks.map(({ icon: Icon, href, label }, i) => (
+                <motion.a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onHoverStart={() => soundEngine.hover()}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.9 + i * 0.08 }}
+                  whileHover={{ scale: 1.2, y: -3,
+                    boxShadow: '0 0 16px rgba(0,212,200,0.5)',
+                    borderColor: 'rgba(0,212,200,0.6)',
+                  }}
+                  whileTap={{ scale: 0.9 }}
+                  className="tron-icon w-10 h-10 rounded-sm border border-white/10 bg-white/3 flex items-center justify-center text-[var(--text-muted)] transition-all"
+                  title={label}
+                >
+                  <Icon size={16} />
+                </motion.a>
+              ))}
+            </div>
+            <div className="w-px h-8 bg-white/10" />
+            <span className="font-space-mono text-[9px] tracking-[0.25em] text-[var(--text-muted)] uppercase">
+              Bengaluru · India
+            </span>
           </motion.div>
         </motion.div>
 
@@ -197,7 +211,7 @@ const Hero = () => {
         <motion.div
           initial={{ opacity: 0, x: 60 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, delay: 0.3, ease: 'easeOut' }}
+          transition={{ duration: 0.9, delay: 0.3, ease: 'easeOut' }}
           className="flex justify-center items-center py-10"
         >
           <ArcIdentity />
@@ -208,7 +222,7 @@ const Hero = () => {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.2 }}
+        transition={{ delay: 1.3 }}
         className="absolute bottom-10 left-1/2 -translate-x-1/2"
       >
         <Link to="about" smooth duration={600} offset={-70} className="cursor-pointer">
@@ -216,9 +230,9 @@ const Hero = () => {
             onHoverStart={() => soundEngine.hover()}
             animate={{ y: [0, 8, 0] }}
             transition={{ duration: 1.5, repeat: Infinity }}
-            className="w-10 h-10 rounded-full border border-indigo-500/40 flex items-center justify-center text-indigo-400 hover:border-indigo-500 transition-colors"
+            className="w-10 h-10 rounded-sm border border-[#00d4c8]/30 flex items-center justify-center text-[#00d4c8]/60 hover:border-[#00d4c8]/70 hover:text-[#00d4c8] transition-colors"
           >
-            <HiArrowDown size={18} />
+            <HiArrowDown size={16} />
           </motion.div>
         </Link>
       </motion.div>
