@@ -1,41 +1,56 @@
 import { useEffect, useRef } from 'react';
 
-const TEAL  = [0,  212, 200];
-const LAV   = [167, 139, 250];
-const GOLD  = [245, 200, 122];
+const TEAL = [0, 212, 200];
+const LAV  = [167, 139, 250];
+const GOLD = [245, 200, 122];
 
-const c = ([r, g, b], a) => `rgba(${r},${g},${b},${a.toFixed(3)})`;
+const c = ([r, g, b], a) => `rgba(${r},${g},${b},${a.toFixed(2)})`;
+
+/* ── Detect weak / in-app browsers ── */
+const ua = typeof navigator !== 'undefined' ? navigator.userAgent : '';
+const isInApp   = /FBAN|FBAV|Instagram|Line|Twitter|MicroMessenger/i.test(ua);
+const isSafari  = /^((?!chrome|android).)*safari/i.test(ua);
+const isLowEnd  = isInApp || isSafari;
+
+/* ── Particle counts ── */
+const N_SPORES = isLowEnd ? 10 : 20;
+const N_TRAILS = isLowEnd ? 2  : 4;
+const N_NODES  = isLowEnd ? 4  : 8;
+const FPS_CAP  = isLowEnd ? 24 : 40;
+const FRAME_MS = 1000 / FPS_CAP;
+
+const rnd = () => Math.random();
 
 const makeSpore = (w, h) => ({
-  x:     Math.random() * w,
-  y:     Math.random() * h,
-  r:     Math.random() * 1.4 + 0.5,
-  vy:    -(Math.random() * 0.22 + 0.05),
-  vx:    (Math.random() - 0.5) * 0.12,
-  phase: Math.random() * Math.PI * 2,
-  a:     Math.random() * 0.25 + 0.08,
+  x:     rnd() * w,
+  y:     rnd() * h,
+  r:     rnd() * 1.2 + 0.5,
+  vy:    -(rnd() * 0.18 + 0.05),
+  vx:    (rnd() - 0.5) * 0.10,
+  phase: rnd() * Math.PI * 2,
+  a:     rnd() * 0.20 + 0.06,
 });
 
 const makeTrail = (w, h) => {
-  const goRight = Math.random() < 0.5;
-  const colors  = [TEAL, LAV, GOLD];
+  const right = rnd() < 0.5;
+  const col   = [TEAL, LAV, GOLD][Math.floor(rnd() * 3)];
   return {
-    x:     goRight ? -80 : w + 80,
-    y:     Math.random() * h * 0.80,
-    speed: (Math.random() * 1.6 + 0.7) * (goRight ? 1 : -1),
-    len:   Math.random() * 80 + 40,
-    color: colors[Math.floor(Math.random() * colors.length)],
-    alpha: Math.random() * 0.28 + 0.14,
-    width: Math.random() * 1.2 + 0.4,
+    x:     right ? -60 : w + 60,
+    y:     rnd() * h * 0.75,
+    speed: (rnd() * 1.4 + 0.6) * (right ? 1 : -1),
+    len:   rnd() * 70 + 35,
+    color: col,
+    alpha: rnd() * 0.22 + 0.12,
+    width: rnd() * 1.0 + 0.4,
   };
 };
 
 const makeNode = (w, h) => ({
-  x:     Math.random() * w,
-  y:     Math.random() * h * 0.65,
-  r:     Math.random() * 2.5 + 1.2,
-  phase: Math.random() * Math.PI * 2,
-  color: [TEAL, LAV, GOLD][Math.floor(Math.random() * 3)],
+  x:     rnd() * w,
+  y:     rnd() * h * 0.60,
+  r:     rnd() * 2.0 + 1.0,
+  phase: rnd() * Math.PI * 2,
+  color: [TEAL, LAV, GOLD][Math.floor(rnd() * 3)],
 });
 
 const TronGhibliCanvas = () => {
@@ -45,7 +60,7 @@ const TronGhibliCanvas = () => {
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    const ctx    = canvas.getContext('2d', { alpha: true });
+    const ctx    = canvas.getContext('2d', { alpha: true, desynchronized: true });
 
     const resize = () => {
       canvas.width  = window.innerWidth;
@@ -58,87 +73,25 @@ const TronGhibliCanvas = () => {
     const h = () => canvas.height;
 
     stateRef.current = {
-      spores:    Array.from({ length: 28 }, () => makeSpore(w(), h())),
-      trails:    Array.from({ length: 5  }, () => makeTrail(w(), h())),
-      nodes:     Array.from({ length: 10 }, () => makeNode(w(), h())),
+      spores:    Array.from({ length: N_SPORES }, () => makeSpore(w(), h())),
+      trails:    Array.from({ length: N_TRAILS }, () => makeTrail(w(), h())),
+      nodes:     Array.from({ length: N_NODES  }, () => makeNode(w(), h())),
       lastTrail: 0,
     };
 
-    /* ── floor grid — drawn once into offscreen canvas, reused ── */
-    let gridCanvas = null;
-    let gridW = 0, gridH = 0;
-
-    const buildGridCache = () => {
-      gridW = w(); gridH = h();
-      gridCanvas = document.createElement('canvas');
-      gridCanvas.width  = gridW;
-      gridCanvas.height = gridH;
-      const gc = gridCanvas.getContext('2d');
-
-      const HORIZON = gridH * 0.52;
-      const VX      = gridW * 0.5;
-      const SPREAD  = gridW * 1.5;
-      const N_RAIL  = 18;
-      const N_RUNG  = 10;
-
-      for (let i = 0; i <= N_RAIL; i++) {
-        const xBot  = (gridW - SPREAD) / 2 + i * (SPREAD / N_RAIL);
-        const major = i % 4 === 0;
-        gc.beginPath();
-        gc.moveTo(VX, HORIZON);
-        gc.lineTo(xBot, gridH);
-        gc.strokeStyle = c(TEAL, major ? 0.10 : 0.032);
-        gc.lineWidth   = major ? 1.0 : 0.45;
-        gc.stroke();
-      }
-
-      for (let j = 1; j <= N_RUNG; j++) {
-        const prog  = Math.pow(j / N_RUNG, 1.5);
-        const y     = HORIZON + (gridH - HORIZON) * prog;
-        const xL    = VX - (SPREAD / 2) * prog;
-        const xR    = VX + (SPREAD / 2) * prog;
-        const major = j % 3 === 0;
-        gc.beginPath();
-        gc.moveTo(xL, y);
-        gc.lineTo(xR, y);
-        gc.strokeStyle = c(j % 5 === 0 ? LAV : TEAL, major ? 0.10 : 0.035);
-        gc.lineWidth   = major ? 0.9 : 0.4;
-        gc.stroke();
-      }
-    };
-
-    buildGridCache();
-    window.addEventListener('resize', buildGridCache);
-
-    /* ── circuit lines ── */
-    const drawCircuits = (t) => {
-      const cw = w(), ch = h();
-      [0.08, 0.22, 0.62, 0.78, 0.92].forEach((f, ci) => {
-        const cx    = f * cw;
-        const len   = ch * (0.22 + 0.12 * Math.sin(ci * 1.7));
-        const alpha = 0.025 + 0.012 * Math.sin(t * 0.55 + ci * 1.3);
-        ctx.beginPath();
-        ctx.moveTo(cx, 0);
-        ctx.lineTo(cx, len);
-        ctx.strokeStyle = c(ci % 2 === 0 ? TEAL : LAV, alpha);
-        ctx.lineWidth   = 0.6;
-        ctx.stroke();
-      });
-    };
-
-    /* ── trails ── */
+    /* ── Trails ── */
     const drawTrails = (ts) => {
       const cw = w(), ch = h();
-      for (let i = ts.length - 1; i >= 0; i--) {
-        const tr = ts[i];
+      const st = stateRef.current;
+      for (let i = st.trails.length - 1; i >= 0; i--) {
+        const tr = st.trails[i];
         tr.x += tr.speed;
-        if (tr.x > cw + 150 || tr.x < -150) { ts.splice(i, 1); continue; }
-
+        if (tr.x > cw + 120 || tr.x < -120) { st.trails.splice(i, 1); continue; }
         const dir = tr.speed > 0 ? -1 : 1;
         const x2  = tr.x + dir * tr.len;
         const grad = ctx.createLinearGradient(tr.x, 0, x2, 0);
-        grad.addColorStop(0,   c(tr.color, tr.alpha));
-        grad.addColorStop(1,   c(tr.color, 0));
+        grad.addColorStop(0, c(tr.color, tr.alpha));
+        grad.addColorStop(1, c(tr.color, 0));
         ctx.beginPath();
         ctx.moveTo(tr.x, tr.y);
         ctx.lineTo(x2, tr.y);
@@ -146,67 +99,61 @@ const TronGhibliCanvas = () => {
         ctx.lineWidth   = tr.width;
         ctx.stroke();
       }
+      if (ts - st.lastTrail > 2200 && st.trails.length < N_TRAILS + 2) {
+        st.trails.push(makeTrail(cw, ch));
+        st.lastTrail = ts;
+      }
     };
 
-    /* ── nodes — no radial gradient, just alpha circle ── */
-    const drawNodes = (t, nodes) => {
-      nodes.forEach(nd => {
-        const pulse = 0.4 + 0.6 * Math.sin(t * 1.4 + nd.phase);
+    /* ── Nodes ── */
+    const drawNodes = (t) => {
+      stateRef.current.nodes.forEach(nd => {
+        const pulse = 0.4 + 0.6 * Math.sin(t * 1.3 + nd.phase);
         ctx.beginPath();
-        ctx.arc(nd.x, nd.y, nd.r * (0.85 + 0.15 * pulse), 0, Math.PI * 2);
-        ctx.fillStyle = c(nd.color, 0.10 * pulse);
+        ctx.arc(nd.x, nd.y, nd.r * pulse, 0, Math.PI * 2);
+        ctx.fillStyle = c(nd.color, 0.09 * pulse);
         ctx.fill();
       });
     };
 
-    /* ── spores — simple solid circle, no radial gradient ── */
-    const drawSpores = (t, spores) => {
+    /* ── Spores — plain circles, no gradients ── */
+    const drawSpores = (t) => {
       const cw = w(), ch = h();
-      spores.forEach(s => {
+      stateRef.current.spores.forEach(s => {
         s.y += s.vy;
         s.x += s.vx;
-        s.phase += 0.016;
-        if (s.y < -8) { s.y = ch + 8; s.x = Math.random() * cw; }
-        if (s.x < -8) s.x = cw + 8;
-        if (s.x > cw + 8) s.x = -8;
-
-        const wobbleX = Math.sin(s.phase) * 1.2;
-        const pulse   = 0.5 + 0.5 * Math.sin(s.phase * 2.2);
+        s.phase += 0.014;
+        if (s.y < -6) { s.y = ch + 6; s.x = rnd() * cw; }
+        if (s.x < -6) s.x = cw + 6;
+        if (s.x > cw + 6) s.x = -6;
+        const wobble = Math.sin(s.phase) * 1.0;
+        const pulse  = 0.5 + 0.5 * Math.sin(s.phase * 2.1);
         ctx.beginPath();
-        ctx.arc(s.x + wobbleX, s.y, s.r * pulse, 0, Math.PI * 2);
+        ctx.arc(s.x + wobble, s.y, s.r * pulse, 0, Math.PI * 2);
         ctx.fillStyle = c(TEAL, s.a * pulse);
         ctx.fill();
       });
     };
 
-    /* ── main loop ── */
+    /* ── Main loop with fps cap + visibility pause ── */
     let lastTs = 0;
+    let paused = false;
+
+    const onVisibility = () => { paused = document.hidden; };
+    document.addEventListener('visibilitychange', onVisibility);
+
     const draw = (ts) => {
       animRef.current = requestAnimationFrame(draw);
-
-      // Cap at ~50fps to reduce CPU load
-      if (ts - lastTs < 20) return;
+      if (paused || ts - lastTs < FRAME_MS) return;
       lastTs = ts;
 
       const t  = ts / 1000;
-      const st = stateRef.current;
       const cw = w(), ch = h();
-
       ctx.clearRect(0, 0, cw, ch);
 
-      // Draw cached grid
-      if (gridCanvas) ctx.drawImage(gridCanvas, 0, 0);
-
-      // Spawn new trail every 1.8s
-      if (ts - st.lastTrail > 1800 && st.trails.length < 8) {
-        st.trails.push(makeTrail(cw, ch));
-        st.lastTrail = ts;
-      }
-
-      drawCircuits(t);
-      drawTrails(st.trails);
-      drawNodes(t, st.nodes);
-      drawSpores(t, st.spores);
+      drawTrails(ts);
+      if (!isLowEnd) drawNodes(t);
+      drawSpores(t);
     };
 
     animRef.current = requestAnimationFrame(draw);
@@ -214,7 +161,7 @@ const TronGhibliCanvas = () => {
     return () => {
       cancelAnimationFrame(animRef.current);
       window.removeEventListener('resize', resize);
-      window.removeEventListener('resize', buildGridCache);
+      document.removeEventListener('visibilitychange', onVisibility);
     };
   }, []);
 

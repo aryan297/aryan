@@ -15,9 +15,9 @@ const TronLetters = ({ text, className = '', delay = 0, inView = true, tag = 'sp
         <motion.span
           key={i}
           className={hasGradient ? className : ''}
-          initial={{ opacity: 0, y: 10 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ delay: delay + i * 0.04, duration: 0.25, ease: 'easeOut' }}
+          initial={{ opacity: 0 }}
+          animate={inView ? { opacity: 1 } : {}}
+          transition={{ delay: delay + i * 0.035, duration: 0.2, ease: 'easeOut' }}
           style={{ display: char === ' ' ? 'inline' : 'inline-block' }}
         >
           {char === ' ' ? '\u00A0' : char}

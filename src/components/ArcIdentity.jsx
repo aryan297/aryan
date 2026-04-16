@@ -54,6 +54,10 @@ const segRing = (cx, cy, r, segments, gap, color, width, opacity) =>
     );
   });
 
+const ua2 = typeof navigator !== 'undefined' ? navigator.userAgent : '';
+const isWeakBrowser = /FBAN|FBAV|Instagram|Line|Twitter/i.test(ua2) ||
+  /^((?!chrome|android).)*safari/i.test(ua2);
+
 const ArcIdentity = () => (
   <div
     className="relative flex items-center justify-center select-none cursor-pointer"
@@ -74,7 +78,7 @@ const ArcIdentity = () => (
 
     {/* ── Ring 1: outer slow-spin conic (Tron disc) ── */}
     <motion.div
-      animate={{ rotate: 360 }}
+      animate={isWeakBrowser ? {} : { rotate: 360 }}
       transition={{ duration: 22, repeat: Infinity, ease: 'linear' }}
       style={{
         position: 'absolute',
@@ -116,7 +120,7 @@ const ArcIdentity = () => (
 
       {/* Ring 3: counter-rotating segmented ring (16 segs) */}
       <motion.g
-        animate={{ rotate: -360 }}
+        animate={isWeakBrowser ? {} : { rotate: -360 }}
         transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
         style={{ originX: `${CX}px`, originY: `${CY}px`, willChange: 'transform' }}
       >
@@ -125,7 +129,7 @@ const ArcIdentity = () => (
 
       {/* Ring 4: fast spin arc segments (Iron Man) */}
       <motion.g
-        animate={{ rotate: 360 }}
+        animate={isWeakBrowser ? {} : { rotate: 360 }}
         transition={{ duration: 9, repeat: Infinity, ease: 'linear' }}
         style={{ originX: `${CX}px`, originY: `${CY}px`, willChange: 'transform' }}
       >
