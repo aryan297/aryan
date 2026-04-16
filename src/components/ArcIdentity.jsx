@@ -67,7 +67,7 @@ const ArcIdentity = () => (
     {/* ── Deep space ambient glow ── */}
     <motion.div
       animate={{ opacity: [0.3, 0.55, 0.3] }}
-      transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+      transition={{ duration: isWeakBrowser ? 5 : 4, repeat: Infinity, ease: 'easeInOut' }}
       style={{
         position: 'absolute', inset: -24, borderRadius: '50%',
         background: 'radial-gradient(circle, rgba(0,212,200,0.15) 0%, rgba(167,139,250,0.08) 40%, transparent 70%)',
@@ -78,8 +78,8 @@ const ArcIdentity = () => (
 
     {/* ── Ring 1: outer slow-spin conic (Tron disc) ── */}
     <motion.div
-      animate={isWeakBrowser ? {} : { rotate: 360 }}
-      transition={{ duration: 22, repeat: Infinity, ease: 'linear' }}
+      animate={{ rotate: 360 }}
+      transition={{ duration: isWeakBrowser ? 26 : 22, repeat: Infinity, ease: 'linear' }}
       style={{
         position: 'absolute',
         width: SIZE - 4, height: SIZE - 4,
@@ -118,19 +118,19 @@ const ArcIdentity = () => (
       {/* Ring 2: major tick marks at 16 positions */}
       {ticks(CX, CY, 128, 32, 8, '#00d4c8', 0.35)}
 
-      {/* Ring 3: counter-rotating segmented ring (16 segs) */}
+      {/* Ring 3: counter-rotating segmented ring */}
       <motion.g
-        animate={isWeakBrowser ? {} : { rotate: -360 }}
-        transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
+        animate={{ rotate: -360 }}
+        transition={{ duration: isWeakBrowser ? 36 : 30, repeat: Infinity, ease: 'linear' }}
         style={{ originX: `${CX}px`, originY: `${CY}px`, willChange: 'transform' }}
       >
         {segRing(CX, CY, 116, 16, 6, '#a78bfa', 1.8, 0.5)}
       </motion.g>
 
-      {/* Ring 4: fast spin arc segments (Iron Man) */}
+      {/* Ring 4: fast spin arc segments */}
       <motion.g
-        animate={isWeakBrowser ? {} : { rotate: 360 }}
-        transition={{ duration: 9, repeat: Infinity, ease: 'linear' }}
+        animate={{ rotate: 360 }}
+        transition={{ duration: isWeakBrowser ? 11 : 9, repeat: Infinity, ease: 'linear' }}
         style={{ originX: `${CX}px`, originY: `${CY}px`, willChange: 'transform' }}
       >
         {segRing(CX, CY, 104, 6, 22, '#00d4c8', 2.5, 0.65)}
