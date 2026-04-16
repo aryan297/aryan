@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { Link } from 'react-scroll';
 import { HiMenuAlt3, HiX } from 'react-icons/hi';
 import SoundToggle from './SoundToggle';
 import { soundEngine } from '../utils/soundEngine';
-import { isLowEnd } from '../utils/deviceUtils';
 
 const navLinks = [
   { name: 'HOME',       to: 'hero'       },
@@ -15,39 +14,40 @@ const navLinks = [
 ];
 
 const Navbar = () => {
-  const [scrolled,  setScrolled]  = useState(false);
-  const [menuOpen,  setMenuOpen]  = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   return (
-    <motion.nav
-      initial={isLowEnd ? false : { y: -80, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.6, ease: 'easeOut' }}
-      style={scrolled ? {
-        background: 'rgba(6,12,20,0.92)',
-        borderColor: 'rgba(0,212,200,0.10)',
-        backdropFilter: 'blur(20px)',
-      } : {}}
+    <nav
+      style={{
+        animation: 'entry-fade-down 0.6s ease forwards',
+        ...(scrolled ? {
+          background: 'rgba(6,12,20,0.92)',
+          borderColor: 'rgba(0,212,200,0.10)',
+          backdropFilter: 'blur(20px)',
+        } : {}),
+      }}
       className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
         scrolled ? 'border-b shadow-2xl' : 'bg-transparent'
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
 
-        {/* Logo — terminal style */}
+        {/* Logo */}
         <Link to="hero" smooth duration={600} className="cursor-pointer">
-          <motion.div
-            whileHover={{ scale: 1.03 }}
-            onHoverStart={() => soundEngine.hover()}
+          <div
             className="flex items-center gap-3"
+            onMouseEnter={() => soundEngine.hover()}
+            style={{ transition: 'transform 0.2s', }}
+            onMouseOver={e => e.currentTarget.style.transform = 'scale(1.03)'}
+            onMouseOut={e  => e.currentTarget.style.transform = 'scale(1)'}
           >
-            {/* Bracket mark */}
             <div className="relative w-9 h-9 flex items-center justify-center">
               <div className="absolute inset-0 border border-[#00d4c8]/40 rounded-sm" />
               <div className="absolute top-0 left-0 w-2 h-0.5 bg-[#00d4c8]" />
@@ -60,7 +60,7 @@ const Navbar = () => {
               <span className="font-space-mono text-white text-sm font-bold tracking-widest uppercase">ARYAN_AMAN</span>
               <span className="font-space-mono text-[#00d4c8]/60 text-[9px] tracking-[0.3em] uppercase">SDE-3 // ENGINEER</span>
             </div>
-          </motion.div>
+          </div>
         </Link>
 
         {/* Desktop Links */}
@@ -69,34 +69,27 @@ const Navbar = () => {
             <Link
               key={link.name}
               to={link.to}
-              smooth
-              duration={600}
-              offset={-70}
-              spy
-              activeClass="active"
+              smooth duration={600} offset={-70}
+              spy activeClass="active"
               onMouseEnter={() => soundEngine.hover()}
               className="nav-link font-space-mono text-[10px] font-bold text-[var(--text-mid)] hover:text-[#00d4c8] cursor-pointer transition-colors tracking-[0.2em]"
             >
               {link.name}
             </Link>
           ))}
-
-          {/* Sound toggle */}
           <SoundToggle />
-
-          <motion.a
+          <a
             href="mailto:aryanaman97@gmail.com"
-            onHoverStart={() => soundEngine.hover()}
+            onMouseEnter={() => soundEngine.hover()}
             onClick={() => soundEngine.click()}
-            whileHover={{ scale: 1.04, boxShadow: '0 0 24px rgba(0,212,200,0.35)' }}
-            whileTap={{ scale: 0.97 }}
             className="font-space-mono text-[10px] font-bold tracking-[0.2em] px-5 py-2.5 border border-[#00d4c8]/60 text-[#00d4c8] hover:bg-[#00d4c8]/10 transition-all uppercase rounded-sm"
+            style={{ transition: 'all 0.2s' }}
           >
             HIRE_ME
-          </motion.a>
+          </a>
         </div>
 
-        {/* Mobile row */}
+        {/* Mobile */}
         <div className="md:hidden flex items-center gap-3">
           <SoundToggle />
           <button
@@ -108,7 +101,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu — keep AnimatePresence for the open/close toggle only */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div
@@ -123,9 +116,7 @@ const Navbar = () => {
                 <Link
                   key={link.name}
                   to={link.to}
-                  smooth
-                  duration={600}
-                  offset={-70}
+                  smooth duration={600} offset={-70}
                   onClick={() => { setMenuOpen(false); soundEngine.click(); }}
                   onMouseEnter={() => soundEngine.hover()}
                   className="font-space-mono text-xs text-[var(--text-mid)] hover:text-[#00d4c8] font-bold py-2 cursor-pointer transition-colors border-b border-white/5 tracking-[0.2em]"
@@ -137,7 +128,7 @@ const Navbar = () => {
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.nav>
+    </nav>
   );
 };
 

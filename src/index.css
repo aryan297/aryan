@@ -306,6 +306,37 @@ body {
 @keyframes corner-h { from { width: 0; } to { width: 42px; } }
 @keyframes corner-v { from { height: 0; } to { height: 42px; } }
 
+/* ══════════════════════════════════════════════════════════
+   ENTRY ANIMATIONS — pure CSS, compositor thread
+   No JS required. Works identically on all devices.
+══════════════════════════════════════════════════════════ */
+@keyframes entry-fade-up {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+@keyframes entry-fade-left {
+  from { opacity: 0; transform: translateX(-48px); }
+  to   { opacity: 1; transform: translateX(0);     }
+}
+@keyframes entry-fade-right {
+  from { opacity: 0; transform: translateX(48px); }
+  to   { opacity: 1; transform: translateX(0);    }
+}
+@keyframes entry-fade-down {
+  from { opacity: 0; transform: translateY(-48px); }
+  to   { opacity: 1; transform: translateY(0);     }
+}
+@keyframes entry-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes entry-scan {
+  0%   { top: -2px;  opacity: 0; }
+  5%   { opacity: 1; }
+  95%  { opacity: .7; }
+  100% { top: 100%;  opacity: 0; }
+}
+
 /* ── Arc Identity CSS spin animations (compositor thread) ── */
 @keyframes arc-cw  { to { transform: rotate(360deg);  } }
 @keyframes arc-ccw { to { transform: rotate(-360deg); } }

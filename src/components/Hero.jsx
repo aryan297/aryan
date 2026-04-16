@@ -5,7 +5,6 @@ import { FaGithub, FaLinkedin, FaNpm, FaMedium } from 'react-icons/fa';
 import { HiArrowDown } from 'react-icons/hi';
 import ArcIdentity from './ArcIdentity';
 import { soundEngine } from '../utils/soundEngine';
-import { isLowEnd } from '../utils/deviceUtils';
 
 const roles = [
   'Senior Software Engineer',
@@ -22,6 +21,13 @@ const socialLinks = [
   { icon: FaNpm,      href: 'https://www.npmjs.com/~aryan297',                   label: 'NPM'      },
 ];
 
+/* CSS entry animation helper */
+const e = (delay, anim = 'entry-fade-up', dur = '0.65s') => ({
+  opacity: 0,
+  animation: `${anim} ${dur} ease forwards`,
+  animationDelay: `${delay}s`,
+});
+
 const Hero = () => {
   const [roleIndex, setRoleIndex]   = useState(0);
   const [displayed, setDisplayed]   = useState('');
@@ -36,26 +42,25 @@ const Hero = () => {
       timeout = setTimeout(() => setIsDeleting(true), 2000);
     } else if (isDeleting && displayed.length > 0) {
       timeout = setTimeout(() => setDisplayed(displayed.slice(0, -1)), 40);
-    } else if (isDeleting && displayed.length === 0) {
+    } else {
       setIsDeleting(false);
-      setRoleIndex((prev) => (prev + 1) % roles.length);
+      setRoleIndex((p) => (p + 1) % roles.length);
     }
     return () => clearTimeout(timeout);
   }, [displayed, isDeleting, roleIndex]);
 
   return (
     <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden grid-bg">
-      {/* Boot scan line */}
-      {!isLowEnd && <motion.div
-        initial={{ top: 0, opacity: 0 }}
-        animate={{ top: '100%', opacity: [0, 1, 1, 0] }}
-        transition={{ delay: 0.3, duration: 1.6, ease: 'linear' }}
-        className="absolute left-0 right-0 h-px z-30 pointer-events-none"
+
+      {/* Boot scan line — pure CSS */}
+      <div className="absolute left-0 right-0 h-px z-30 pointer-events-none"
         style={{
+          animation: 'entry-scan 1.6s linear 0.3s forwards',
+          opacity: 0,
           background: 'linear-gradient(90deg,transparent,rgba(0,212,200,.9) 20%,rgba(167,139,250,1) 50%,rgba(0,180,216,.9) 80%,transparent)',
           boxShadow: '0 0 16px rgba(0,212,200,.7)',
         }}
-      />}
+      />
 
       {/* Ambient glow orbs */}
       <div className="absolute top-1/4 left-1/6 w-[500px] h-[500px] rounded-full blur-3xl pointer-events-none"
@@ -69,19 +74,12 @@ const Hero = () => {
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-16 items-center">
 
-        {/* ── Left: text ── */}
-        <motion.div
-          initial={isLowEnd ? false : { opacity: 0, x: -60 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.9, ease: 'easeOut' }}
-        >
+        {/* ── Left: text — CSS slide-from-left ── */}
+        <div style={e(0.1, 'entry-fade-left', '0.8s')}>
+
           {/* Status badge */}
-          <motion.div
-            initial={isLowEnd ? false : { opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="inline-flex items-center gap-2.5 mb-8"
-          >
+          <div className="inline-flex items-center gap-2.5 mb-8" style={e(0.25)}>
+            {/* Pulsing dot — motion ok (continuous, not entry) */}
             <motion.span
               className="w-2 h-2 rounded-full bg-[#00d4c8]"
               animate={{ scale: [1, 1.5, 1], opacity: [1, 0.5, 1], boxShadow: ['0 0 0px #00d4c8', '0 0 10px #00d4c8', '0 0 0px #00d4c8'] }}
@@ -89,14 +87,10 @@ const Hero = () => {
             />
             <span className="font-space-mono text-[10px] tracking-[0.3em] text-[#00d4c8] uppercase">Available for opportunities</span>
             <span className="w-8 h-px bg-[#00d4c8]/40" />
-          </motion.div>
+          </div>
 
-          {/* Display heading — editorial large */}
-          <motion.div
-            initial={isLowEnd ? false : { opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.8 }}
-          >
+          {/* Display heading */}
+          <div style={e(0.35, 'entry-fade-up', '0.7s')}>
             <p className="font-space-mono text-[10px] text-[var(--text-muted)] tracking-[0.3em] uppercase mb-3">Hi, I'm</p>
             <h1 className="display-heading text-[clamp(4.5rem,10vw,8rem)] leading-none mb-3">
               <span className="text-white">ARYAN </span>
@@ -106,47 +100,35 @@ const Hero = () => {
               <span className="w-8 h-px bg-[#00d4c8]/50" />
               <p className="font-grotesk text-[var(--text-mid)] text-base font-medium tracking-wide">Senior Software Engineer · SDE-3</p>
             </div>
-          </motion.div>
+          </div>
 
           {/* Typewriter */}
-          <motion.div
-            initial={isLowEnd ? false : { opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.55 }}
-            className="font-space-mono text-sm text-[#00d4c8]/80 mb-6 h-6 flex items-center gap-2"
-          >
+          <div className="font-space-mono text-sm text-[#00d4c8]/80 mb-6 h-6 flex items-center gap-2"
+            style={e(0.5)}>
             <span className="text-[#00d4c8]/40">~/</span>
             {displayed}
+            {/* Cursor blink — motion ok (continuous) */}
             <motion.span
               className="inline-block w-0.5 h-4"
               style={{ background: '#a78bfa', boxShadow: '0 0 8px #a78bfa' }}
               animate={{ opacity: [1, 0, 1] }}
               transition={{ duration: 0.9, repeat: Infinity }}
             />
-          </motion.div>
+          </div>
 
           {/* Description */}
-          <motion.p
-            initial={isLowEnd ? false : { opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.65 }}
-            className="font-grotesk text-[var(--text-mid)] text-lg leading-relaxed mb-10 max-w-lg"
-          >
+          <p className="font-grotesk text-[var(--text-mid)] text-lg leading-relaxed mb-10 max-w-lg"
+            style={e(0.6)}>
             A results-driven Senior Software Engineer with{' '}
             <span className="text-white font-semibold">6+ years</span> of experience
             building high-performance, distributed systems in{' '}
             <span className="text-[#00d4c8] font-semibold">GoLang</span>,{' '}
             <span className="text-[#a78bfa] font-semibold">Node.js</span>, and{' '}
             <span className="text-[#00b4d8] font-semibold">Angular</span>.
-          </motion.p>
+          </p>
 
           {/* CTA Buttons */}
-          <motion.div
-            initial={isLowEnd ? false : { opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.75 }}
-            className="flex flex-wrap gap-4 mb-12"
-          >
+          <div className="flex flex-wrap gap-4 mb-12" style={e(0.7)}>
             <Link to="contact" smooth duration={600} offset={-70}>
               <motion.button
                 onHoverStart={() => soundEngine.hover()}
@@ -169,26 +151,18 @@ const Hero = () => {
                 VIEW WORK
               </motion.button>
             </Link>
-          </motion.div>
+          </div>
 
-          {/* Social Links + Location */}
-          <motion.div
-            initial={isLowEnd ? false : { opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.9 }}
-            className="flex items-center gap-4"
-          >
+          {/* Social Links */}
+          <div className="flex items-center gap-4" style={e(0.85)}>
             <div className="flex items-center gap-3">
-              {socialLinks.map(({ icon: Icon, href, label }, i) => (
+              {socialLinks.map(({ icon: Icon, href, label }) => (
                 <motion.a
                   key={label}
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
                   onHoverStart={() => soundEngine.hover()}
-                  initial={isLowEnd ? false : { opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.9 + i * 0.08 }}
                   whileHover={{ scale: 1.2, y: -3,
                     boxShadow: '0 0 16px rgba(0,212,200,0.5)',
                     borderColor: 'rgba(0,212,200,0.6)',
@@ -205,27 +179,18 @@ const Hero = () => {
             <span className="font-space-mono text-[9px] tracking-[0.25em] text-[var(--text-muted)] uppercase">
               Bengaluru · India
             </span>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
 
-        {/* ── Right: Arc Identity ── */}
-        <motion.div
-          initial={isLowEnd ? false : { opacity: 0, x: 60 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.9, delay: 0.3, ease: 'easeOut' }}
-          className="flex justify-center items-center py-10"
-        >
+        {/* ── Right: ArcIdentity — CSS slide-from-right ── */}
+        <div className="flex justify-center items-center py-10"
+          style={e(0.4, 'entry-fade-right', '0.8s')}>
           <ArcIdentity />
-        </motion.div>
+        </div>
       </div>
 
       {/* Scroll indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.3 }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2"
-      >
+      <div className="absolute bottom-10 left-1/2 -translate-x-1/2" style={e(1.1)}>
         <Link to="about" smooth duration={600} offset={-70} className="cursor-pointer">
           <motion.div
             onHoverStart={() => soundEngine.hover()}
@@ -236,7 +201,7 @@ const Hero = () => {
             <HiArrowDown size={16} />
           </motion.div>
         </Link>
-      </motion.div>
+      </div>
     </section>
   );
 };
