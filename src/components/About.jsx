@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
-import { FaGraduationCap, FaMapMarkerAlt, FaCode, FaRocket } from 'react-icons/fa';
+import { FaGraduationCap, FaMapMarkerAlt, FaCode, FaRocket, FaInstagram, FaYoutube } from 'react-icons/fa';
 import { useScrollSound } from '../hooks/useScrollSound';
 import TronLetters from './TronLetters';
 
@@ -105,6 +105,24 @@ const About = () => {
                 className="font-space-mono text-[10px] tracking-[0.2em] px-6 py-3 border border-[#00d4c8]/40 text-[#00d4c8] font-bold uppercase hover:bg-[#00d4c8]/10 transition-colors rounded-sm"
               >
                 +91 7528800424
+              </a>
+              <a
+                href="https://www.instagram.com/aryantechstories"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-space-mono text-[10px] tracking-[0.2em] px-6 py-3 border border-[#e1306c]/40 text-[#e1306c] font-bold uppercase hover:bg-[#e1306c]/10 transition-colors rounded-sm flex items-center gap-2"
+              >
+                <FaInstagram size={14} />
+                INSTAGRAM
+              </a>
+              <a
+                href="https://www.youtube.com/channel/UCHW7m6lPRdwrVMNv9_GbrUQ/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-space-mono text-[10px] tracking-[0.2em] px-6 py-3 border border-[#ff0000]/40 text-[#ff0000] font-bold uppercase hover:bg-[#ff0000]/10 transition-colors rounded-sm flex items-center gap-2"
+              >
+                <FaYoutube size={14} />
+                YOUTUBE
               </a>
             </motion.div>
           </motion.div>

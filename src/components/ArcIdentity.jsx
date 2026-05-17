@@ -2,13 +2,13 @@ import { motion } from 'framer-motion';
 import { soundEngine } from '../utils/soundEngine';
 
 const SIZE = 300;
-const CX   = SIZE / 2;
-const CY   = SIZE / 2;
-const PI2  = Math.PI * 2;
+const CX = SIZE / 2;
+const CY = SIZE / 2;
+const PI2 = Math.PI * 2;
 
 const arcPath = (cx, cy, r, startDeg, endDeg) => {
-  const s  = (startDeg * Math.PI) / 180;
-  const e  = (endDeg   * Math.PI) / 180;
+  const s = (startDeg * Math.PI) / 180;
+  const e = (endDeg * Math.PI) / 180;
   const x1 = cx + r * Math.cos(s);
   const y1 = cy + r * Math.sin(s);
   const x2 = cx + r * Math.cos(e);
@@ -18,7 +18,7 @@ const arcPath = (cx, cy, r, startDeg, endDeg) => {
 
 const ticks = (cx, cy, r, count, len, color, opacity) =>
   Array.from({ length: count }, (_, i) => {
-    const a  = (i / count) * PI2 - Math.PI / 2;
+    const a = (i / count) * PI2 - Math.PI / 2;
     const x1 = cx + r * Math.cos(a);
     const y1 = cy + r * Math.sin(a);
     const x2 = cx + (r + len) * Math.cos(a);
@@ -30,15 +30,15 @@ const ticks = (cx, cy, r, count, len, color, opacity) =>
 
 const segRing = (cx, cy, r, segments, gap, color, width, opacity) =>
   Array.from({ length: segments }, (_, i) => {
-    const seg   = 360 / segments;
+    const seg = 360 / segments;
     const start = i * seg + gap / 2;
-    const end   = (i + 1) * seg - gap / 2;
+    const end = (i + 1) * seg - gap / 2;
     return <path key={i} d={arcPath(cx, cy, r, start, end)}
       stroke={color} strokeWidth={width} strokeLinecap="round" fill="none" opacity={opacity} />;
   });
 
 /* Shared spin style — uses CSS keyframes, runs on compositor thread */
-const spinCW  = (dur) => ({ animation: `arc-cw ${dur}s linear infinite`,  willChange: 'transform' });
+const spinCW = (dur) => ({ animation: `arc-cw ${dur}s linear infinite`, willChange: 'transform' });
 const spinCCW = (dur) => ({ animation: `arc-ccw ${dur}s linear infinite`, willChange: 'transform' });
 
 const ArcIdentity = () => (
@@ -73,7 +73,7 @@ const ArcIdentity = () => (
       style={{ position: 'absolute', top: 0, left: 0 }}>
       <defs>
         <radialGradient id="coreGrad" cx="50%" cy="50%" r="50%">
-          <stop offset="0%"   stopColor="#0d1828" />
+          <stop offset="0%" stopColor="#0d1828" />
           <stop offset="100%" stopColor="#060c14" />
         </radialGradient>
         <filter id="arcGlow">
@@ -89,17 +89,17 @@ const ArcIdentity = () => (
           <feComposite in="SourceGraphic" in2="b" operator="over" />
         </filter>
         <linearGradient id="aaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%"   stopColor="#00d4c8" />
-          <stop offset="50%"  stopColor="#a78bfa" />
+          <stop offset="0%" stopColor="#00d4c8" />
+          <stop offset="50%" stopColor="#a78bfa" />
           <stop offset="100%" stopColor="#f5c87a" />
         </linearGradient>
         <radialGradient id="reactorFill" cx="50%" cy="40%" r="60%">
-          <stop offset="0%"   stopColor="#0a2535" />
-          <stop offset="60%"  stopColor="#061220" />
+          <stop offset="0%" stopColor="#0a2535" />
+          <stop offset="60%" stopColor="#061220" />
           <stop offset="100%" stopColor="#030a12" />
         </radialGradient>
         <radialGradient id="innerGlow" cx="50%" cy="50%" r="50%">
-          <stop offset="0%"   stopColor="#00d4c8" stopOpacity="0.25" />
+          <stop offset="0%" stopColor="#00d4c8" stopOpacity="0.25" />
           <stop offset="100%" stopColor="#00d4c8" stopOpacity="0" />
         </radialGradient>
       </defs>
@@ -136,7 +136,7 @@ const ArcIdentity = () => (
       {segRing(CX, CY, 78, 12, 4, '#00d4c8', 3.5, 0.5)}
 
       {/* Spokes — thick Iron Man style */}
-      {[0,45,90,135,180,225,270,315].map((deg, i) => {
+      {[0, 45, 90, 135, 180, 225, 270, 315].map((deg, i) => {
         const a = (deg * Math.PI) / 180;
         const main = i % 2 === 0;
         return <g key={i}>
@@ -195,8 +195,8 @@ const ArcIdentity = () => (
       </text>
 
       {/* Cardinal marks */}
-      {[0,90,180,270].map((deg, i) => {
-        const a  = ((deg - 90) * Math.PI) / 180;
+      {[0, 90, 180, 270].map((deg, i) => {
+        const a = ((deg - 90) * Math.PI) / 180;
         return <g key={i}>
           <line x1={CX + 128 * Math.cos(a)} y1={CY + 128 * Math.sin(a)}
             x2={CX + 140 * Math.cos(a)} y2={CY + 140 * Math.sin(a)}
