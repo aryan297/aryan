@@ -65,7 +65,14 @@ const badgeStyle = {
   boxShadow: '0 6px 16px rgba(0,0,0,0.08)',
 };
 
+const badges = [
+  { key: 'exp', label: 'Experience', value: '6+ yrs', valueColor: 'var(--red)', pos: 'arc-badge-tr' },
+  { key: 'cur', label: 'Current', value: 'SDE-3 @ Vola', valueColor: 'var(--orchid)', pos: 'arc-badge-bl' },
+  { key: 'stack', label: 'Stack', value: 'Go · Node', valueColor: 'var(--red-soft)', pos: 'arc-badge-mr' },
+];
+
 const ArcIdentity = memo(() => (
+  <div className="arc-wrap">
   <div
     className="arc-reactor relative flex items-center justify-center select-none cursor-pointer"
     onClick={() => soundEngine.boop()}
@@ -210,21 +217,24 @@ const ArcIdentity = memo(() => (
       {ticks(CX, CY, 138, 48, 4, 'var(--orchid)', 0.14)}
     </svg>
 
-    {/* Badges — desktop/tablet only; kept inside stage bounds via CSS */}
-    <div className="arc-badge arc-badge-tr" style={badgeStyle}>
-      <div className="text-[10px]" style={{ color: 'var(--text-muted)' }}>Experience</div>
-      <div className="font-bold text-sm" style={{ color: 'var(--red)' }}>6+ yrs</div>
-    </div>
+    {/* Floating badges (desktop / tablet) */}
+    {badges.map(({ key, label, value, valueColor, pos }) => (
+      <div key={key} className={`arc-badge arc-badge-float ${pos}`} style={badgeStyle}>
+        <div className="text-[10px]" style={{ color: 'var(--text-muted)' }}>{label}</div>
+        <div className="font-bold text-xs sm:text-sm" style={{ color: valueColor }}>{value}</div>
+      </div>
+    ))}
+  </div>
 
-    <div className="arc-badge arc-badge-bl" style={badgeStyle}>
-      <div className="text-[10px]" style={{ color: 'var(--text-muted)' }}>Current</div>
-      <div className="font-bold text-xs" style={{ color: 'var(--orchid)' }}>SDE-3 @ Vola</div>
-    </div>
-
-    <div className="arc-badge arc-badge-mr" style={badgeStyle}>
-      <div className="text-[10px]" style={{ color: 'var(--text-muted)' }}>Stack</div>
-      <div className="font-bold text-xs" style={{ color: 'var(--red-soft)' }}>Go · Node</div>
-    </div>
+  {/* Mobile row — always visible under the reactor */}
+  <div className="arc-badges-mobile">
+    {badges.map(({ key, label, value, valueColor }) => (
+      <div key={key} className="arc-badge-chip" style={badgeStyle}>
+        <div className="text-[9px] uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>{label}</div>
+        <div className="font-bold text-xs" style={{ color: valueColor }}>{value}</div>
+      </div>
+    ))}
+  </div>
   </div>
 ));
 

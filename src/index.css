@@ -202,22 +202,25 @@ body::after {
   .section-padding { padding: 56px 0; }
 }
 
-/* ── Arc reactor — fluid size, no CSS scale hacks ── */
+/* ── Arc reactor — fluid size + mobile badge chips ── */
 .arc-stage {
-  width: min(100%, 300px);
-  aspect-ratio: 1;
+  width: min(100%, 340px);
   margin-inline: auto;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   position: relative;
-  /* room for badges without clipping the hero */
-  padding: 0;
+}
+.arc-wrap {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .arc-reactor {
-  width: 100%;
+  width: min(100%, 300px);
   aspect-ratio: 1;
-  max-width: 300px;
   position: relative;
   overflow: visible;
 }
@@ -258,12 +261,12 @@ body::after {
   background: var(--bg-primary);
 }
 
-.arc-badge {
+.arc-badge-float {
   position: absolute;
   z-index: 2;
   border-radius: 0.75rem;
   padding: 0.4rem 0.65rem;
-  font-family: ui-monospace, 'Space Mono', monospace;
+  font-family: 'Space Mono', ui-monospace, monospace;
   white-space: nowrap;
   pointer-events: none;
 }
@@ -271,17 +274,39 @@ body::after {
 .arc-badge-bl { bottom: 2%; left: 0; animation: float-y-sm 3.5s ease-in-out infinite reverse; }
 .arc-badge-mr { top: 48%; right: -2%; transform: translateY(-50%); }
 
+/* Mobile chip row under reactor */
+.arc-badges-mobile {
+  display: none;
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.85rem;
+  padding-inline: 0.25rem;
+}
+.arc-badge-chip {
+  border-radius: 0.75rem;
+  padding: 0.45rem 0.7rem;
+  font-family: 'Space Mono', ui-monospace, monospace;
+  text-align: center;
+  white-space: nowrap;
+}
+
 @media (max-width: 900px) {
-  .arc-stage { width: min(100%, 260px); }
+  .arc-stage { width: min(100%, 300px); }
+  .arc-reactor { width: min(100%, 260px); }
   .arc-badge-mr { right: 0; }
 }
 @media (max-width: 767px) {
-  .arc-stage { width: min(72vw, 240px); }
-  /* Badges collide on narrow screens — hide them */
-  .arc-badge { display: none; }
+  .arc-stage { width: min(92vw, 320px); }
+  .arc-reactor { width: min(72vw, 240px); }
+  /* Float badges off on phone — show chip row instead */
+  .arc-badge-float { display: none; }
+  .arc-badges-mobile { display: flex; }
 }
 @media (max-width: 380px) {
-  .arc-stage { width: min(68vw, 210px); }
+  .arc-reactor { width: min(68vw, 210px); }
+  .arc-badge-chip { padding: 0.4rem 0.55rem; }
 }
 
 /* Soft gradient text — muted so letters stay readable */
