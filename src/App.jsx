@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -7,14 +8,20 @@ import Blogs from './components/Blogs';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import TronGhibliCanvas from './components/TronGhibliCanvas';
+import EnterGate from './components/EnterGate';
 
 function App() {
   return (
-    <div className="relative min-h-screen overflow-x-hidden" style={{ background: 'var(--bg-primary)', color: 'var(--text-bright)' }}>
-      {/* Tron × Ghibli canvas background */}
+    <motion.div
+      className="relative min-h-screen overflow-x-hidden"
+      style={{ background: 'var(--bg-primary)', color: 'var(--text-bright)' }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+    >
       <TronGhibliCanvas />
+      <EnterGate />
 
-      {/* Main content */}
       <div className="relative z-10">
         <Navbar />
         <main>
@@ -27,7 +34,7 @@ function App() {
         </main>
         <Footer />
       </div>
-    </div>
+    </motion.div>
   );
 }
 

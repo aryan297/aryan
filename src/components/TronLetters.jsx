@@ -1,20 +1,21 @@
 import { motion } from 'framer-motion';
 
 /**
- * Stagger-reveals each character with a Tron blur-in effect.
- * Use inView prop so letters animate when the section enters viewport.
+ * Stagger-reveals each character.
+ * Clip-text classes (gradient-text / glass-text) are applied per-character
+ * so Safari/mobile background-clip works on inline-block spans.
  */
 const TronLetters = ({ text, className = '', delay = 0, inView = true, tag = 'span' }) => {
   const Tag = tag;
-  // If className contains gradient-text, apply it per-character so that
-  // -webkit-background-clip:text works on every inline-block span (Safari/mobile fix)
-  const hasGradient = className.includes('gradient-text');
+  const perChar =
+    className.includes('gradient-text') || className.includes('glass-text');
+
   return (
-    <Tag className={hasGradient ? '' : className} aria-label={text}>
+    <Tag className={perChar ? '' : className} aria-label={text}>
       {text.split('').map((char, i) => (
         <motion.span
           key={i}
-          className={hasGradient ? className : ''}
+          className={perChar ? className : ''}
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
           transition={{ delay: delay + i * 0.035, duration: 0.2, ease: 'easeOut' }}

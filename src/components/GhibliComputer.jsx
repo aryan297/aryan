@@ -292,14 +292,14 @@ const GhibliComputer = () => {
               width={[28, 40, 22, 36, 30, 18][i]}
               height="3"
               rx="1.5"
-              fill={i % 2 === 0 ? '#7ecba1' : '#00b89a'}
+              fill={i % 2 === 0 ? '#f15153' : '#00b89a'}
               {...codeLine(i * 0.3)}
             />
           ))}
           {/* Indicator dots */}
           <motion.circle cx="70"  cy="200" r="4" fill="#ff6b6b" animate={{ opacity: [0.6, 1, 0.6] }} transition={{ duration: 1.2, repeat: Infinity }} />
           <motion.circle cx="82"  cy="200" r="4" fill="#ffd700" animate={{ opacity: [0.6, 1, 0.6] }} transition={{ duration: 1.5, repeat: Infinity, delay: 0.3 }} />
-          <motion.circle cx="94"  cy="200" r="4" fill="#7ecba1" animate={{ opacity: [0.6, 1, 0.6] }} transition={{ duration: 1.3, repeat: Infinity, delay: 0.6 }} />
+          <motion.circle cx="94"  cy="200" r="4" fill="#f15153" animate={{ opacity: [0.6, 1, 0.6] }} transition={{ duration: 1.3, repeat: Infinity, delay: 0.6 }} />
           <motion.circle cx="106" cy="200" r="4" fill="#6ab04c" animate={{ opacity: [0.6, 1, 0.6] }} transition={{ duration: 1.7, repeat: Infinity, delay: 0.9 }} />
 
           {/* ── Arms ── */}
@@ -322,15 +322,15 @@ const GhibliComputer = () => {
 
           {/* Glowing orb between hands */}
           <motion.circle
-            cx="90" cy="208" r="15" fill="#7ecba1"
+            cx="90" cy="208" r="15" fill="#f15153"
             animate={{ r: [15, 19, 15], opacity: [0.18, 0.40, 0.18] }}
             transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
           />
           <circle cx="90" cy="208" r="11" fill="#5bb88a" opacity="0.75" />
           <circle cx="85" cy="203" r="3.5" fill="white" opacity="0.65" />
           {/* tiny circuit lines on orb */}
-          <line x1="88" y1="210" x2="96" y2="210" stroke="#7ecba1" strokeWidth="1" opacity="0.6" />
-          <line x1="92" y1="206" x2="92" y2="214" stroke="#7ecba1" strokeWidth="1" opacity="0.6" />
+          <line x1="88" y1="210" x2="96" y2="210" stroke="#f15153" strokeWidth="1" opacity="0.6" />
+          <line x1="92" y1="206" x2="92" y2="214" stroke="#f15153" strokeWidth="1" opacity="0.6" />
 
           {/* ── Legs ── */}
           <ellipse cx="73"  cy="221" rx="18" ry="14" fill="#6a9070" />
@@ -366,30 +366,30 @@ const GhibliComputer = () => {
         animate={{ y: [-5, 5, -5] }}
         transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
         className="absolute top-4 right-0 rounded-xl px-3 py-2"
-        style={{ background: 'var(--bg-card)', border: '1px solid rgba(126,203,161,0.28)', boxShadow: '0 0 18px rgba(126,203,161,0.14)' }}
+        style={{ background: 'var(--bg-card)', border: '1px solid rgba(241,81,83,0.28)', boxShadow: '0 0 18px rgba(241,81,83,0.14)' }}
       >
         <div className="text-xs font-mono" style={{ color: 'var(--text-muted)' }}>Experience</div>
-        <div className="font-bold text-lg" style={{ color: 'var(--mint)' }}>6+ yrs</div>
+        <div className="font-bold text-lg" style={{ color: 'var(--red)' }}>6+ yrs</div>
       </motion.div>
 
       <motion.div
         animate={{ y: [5, -5, 5] }}
         transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
         className="absolute bottom-8 left-0 rounded-xl px-3 py-2"
-        style={{ background: 'var(--bg-card)', border: '1px solid rgba(196,180,232,0.28)', boxShadow: '0 0 18px rgba(196,180,232,0.12)' }}
+        style={{ background: 'var(--bg-card)', border: '1px solid rgba(168,85,247,0.28)', boxShadow: '0 0 18px rgba(168,85,247,0.12)' }}
       >
         <div className="text-xs font-mono" style={{ color: 'var(--text-muted)' }}>Current</div>
-        <div className="font-bold text-sm" style={{ color: 'var(--lav)' }}>SDE-3 @ Vola</div>
+        <div className="font-bold text-sm" style={{ color: 'var(--orchid)' }}>SDE-3 @ Vola</div>
       </motion.div>
 
       <motion.div
         animate={{ x: [-4, 4, -4] }}
         transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
         className="absolute top-1/2 -right-2 rounded-xl px-3 py-2"
-        style={{ background: 'var(--bg-card)', border: '1px solid rgba(245,200,122,0.28)', boxShadow: '0 0 18px rgba(245,200,122,0.10)' }}
+        style={{ background: 'var(--bg-card)', border: '1px solid rgba(249,139,141,0.28)', boxShadow: '0 0 18px rgba(249,139,141,0.10)' }}
       >
         <div className="text-xs font-mono" style={{ color: 'var(--text-muted)' }}>Stack</div>
-        <div className="font-bold text-sm" style={{ color: 'var(--gold)' }}>Go · Node</div>
+        <div className="font-bold text-sm" style={{ color: 'var(--red-soft)' }}>Go · Node</div>
       </motion.div>
 
       {/* Click hint */}

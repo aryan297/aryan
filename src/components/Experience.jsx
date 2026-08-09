@@ -12,7 +12,7 @@ const experiences = [
     location: 'Bengaluru, India',
     period: '04/2025 – Present',
     type: 'Full-time',
-    color: 'from-indigo-500 to-cyan-500',
+    color: 'from-[#f15153] to-[#ff6d6f]',
     badge: 'Current',
     project: 'Gentoo App – Microfinance Platform (Spain)',
     tech: ['NestJS', 'Node.js', 'Go (Gin)', 'ConnectPay', 'Bank of Lithuania', 'PostgreSQL', 'Redis', 'AWS S3', 'AWS Lambda', 'CloudWatch', 'Docker', 'Kubernetes'],
@@ -30,7 +30,7 @@ const experiences = [
     location: 'Gurgaon, India',
     period: '12/2022 – 04/2025',
     type: 'Full-time',
-    color: 'from-cyan-500 to-emerald-500',
+    color: 'from-[#f15153] to-[#d1548c]',
     badge: '2.4 yrs',
     tech: ['Go (Gin)', 'Node.js', 'Angular 17', 'Angular 15', 'Redis', 'PostgreSQL', 'Kubernetes', 'AWS EC2', 'AWS S3', 'Route 53', 'CloudWatch', 'Kafka', 'Docker'],
     highlights: [
@@ -46,7 +46,7 @@ const experiences = [
     location: 'Gurgaon, India',
     period: '01/2022 – 12/2022',
     type: 'Full-time',
-    color: 'from-purple-500 to-pink-500',
+    color: 'from-[#d1548c] to-[#a855f7]',
     badge: '1 yr',
     tech: ['NestJS', 'MongoDB', 'Ag-Grid', 'XLSX', 'Angular'],
     highlights: [
@@ -61,7 +61,7 @@ const experiences = [
     location: 'Bengaluru, India',
     period: '07/2020 – 01/2022',
     type: 'Full-time',
-    color: 'from-rose-500 to-orange-500',
+    color: 'from-[#a855f7] to-[#7c46b0]',
     badge: '1.5 yrs',
     tech: ['Angular', 'NgRx', 'RxJS', 'NestJS', 'Node.js'],
     highlights: [
@@ -75,7 +75,7 @@ const experiences = [
     location: 'Bhubaneswar, India',
     period: '01/2020 – 07/2020',
     type: 'Internship',
-    color: 'from-slate-500 to-slate-400',
+    color: 'from-[#7c46b0] to-[#4d2870]',
     badge: 'Internship',
     tech: ['NestJS', 'MongoDB', 'Angular', 'RxJS', 'Firebase', 'CI/CD'],
     highlights: [
@@ -87,9 +87,9 @@ const experiences = [
 
 const ExperienceCard = ({ exp, index, isInView }) => (
   <motion.div
-    initial={{ opacity: 0, x: index % 2 === 0 ? -60 : 60 }}
-    animate={isInView ? { opacity: 1, x: 0 } : {}}
-    transition={{ duration: 0.6, delay: index * 0.15 }}
+    initial={{ opacity: 0, y: 28 }}
+    animate={isInView ? { opacity: 1, y: 0 } : {}}
+    transition={{ duration: 0.55, delay: index * 0.12 }}
     className="relative"
   >
     {/* Timeline dot */}
@@ -110,28 +110,29 @@ const ExperienceCard = ({ exp, index, isInView }) => (
 
     <div className={`md:w-[calc(50%-2rem)] ${index % 2 === 0 ? 'md:mr-auto md:pr-8' : 'md:ml-auto md:pl-8'}`}>
       <motion.div
-        whileHover={{ y: -6 }}
-        className="tron-card tron-data-border glow-border rounded-2xl p-6 bg-[var(--bg-card)]/80 border border-white/5 backdrop-blur-sm transition-all duration-300"
+        whileHover={{ y: -8, scale: 1.01 }}
+        transition={{ type: 'spring', stiffness: 280, damping: 20 }}
+        className="tron-card glow-border glass rounded-2xl p-4 sm:p-6"
       >
         {/* Header */}
-        <div className="flex items-start justify-between gap-3 mb-3">
-          <div>
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 sm:gap-3 mb-3">
+          <div className="min-w-0">
             <span className={`text-xs font-semibold px-2 py-0.5 rounded-full bg-gradient-to-r ${exp.color} text-white mb-2 inline-block`}>
               {exp.badge}
             </span>
-            <h3 className="text-lg font-bold text-white">{exp.role}</h3>
-            <div className="flex items-center gap-2 mt-1">
-              <FaBriefcase className="text-[#00d4c8]" size={12} />
-              <span className="text-[#00d4c8] font-semibold text-sm font-grotesk">{exp.company}</span>
-              <span className="text-slate-500 text-sm">· {exp.location}</span>
+            <h3 className="text-base sm:text-lg font-bold text-[var(--text-bright)]">{exp.role}</h3>
+            <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mt-1">
+              <FaBriefcase className="text-[#f15153] shrink-0" size={12} />
+              <span className="text-[#f15153] font-semibold text-sm font-grotesk">{exp.company}</span>
+              <span className="text-[var(--text-muted)] text-sm">· {exp.location}</span>
             </div>
           </div>
-          <span className="text-xs text-slate-500 font-mono shrink-0 mt-1 tracking-wider">{exp.period}</span>
+          <span className="text-[10px] sm:text-xs text-[var(--text-muted)] font-mono shrink-0 sm:mt-1 tracking-wider">{exp.period}</span>
         </div>
 
         {/* Project */}
         {exp.project && (
-          <div className="text-xs text-cyan-400 font-mono mb-3 px-2 py-1 bg-cyan-500/10 rounded-lg border border-cyan-500/20 inline-block">
+          <div className="glass-chip text-xs text-[var(--magenta)] font-mono mb-3 px-2.5 py-1 rounded-lg inline-block">
             📁 {exp.project}
           </div>
         )}
@@ -139,8 +140,8 @@ const ExperienceCard = ({ exp, index, isInView }) => (
         {/* Highlights */}
         <ul className="space-y-2 mb-4">
           {exp.highlights.map((h, i) => (
-            <li key={i} className="flex items-start gap-2 text-sm text-slate-300">
-              <HiChevronRight className="text-[#00d4c8] mt-0.5 shrink-0" size={16} />
+            <li key={i} className="flex items-start gap-2 text-sm text-[var(--text-mid)]">
+              <HiChevronRight className="text-[#f15153] mt-0.5 shrink-0" size={16} />
               <span>{h}</span>
             </li>
           ))}
@@ -152,7 +153,7 @@ const ExperienceCard = ({ exp, index, isInView }) => (
             <motion.span
               key={t}
               whileHover={{ scale: 1.1, y: -2 }}
-              className="tron-badge font-space-mono text-[9px] px-2 py-0.5 rounded-sm bg-[#00d4c8]/8 text-[#00d4c8]/80 border border-[#00d4c8]/20"
+              className="tron-badge glass-chip font-space-mono text-[9px] px-2 py-0.5 rounded text-[var(--text-mid)]"
             >
               {t}
             </motion.span>
@@ -173,23 +174,23 @@ const Experience = () => {
       <div className="absolute inset-0 grid-bg opacity-20" />
 
       {/* Glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-indigo-600/5 rounded-full blur-3xl" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-[700px] aspect-square bg-[#e8d0ff]/40 rounded-full blur-3xl pointer-events-none" />
 
-      <div ref={ref} className="relative z-10 max-w-6xl mx-auto px-6">
+      <div ref={ref} className="relative z-10 page-container max-w-6xl">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="text-center mb-10 sm:mb-16"
         >
           <span className="terminal-label">Career Journey</span>
-          <h2 className="display-heading text-5xl md:text-7xl text-white mt-3">
+          <h2 className="display-heading section-title text-[var(--text-bright)] mt-3">
             <TronLetters text="WORK " inView={isInView} delay={0.1} />
             <TronLetters text="EXPERIENCE" className="gradient-text" inView={isInView} delay={0.44} />
           </h2>
           <motion.div
-            className="w-20 h-0.5 bg-gradient-to-r from-[#00d4c8] to-[#a78bfa] rounded-full mx-auto mt-5"
+            className="w-24 h-[3px] bg-gradient-to-r from-[#f15153] via-[#d1548c] to-[#a855f7] rounded-full mx-auto mt-6"
             initial={{ scaleX: 0 }} animate={isInView ? { scaleX: 1 } : {}}
             transition={{ delay: 0.9, duration: 0.5, ease: 'easeOut' }}
             style={{ transformOrigin: 'left' }}
@@ -198,8 +199,14 @@ const Experience = () => {
 
         {/* Timeline */}
         <div className="relative space-y-8">
-          {/* Center line */}
-          <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-[#00d4c8]/50 via-[#a78bfa]/30 to-transparent -translate-x-1/2" />
+          {/* Center line — grows in as section appears */}
+          <motion.div
+            className="hidden md:block absolute left-1/2 top-0 bottom-0 w-px -translate-x-1/2 origin-top"
+            style={{ background: 'linear-gradient(to bottom, var(--red), var(--magenta), var(--orchid))', opacity: 0.45 }}
+            initial={{ scaleY: 0 }}
+            animate={isInView ? { scaleY: 1 } : {}}
+            transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+          />
 
           {experiences.map((exp, i) => (
             <ExperienceCard key={i} exp={exp} index={i} isInView={isInView} />

@@ -1,16 +1,16 @@
 import { useEffect, useRef } from 'react';
 
-const TEAL = [0, 212, 200];
-const LAV  = [167, 139, 250];
-const GOLD = [245, 200, 122];
+const RED     = [241, 81, 83];
+const ORCHID  = [168, 85, 247];
+const MAGENTA = [209, 84, 140];
 
 const c = ([r, g, b], a) => `rgba(${r},${g},${b},${a.toFixed(2)})`;
 
-/* ── Uniform settings for all devices ── */
-const N_SPORES = 16;
-const N_TRAILS = 4;
-const N_NODES  = 6;
-const FRAME_MS = 1000 / 40; // 40fps cap — smooth on all screens
+/* Lighter particle field — canvas sits under every section */
+const N_SPORES = 8;
+const N_TRAILS = 2;
+const N_NODES  = 3;
+const FRAME_MS = 1000 / 24;
 
 const rnd = () => Math.random();
 
@@ -21,19 +21,19 @@ const makeSpore = (w, h) => ({
   vy:    -(rnd() * 0.18 + 0.05),
   vx:    (rnd() - 0.5) * 0.10,
   phase: rnd() * Math.PI * 2,
-  a:     rnd() * 0.20 + 0.06,
+  a:     rnd() * 0.08 + 0.03,
 });
 
 const makeTrail = (w, h) => {
   const right = rnd() < 0.5;
-  const col   = [TEAL, LAV, GOLD][Math.floor(rnd() * 3)];
+  const col   = [RED, ORCHID, MAGENTA][Math.floor(rnd() * 3)];
   return {
     x:     right ? -60 : w + 60,
     y:     rnd() * h * 0.75,
     speed: (rnd() * 1.4 + 0.6) * (right ? 1 : -1),
     len:   rnd() * 70 + 35,
     color: col,
-    alpha: rnd() * 0.22 + 0.12,
+    alpha: rnd() * 0.10 + 0.04,
     width: rnd() * 1.0 + 0.4,
   };
 };
@@ -43,7 +43,7 @@ const makeNode = (w, h) => ({
   y:     rnd() * h * 0.60,
   r:     rnd() * 2.0 + 1.0,
   phase: rnd() * Math.PI * 2,
-  color: [TEAL, LAV, GOLD][Math.floor(rnd() * 3)],
+  color: [RED, ORCHID, MAGENTA][Math.floor(rnd() * 3)],
 });
 
 const TronGhibliCanvas = () => {
@@ -56,14 +56,20 @@ const TronGhibliCanvas = () => {
     const ctx    = canvas.getContext('2d', { alpha: true, desynchronized: true });
 
     const resize = () => {
-      canvas.width  = window.innerWidth;
-      canvas.height = window.innerHeight;
+      const dpr = Math.min(window.devicePixelRatio || 1, 1);
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      canvas.width  = Math.floor(w * dpr);
+      canvas.height = Math.floor(h * dpr);
+      canvas.style.width  = `${w}px`;
+      canvas.style.height = `${h}px`;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
     resize();
     window.addEventListener('resize', resize);
 
-    const w = () => canvas.width;
-    const h = () => canvas.height;
+    const w = () => window.innerWidth;
+    const h = () => window.innerHeight;
 
     stateRef.current = {
       spores:    Array.from({ length: N_SPORES }, () => makeSpore(w(), h())),
@@ -72,7 +78,6 @@ const TronGhibliCanvas = () => {
       lastTrail: 0,
     };
 
-    /* ── Trails ── */
     const drawTrails = (ts) => {
       const cw = w(), ch = h();
       const st = stateRef.current;
@@ -92,27 +97,25 @@ const TronGhibliCanvas = () => {
         ctx.lineWidth   = tr.width;
         ctx.stroke();
       }
-      if (ts - st.lastTrail > 2200 && st.trails.length < N_TRAILS + 2) {
+      if (ts - st.lastTrail > 2800 && st.trails.length < N_TRAILS + 1) {
         st.trails.push(makeTrail(cw, ch));
         st.lastTrail = ts;
       }
     };
 
-    /* ── Nodes ── */
     const drawNodes = (t) => {
-      stateRef.current.nodes.forEach(nd => {
+      stateRef.current.nodes.forEach((nd) => {
         const pulse = 0.4 + 0.6 * Math.sin(t * 1.3 + nd.phase);
         ctx.beginPath();
         ctx.arc(nd.x, nd.y, nd.r * pulse, 0, Math.PI * 2);
-        ctx.fillStyle = c(nd.color, 0.09 * pulse);
+        ctx.fillStyle = c(nd.color, 0.04 * pulse);
         ctx.fill();
       });
     };
 
-    /* ── Spores — plain circles, no gradients ── */
     const drawSpores = (t) => {
       const cw = w(), ch = h();
-      stateRef.current.spores.forEach(s => {
+      stateRef.current.spores.forEach((s) => {
         s.y += s.vy;
         s.x += s.vx;
         s.phase += 0.014;
@@ -123,14 +126,13 @@ const TronGhibliCanvas = () => {
         const pulse  = 0.5 + 0.5 * Math.sin(s.phase * 2.1);
         ctx.beginPath();
         ctx.arc(s.x + wobble, s.y, s.r * pulse, 0, Math.PI * 2);
-        ctx.fillStyle = c(TEAL, s.a * pulse);
+        ctx.fillStyle = c(ORCHID, s.a * pulse);
         ctx.fill();
       });
     };
 
-    /* ── Main loop with fps cap + visibility pause ── */
     let lastTs = 0;
-    let paused = false;
+    let paused = document.hidden;
 
     const onVisibility = () => { paused = document.hidden; };
     document.addEventListener('visibilitychange', onVisibility);
@@ -165,7 +167,6 @@ const TronGhibliCanvas = () => {
         position: 'fixed', top: 0, left: 0,
         width: '100%', height: '100%',
         zIndex: 0, pointerEvents: 'none',
-        willChange: 'transform',
       }}
     />
   );
