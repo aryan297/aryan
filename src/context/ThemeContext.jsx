@@ -4,10 +4,10 @@ const ThemeContext = createContext(null);
 const STORAGE_KEY = 'portfolio-theme';
 
 function getInitialTheme() {
-  if (typeof window === 'undefined') return 'light';
+  if (typeof window === 'undefined') return 'dark';
   const saved = window.localStorage.getItem(STORAGE_KEY);
   if (saved === 'light' || saved === 'dark') return saved;
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  return 'dark'; // default black / dark theme
 }
 
 export function ThemeProvider({ children }) {
