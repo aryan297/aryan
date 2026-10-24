@@ -1,203 +1,226 @@
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
-import { FaGraduationCap, FaMapMarkerAlt, FaCode, FaRocket, FaInstagram, FaYoutube } from 'react-icons/fa';
-import { useScrollSound } from '../hooks/useScrollSound';
-import TronLetters from './TronLetters';
-import { staggerContainer, staggerItem, easeOut } from '../utils/motion';
+import { FaGraduationCap, FaMapMarkerAlt, FaCode, FaRocket } from 'react-icons/fa';
+
+const ease = [0.22, 1, 0.36, 1];
 
 const stats = [
-  { value: '6+', label: 'Years Experience', icon: '⚡' },
-  { value: '4', label: 'Companies', icon: '🏢' },
-  { value: '10+', label: 'Major Projects', icon: '🚀' },
-  { value: 'SDE-3', label: 'Current Level', icon: '🎯' },
+  { value: '6+',    label: 'Years Experience' },
+  { value: '4',     label: 'Companies' },
+  { value: '10+',   label: 'Major Projects' },
+  { value: 'SDE-3', label: 'Current Level' },
 ];
 
 const highlights = [
-  { icon: FaMapMarkerAlt, text: 'Bengaluru, India', color: 'text-[var(--red)]' },
-  { icon: FaGraduationCap, text: 'B.E. Computer Science — Chandigarh University, 2020', color: 'text-[var(--red-soft)]' },
-  { icon: FaCode, text: 'GoLang, Node.js, Angular, NestJS specialist', color: 'text-[var(--magenta)]' },
-  { icon: FaRocket, text: 'Microservices & Distributed Systems architect', color: 'text-[var(--orchid)]' },
+  { icon: FaMapMarkerAlt,  text: 'Bengaluru, India' },
+  { icon: FaGraduationCap, text: 'B.E. Computer Science - Chandigarh University, 2020' },
+  { icon: FaCode,          text: 'GoLang, Node.js, Angular, NestJS specialist' },
+  { icon: FaRocket,        text: 'Microservices & Distributed Systems architect' },
 ];
 
-const fadeInUp = {
-  hidden: { opacity: 0, y: 40 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+const CountUp = ({ value, isInView }) => {
+  const numericPart = value.replace(/[^0-9]/g, '');
+  const suffix = value.replace(/[0-9]/g, '');
+
+  if (!numericPart) return <>{value}</>;
+
+  return (
+    <motion.span
+      initial={{ opacity: 0 }}
+      animate={isInView ? { opacity: 1 } : {}}
+    >
+      <motion.span
+        initial={{ opacity: 0 }}
+        animate={isInView ? { opacity: 1 } : {}}
+        transition={{ duration: 0.3 }}
+      >
+        {value}
+      </motion.span>
+    </motion.span>
+  );
 };
 
 const About = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
-  const soundRef = useScrollSound('section', 0.2);
-
+  const containerRef = useRef(null);
+  const { scrollYProgress } = useScroll({ target: containerRef, offset: ['start end', 'end start'] });
+  const parallaxY = useTransform(scrollYProgress, [0, 1], [40, -40]);
 
   return (
-    <section id="about" ref={soundRef} className="section-padding relative overflow-hidden">
-      <div className="absolute inset-0 grid-bg opacity-30" />
+    <section id="about" ref={containerRef} className="section-padding relative overflow-hidden">
+      {/* Subtle decorative star */}
+      <motion.div
+        className="absolute top-20 right-16 hidden lg:block"
+        style={{ y: parallaxY }}
+      >
+        <span className="text-2xl" style={{ color: 'var(--royal)', opacity: 0.2 }}>&#10022;</span>
+      </motion.div>
 
-      <div ref={ref} className="relative z-10 page-container max-w-6xl">
+      <div ref={ref} className="page-container max-w-6xl">
         {/* Section header */}
         <motion.div
-          variants={fadeInUp}
-          initial="hidden"
-          animate={isInView ? 'visible' : 'hidden'}
-          className="text-center mb-10 sm:mb-16"
+          className="flex items-center gap-4 mb-16"
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.7, ease }}
         >
-          <span className="terminal-label">Get to know me</span>
-          <h2 className="display-heading section-title text-[var(--text-bright)] mt-3">
-            <TronLetters text="ABOUT " inView={isInView} delay={0.1} />
-            <TronLetters text="ME" className="gradient-text" inView={isInView} delay={0.44} />
-          </h2>
+          <span className="section-number">01.</span>
+          <span className="section-label">About Me</span>
           <motion.div
-            className="w-24 h-[3px] rounded-full mx-auto mt-6"
-            initial={{ scaleX: 0 }}
+            className="flex-1 h-px"
+            style={{ background: 'var(--border)' }}
+            initial={{ scaleX: 0, transformOrigin: 'left' }}
             animate={isInView ? { scaleX: 1 } : {}}
-            transition={{ delay: 0.7, duration: 0.55, ease: easeOut }}
-            style={{
-              transformOrigin: 'left',
-              background: 'linear-gradient(90deg, var(--red), var(--magenta), var(--orchid))',
-            }}
+            transition={{ delay: 0.3, duration: 1.0, ease }}
           />
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
-          {/* Left — Text */}
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">
+          {/* Left - text */}
           <motion.div
-            variants={fadeInUp}
-            initial="hidden"
-            animate={isInView ? 'visible' : 'hidden'}
-            transition={{ delay: 0.2 }}
+            initial={{ opacity: 0, x: -40 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ delay: 0.15, duration: 0.8, ease }}
           >
-            <motion.div
-              className="space-y-4 sm:space-y-5 font-grotesk text-[var(--text-mid)] text-base sm:text-lg leading-relaxed"
-              variants={staggerContainer}
-              initial="hidden"
-              animate={isInView ? 'visible' : 'hidden'}
-            >
-              <motion.p variants={staggerItem}>
-                I'm a <span className="text-[var(--text-bright)] font-medium">Results-driven Senior Software Engineer (SDE-3)</span> with 6+ years
-                of experience designing and delivering high-performance, scalable backend systems and full-stack applications, currently at{' '}
-                <span className="text-[var(--red)] font-medium">Vola Finance</span>, Bengaluru.
-              </motion.p>
-              <motion.p variants={staggerItem}>
-                My expertise spans building <span className="text-[var(--red)] font-medium">microfinance platforms</span>,
-                high-concurrency schedulers, event-driven architectures, and real-time dashboards — from backend
-                APIs in <span className="text-[var(--text-bright)] font-medium">GoLang (Gin)</span> and{' '}
-                <span className="text-[var(--magenta)] font-medium">NestJS</span> to powerful frontend experiences
-                in <span className="text-[var(--orchid)] font-medium">Angular</span>.
-              </motion.p>
-              <motion.p variants={staggerItem}>
-                Proven track record across fintech, mobility, and e-commerce domains — integrating BaaS providers
-                (ConnectPay, Bank of Lithuania), building event-driven systems with Kafka & Redis, and shipping
-                distributed products that scale to 10,000+ daily active users.
-              </motion.p>
-            </motion.div>
+            <div className="overflow-hidden mb-8">
+              <motion.h2
+                className="editorial-heading text-[clamp(2.5rem,6vw,4.5rem)]"
+                initial={{ y: '100%' }}
+                animate={isInView ? { y: '0%' } : {}}
+                transition={{ delay: 0.2, duration: 0.8, ease }}
+              >
+                Building systems<br />
+                <span style={{ color: 'var(--royal)' }}>that scale.</span>
+              </motion.h2>
+            </div>
+
+            <div className="space-y-5 font-sans text-base leading-relaxed" style={{ color: 'var(--text-mid)' }}>
+              {[
+                <>
+                  I'm a <strong style={{ color: 'var(--text-bright)' }}>Results-driven Senior Software Engineer (SDE-3)</strong> with 6+ years
+                  of experience designing and delivering high-performance, scalable backend systems and full-stack applications, currently at{' '}
+                  <strong style={{ color: 'var(--tomato)' }}>Vola Finance</strong>, Bengaluru.
+                </>,
+                <>
+                  My expertise spans building microfinance platforms, high-concurrency schedulers, event-driven architectures, and real-time dashboards — from backend APIs in{' '}
+                  <strong style={{ color: 'var(--royal)' }}>GoLang</strong> and{' '}
+                  <strong style={{ color: 'var(--royal)' }}>NestJS</strong> to powerful frontend experiences in{' '}
+                  <strong style={{ color: 'var(--royal)' }}>Angular</strong>.
+                </>,
+                <>
+                  Proven track record across fintech, mobility, and e-commerce domains — integrating BaaS providers,
+                  building event-driven systems with Kafka & Redis, and shipping distributed products that scale to 10,000+ daily active users.
+                </>,
+              ].map((content, i) => (
+                <motion.p
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={isInView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ delay: 0.4 + i * 0.15, duration: 0.6, ease }}
+                >
+                  {content}
+                </motion.p>
+              ))}
+            </div>
 
             {/* Highlights */}
-            <motion.div
-              className="mt-8 space-y-3"
-              variants={staggerContainer}
-              initial="hidden"
-              animate={isInView ? 'visible' : 'hidden'}
-            >
-              {highlights.map(({ icon: Icon, text, color }) => (
+            <div className="mt-8 space-y-3">
+              {highlights.map(({ icon: Icon, text }, i) => (
                 <motion.div
                   key={text}
-                  variants={staggerItem}
-                  whileHover={{ x: 6 }}
-                  className="flex items-start gap-3 rounded-lg px-2 py-1.5 -mx-2 transition-colors"
+                  initial={{ opacity: 0, x: -30 }}
+                  animate={isInView ? { opacity: 1, x: 0 } : {}}
+                  transition={{ delay: 0.7 + i * 0.1, duration: 0.5, ease }}
+                  whileHover={{ x: 8, transition: { duration: 0.2 } }}
+                  className="flex items-center gap-3 cursor-default"
                 >
-                  <Icon className={`${color} mt-1 shrink-0`} size={16} />
-                  <span className="text-[var(--text-mid)] text-sm">{text}</span>
+                  <Icon size={14} style={{ color: 'var(--royal)', flexShrink: 0 }} />
+                  <span className="font-sans text-sm" style={{ color: 'var(--text-mid)' }}>{text}</span>
                 </motion.div>
               ))}
-            </motion.div>
+            </div>
 
             <motion.div
-              className="mt-8 flex gap-4 flex-wrap"
-              initial={{ opacity: 0, y: 12 }}
+              className="mt-10 flex gap-4 flex-wrap"
+              initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.55, duration: 0.45 }}
+              transition={{ delay: 1.0, duration: 0.5, ease }}
             >
               <motion.a
                 href="mailto:aryanaman97@gmail.com"
-                whileHover={{ scale: 1.04, y: -2 }}
-                whileTap={{ scale: 0.97 }}
-                className="btn-primary font-space-mono text-[10px] tracking-[0.2em] px-6 py-3 font-semibold uppercase rounded-md"
+                whileHover={{ scale: 1.03, y: -2 }}
+                whileTap={{ scale: 0.98 }}
+                className="btn-editorial-fill text-[10px] px-6 py-3"
               >
-                EMAIL_ME
+                Email Me
               </motion.a>
               <motion.a
                 href="tel:+917528800424"
-                whileHover={{ scale: 1.04, y: -2 }}
-                whileTap={{ scale: 0.97 }}
-                className="btn-ghost font-space-mono text-[10px] tracking-[0.2em] px-6 py-3 font-semibold uppercase rounded-md"
+                whileHover={{ scale: 1.03, y: -2 }}
+                whileTap={{ scale: 0.98 }}
+                className="btn-editorial text-[10px] px-6 py-3"
               >
                 +91 7528800424
-              </motion.a>
-              <motion.a
-                href="https://www.instagram.com/aryantechstories"
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ scale: 1.04, y: -2 }}
-                whileTap={{ scale: 0.97 }}
-                className="font-space-mono text-[10px] tracking-[0.2em] px-6 py-3 border border-[#e1306c]/40 text-[#e1306c] font-semibold uppercase hover:bg-[#e1306c]/10 transition-colors rounded-md flex items-center gap-2"
-              >
-                <FaInstagram size={14} />
-                INSTAGRAM
-              </motion.a>
-              <motion.a
-                href="https://www.youtube.com/channel/UCHW7m6lPRdwrVMNv9_GbrUQ/"
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ scale: 1.04, y: -2 }}
-                whileTap={{ scale: 0.97 }}
-                className="font-space-mono text-[10px] tracking-[0.2em] px-6 py-3 border border-[#ff0000]/40 text-[#ff0000] font-semibold uppercase hover:bg-[#ff0000]/10 transition-colors rounded-md flex items-center gap-2"
-              >
-                <FaYoutube size={14} />
-                YOUTUBE
               </motion.a>
             </motion.div>
           </motion.div>
 
-          {/* Right — Stats */}
+          {/* Right - Stats */}
           <motion.div
-            variants={fadeInUp}
-            initial="hidden"
-            animate={isInView ? 'visible' : 'hidden'}
-            transition={{ delay: 0.4 }}
-            className="grid grid-cols-2 gap-3 sm:gap-4"
+            initial={{ opacity: 0, x: 40 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ delay: 0.3, duration: 0.8, ease }}
           >
-            {stats.map(({ value, label, icon }, i) => (
-              <motion.div
-                key={label}
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={isInView ? { opacity: 1, scale: 1 } : {}}
-                transition={{ delay: 0.4 + i * 0.1, type: 'spring', stiffness: 200 }}
-                whileHover={{ scale: 1.05, y: -4 }}
-                className="tron-card glow-border glass rounded-xl p-4 sm:p-6 text-center"
-              >
-                <div className="text-2xl sm:text-3xl mb-2">{icon}</div>
-                <div className="display-heading text-2xl sm:text-3xl gradient-text tron-counter">{value}</div>
-                <div className="font-space-mono text-[var(--text-muted)] text-[8px] sm:text-[9px] mt-2 tracking-[0.15em] sm:tracking-[0.2em] uppercase">{label}</div>
-              </motion.div>
-            ))}
+            <div className="grid grid-cols-2 gap-4">
+              {stats.map(({ value, label }, i) => (
+                <motion.div
+                  key={label}
+                  initial={{ opacity: 0, y: 30, scale: 0.95 }}
+                  animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+                  transition={{ delay: 0.4 + i * 0.12, duration: 0.6, ease }}
+                  whileHover={{ y: -6, borderColor: 'var(--royal)', transition: { duration: 0.3 } }}
+                  className="editorial-card p-6 sm:p-8 text-center group cursor-default"
+                >
+                  <motion.div
+                    className="editorial-heading text-[clamp(2rem,5vw,3.5rem)] transition-colors duration-300"
+                    style={{ color: 'var(--royal)' }}
+                  >
+                    <CountUp value={value} isInView={isInView} />
+                  </motion.div>
+                  <div className="font-sans text-[10px] font-medium tracking-[0.2em] uppercase mt-2 transition-colors duration-300" style={{ color: 'var(--text-muted)' }}>
+                    {label}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
 
             {/* Tech pillars */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={isInView ? { opacity: 1, scale: 1 } : {}}
-              transition={{ delay: 0.8, type: 'spring' }}
-              className="col-span-2 rounded-xl p-5 glass-panel"
+              initial={{ opacity: 0, y: 30 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ delay: 0.9, duration: 0.6, ease }}
+              className="editorial-card p-6 mt-4"
             >
-              <div className="font-space-mono text-[9px] text-[var(--text-muted)] mb-4 uppercase tracking-[0.25em]">Core Tech Pillars</div>
+              <div className="font-sans text-[10px] font-semibold tracking-[0.25em] uppercase mb-4" style={{ color: 'var(--text-muted)' }}>
+                Core Tech Stack
+              </div>
               <div className="flex flex-wrap gap-2">
                 {['GoLang', 'Node.js', 'NestJS', 'Angular', 'PostgreSQL', 'Redis', 'Kafka', 'Docker', 'Kubernetes', 'LLM Infra', 'AWS'].map((tech, i) => (
                   <motion.span
                     key={tech}
-                    initial={{ opacity: 0, scale: 0.7 }}
+                    initial={{ opacity: 0, scale: 0.8 }}
                     animate={isInView ? { opacity: 1, scale: 1 } : {}}
-                    transition={{ delay: 0.9 + i * 0.06, type: 'spring', stiffness: 300 }}
-                    className="tron-badge glass-chip font-space-mono px-3 py-1 rounded-md text-[10px] font-medium text-[var(--text-mid)]"
+                    transition={{ delay: 1.0 + i * 0.04, type: 'spring', stiffness: 200 }}
+                    whileHover={{
+                      scale: 1.08,
+                      y: -2,
+                      borderColor: 'var(--royal)',
+                      color: 'var(--royal)',
+                      transition: { duration: 0.2 },
+                    }}
+                    className="font-sans text-[11px] font-medium px-3 py-1.5 border cursor-default transition-colors"
+                    style={{ borderColor: 'var(--border)', color: 'var(--text-mid)' }}
                   >
                     {tech}
                   </motion.span>

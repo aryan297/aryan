@@ -1,11 +1,11 @@
 import { useState, useEffect, memo } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { Link } from 'react-scroll';
 import { FaGithub, FaLinkedin, FaNpm, FaMedium } from 'react-icons/fa';
-import { HiArrowDown } from 'react-icons/hi';
-import ArcIdentity from './ArcIdentity';
-import { soundEngine } from '../utils/soundEngine';
-import { easeOut, fadeLeft, fadeRight, staggerContainer, staggerItem } from '../utils/motion';
+import { HiArrowRight, HiArrowDown } from 'react-icons/hi';
+import EditorialMonogram from './EditorialMonogram';
+
+const ease = [0.22, 1, 0.36, 1];
 
 const roles = [
   'Senior Software Engineer',
@@ -17,17 +17,14 @@ const roles = [
 
 const socialLinks = [
   { icon: FaLinkedin, href: 'https://www.linkedin.com/in/aryanaman-a4a5bb144/', label: 'LinkedIn' },
-  { icon: FaGithub,   href: 'https://github.com/aryan297',                       label: 'GitHub'   },
-  { icon: FaMedium,   href: 'https://medium.com/@aryanaman97',                   label: 'Medium'   },
-  { icon: FaNpm,      href: 'https://www.npmjs.com/~aryan297',                   label: 'NPM'      },
+  { icon: FaGithub,   href: 'https://github.com/aryan297',                       label: 'GitHub' },
+  { icon: FaMedium,   href: 'https://medium.com/@aryanaman97',                   label: 'Medium' },
+  { icon: FaNpm,      href: 'https://www.npmjs.com/~aryan297',                   label: 'NPM' },
 ];
 
-const nameLetters = 'ARYAN'.split('');
-
-/** Isolated so typewriter ticks don't re-render ArcIdentity / the rest of Hero */
 const TypewriterRole = memo(() => {
-  const [roleIndex, setRoleIndex]   = useState(0);
-  const [displayed, setDisplayed]   = useState('');
+  const [roleIndex, setRoleIndex] = useState(0);
+  const [displayed, setDisplayed] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
@@ -47,245 +44,277 @@ const TypewriterRole = memo(() => {
   }, [displayed, isDeleting, roleIndex]);
 
   return (
-    <div className="font-space-mono text-xs sm:text-sm text-[var(--red)] mb-5 sm:mb-6 min-h-[1.5rem] flex items-center gap-2 flex-wrap">
-      <span style={{ opacity: 0.5 }}>~/</span>
+    <span className="font-mono text-xs sm:text-sm" style={{ color: 'var(--tomato)' }}>
       {displayed}
-      <span
-        className="inline-block w-0.5 h-4 anim-blink"
-        style={{ background: 'var(--orchid)' }}
-      />
-    </div>
+      <span className="inline-block w-[2px] h-4 ml-0.5 align-middle" style={{ background: 'var(--tomato)', animation: 'soft-blink 0.9s step-end infinite' }} />
+    </span>
   );
 });
 TypewriterRole.displayName = 'TypewriterRole';
 
-const Hero = () => (
-  <section id="hero" className="relative min-h-[100svh] flex items-center justify-center overflow-hidden">
-    <div className="absolute inset-0 grid-bg pointer-events-none" />
+const Hero = () => {
+  const { scrollYProgress } = useScroll();
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.15], [1, 0]);
+  const heroY = useTransform(scrollYProgress, [0, 0.15], [0, -60]);
+  const starRotate = useTransform(scrollYProgress, [0, 0.3], [0, 180]);
 
-    <div
-      className="absolute top-1/4 left-1/6 w-[280px] sm:w-[420px] md:w-[560px] h-[280px] sm:h-[420px] md:h-[560px] rounded-full blur-3xl pointer-events-none anim-orb-a"
-      style={{ background: 'radial-gradient(circle, var(--orb-1) 0%, transparent 65%)' }}
-    />
-    <div
-      className="absolute bottom-1/4 right-1/6 w-[240px] sm:w-[360px] md:w-[460px] h-[240px] sm:h-[360px] md:h-[460px] rounded-full blur-3xl pointer-events-none anim-orb-b"
-      style={{ background: 'radial-gradient(circle, var(--orb-2) 0%, transparent 65%)' }}
-    />
-    <div
-      className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-[820px] h-[280px] sm:h-[420px] rounded-full blur-3xl pointer-events-none anim-orb-pulse"
-      style={{ background: 'radial-gradient(ellipse, var(--orb-3) 0%, transparent 70%)' }}
-    />
-
-    <div className="tron-corner corner-tl tron-corner-animated" />
-    <div className="tron-corner corner-tr tron-corner-animated" />
-
-    <div className="relative z-10 page-container pt-28 pb-24 sm:py-24 md:py-20 grid md:grid-cols-2 gap-10 md:gap-12 lg:gap-16 items-center">
+  return (
+    <section id="hero" className="relative min-h-[100svh] flex items-center overflow-hidden">
+      {/* Parallax decorative star elements */}
+      <motion.div
+        className="absolute top-[12%] right-[8%] hidden lg:block"
+        style={{ rotate: starRotate }}
+        initial={{ opacity: 0, scale: 0 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 1.4, duration: 0.8, ease, type: 'spring' }}
+      >
+        <span className="text-5xl" style={{ color: 'var(--tomato)' }}>&#10022;</span>
+      </motion.div>
 
       <motion.div
-        variants={fadeLeft}
-        initial="hidden"
-        animate="visible"
-        custom={0.08}
-        className="order-1 text-center md:text-left"
+        className="absolute bottom-[22%] left-[4%] hidden lg:block"
+        initial={{ opacity: 0, scale: 0, rotate: -60 }}
+        animate={{ opacity: 0.6, scale: 1, rotate: 0 }}
+        transition={{ delay: 1.7, duration: 1, ease }}
+      >
+        <span className="text-3xl" style={{ color: 'var(--royal)' }}>&#10022;</span>
+      </motion.div>
+
+      <motion.div
+        className="absolute top-[35%] right-[18%] hidden xl:block"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.3 }}
+        transition={{ delay: 2.0, duration: 1 }}
+      >
+        <span className="text-lg" style={{ color: 'var(--text-muted)' }}>&#10038;</span>
+      </motion.div>
+
+      {/* Side text — left vertical */}
+      <motion.div
+        className="absolute left-6 top-1/2 -translate-y-1/2 hidden xl:flex flex-col items-center gap-4"
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 1.2, duration: 0.6, ease }}
       >
         <motion.div
-          initial={{ opacity: 0, y: 12, scale: 0.96 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ delay: 0.2, duration: 0.5, ease: easeOut }}
-          className="glass-chip inline-flex items-center gap-2.5 mb-6 sm:mb-8 pl-3 pr-4 py-2 rounded-full"
-        >
-          <span
-            className="w-2 h-2 rounded-full anim-orb-pulse shrink-0"
-            style={{ background: 'var(--red)' }}
-          />
-          <span className="font-space-mono text-[9px] sm:text-[10px] tracking-[0.2em] sm:tracking-[0.3em] text-[var(--red)] uppercase">
-            Available for opportunities
-          </span>
-        </motion.div>
-
-        <div className="mb-3">
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.28 }}
-            className="font-space-mono text-[10px] text-[var(--text-muted)] tracking-[0.3em] uppercase mb-3"
-          >
-            Hi, I&apos;m
-          </motion.p>
-          <h1 className="display-heading text-[clamp(3.25rem,12vw,8rem)] leading-none mb-3">
-            <span className="inline-flex text-[var(--text-bright)] justify-center md:justify-start">
-              {nameLetters.map((ch, i) => (
-                <motion.span
-                  key={`${ch}-${i}`}
-                  initial={{ opacity: 0, y: 36 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.32 + i * 0.055, duration: 0.45, ease: easeOut }}
-                  className="inline-block"
-                >
-                  {ch}
-                </motion.span>
-              ))}
-              <motion.span
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.6 }}
-                className="inline-block"
-              >
-                &nbsp;
-              </motion.span>
-            </span>
-            <motion.span
-              className="gradient-text inline-block"
-              initial={{ opacity: 0, y: 28 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.62, duration: 0.55, ease: easeOut }}
-            >
-              AMAN
-            </motion.span>
-          </h1>
-          <motion.div
-            className="flex items-center justify-center md:justify-start gap-3 mb-5 sm:mb-6"
-            initial={{ opacity: 0, x: -12 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.75, duration: 0.45 }}
-          >
-            <motion.span
-              className="h-px hidden sm:block"
-              style={{ background: 'var(--red)', opacity: 0.45 }}
-              initial={{ width: 0 }}
-              animate={{ width: 32 }}
-              transition={{ delay: 0.85, duration: 0.45, ease: easeOut }}
-            />
-            <p className="font-grotesk text-[var(--text-mid)] text-sm sm:text-base font-normal tracking-wide">
-              Senior Software Engineer · SDE-3
-            </p>
-          </motion.div>
-        </div>
-
+          className="w-px h-16"
+          style={{ background: 'var(--border)' }}
+          initial={{ scaleY: 0 }}
+          animate={{ scaleY: 1 }}
+          transition={{ delay: 1.3, duration: 0.8, ease }}
+        />
+        <span className="font-sans text-[9px] tracking-[0.3em] uppercase" style={{ color: 'var(--text-muted)', writingMode: 'vertical-rl' }}>
+          Portfolio 2026
+        </span>
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.9 }}
-          className="flex justify-center md:justify-start"
-        >
-          <TypewriterRole />
-        </motion.div>
+          className="w-px h-16"
+          style={{ background: 'var(--border)' }}
+          initial={{ scaleY: 0 }}
+          animate={{ scaleY: 1 }}
+          transition={{ delay: 1.5, duration: 0.8, ease }}
+        />
+      </motion.div>
 
-        <motion.p
-          className="font-grotesk text-[var(--text-mid)] text-base sm:text-lg leading-relaxed mb-8 sm:mb-10 max-w-lg mx-auto md:mx-0"
-          initial={{ opacity: 0, y: 16 }}
+      {/* Side text — right vertical */}
+      <motion.div
+        className="absolute right-6 top-1/2 -translate-y-1/2 hidden xl:flex flex-col items-center gap-4"
+        initial={{ opacity: 0, x: 20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 1.3, duration: 0.6, ease }}
+      >
+        <motion.div
+          className="w-px h-16"
+          style={{ background: 'var(--border)' }}
+          initial={{ scaleY: 0 }}
+          animate={{ scaleY: 1 }}
+          transition={{ delay: 1.4, duration: 0.8, ease }}
+        />
+        <span className="font-sans text-[9px] tracking-[0.3em] uppercase" style={{ color: 'var(--text-muted)', writingMode: 'vertical-rl' }}>
+          Scroll Down
+        </span>
+        <motion.div
+          className="w-px h-16"
+          style={{ background: 'var(--border)' }}
+          initial={{ scaleY: 0 }}
+          animate={{ scaleY: 1 }}
+          transition={{ delay: 1.6, duration: 0.8, ease }}
+        />
+      </motion.div>
+
+      <motion.div
+        className="relative z-10 page-container pt-28 sm:pt-32 pb-20 sm:pb-24"
+        style={{ opacity: heroOpacity, y: heroY }}
+      >
+        {/* Availability badge with pulse */}
+        <motion.div
+          className="mb-6 sm:mb-10"
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.0, duration: 0.5, ease: easeOut }}
-        >
-          A results-driven Senior Software Engineer with{' '}
-          <span className="text-[var(--text-bright)] font-medium">6+ years</span> of experience
-          building high-performance, distributed systems in{' '}
-          <span className="text-[var(--red)] font-medium">GoLang</span>,{' '}
-          <span className="text-[var(--orchid)] font-medium">Node.js</span>, and{' '}
-          <span className="text-[var(--magenta)] font-medium">Angular</span>.
-        </motion.p>
-
-        <motion.div
-          className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 mb-8 sm:mb-12 items-stretch sm:items-center justify-center md:justify-start"
-          initial={{ opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.1, duration: 0.5, ease: easeOut }}
-        >
-          <Link to="contact" smooth duration={600} offset={-70} className="w-full sm:w-auto">
-            <motion.button
-              onHoverStart={() => soundEngine.hover()}
-              onClick={() => soundEngine.click()}
-              whileHover={{ scale: 1.03, y: -2 }}
-              whileTap={{ scale: 0.97 }}
-              className="btn-primary w-full sm:w-auto font-space-mono text-[11px] tracking-[0.2em] px-8 py-3.5 sm:py-4 font-semibold uppercase cursor-pointer rounded-md"
-            >
-              GET IN TOUCH
-            </motion.button>
-          </Link>
-          <Link to="experience" smooth duration={600} offset={-70} className="w-full sm:w-auto">
-            <motion.button
-              onHoverStart={() => soundEngine.hover()}
-              onClick={() => soundEngine.click()}
-              whileHover={{ scale: 1.03, y: -2 }}
-              whileTap={{ scale: 0.97 }}
-              className="btn-ghost w-full sm:w-auto font-space-mono text-[11px] tracking-[0.2em] px-8 py-3.5 sm:py-4 font-semibold uppercase cursor-pointer rounded-md"
-            >
-              VIEW WORK
-            </motion.button>
-          </Link>
-        </motion.div>
-
-        <motion.div
-          className="flex flex-wrap items-center justify-center md:justify-start gap-3 sm:gap-4"
-          variants={staggerContainer}
-          initial="hidden"
-          animate="visible"
+          transition={{ delay: 0.1, duration: 0.7, ease }}
         >
           <div className="flex items-center gap-2 sm:gap-3">
-            {socialLinks.map(({ icon: Icon, href, label }) => (
+            <motion.div
+              className="w-2 h-2 rounded-full flex-shrink-0"
+              style={{ background: 'var(--tomato)' }}
+              animate={{ scale: [1, 1.4, 1], opacity: [1, 0.5, 1] }}
+              transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
+            />
+            <span className="font-sans text-[9px] sm:text-[10px] font-semibold tracking-[0.2em] sm:tracking-[0.25em] uppercase" style={{ color: 'var(--tomato)' }}>
+              Available for opportunities
+            </span>
+          </div>
+        </motion.div>
+
+        {/* Mobile monogram — small, centered */}
+        <div className="flex justify-center mb-6 lg:hidden">
+          <div className="w-[140px] sm:w-[180px]">
+            <EditorialMonogram />
+          </div>
+        </div>
+
+        {/* Giant editorial heading — ARYAN */}
+        <div className="overflow-hidden mb-1 sm:mb-2">
+          <h1 className="editorial-display text-[clamp(3rem,14vw,13rem)]" style={{ color: 'var(--royal)' }}>
+            {'ARYAN'.split('').map((c, i) => (
+              <motion.span
+                key={i}
+                className="inline-block"
+                initial={{ y: '120%', opacity: 0, rotateX: -40 }}
+                animate={{ y: '0%', opacity: 1, rotateX: 0 }}
+                transition={{ delay: 0.25 + i * 0.07, duration: 0.9, ease }}
+              >
+                {c}
+              </motion.span>
+            ))}
+          </h1>
+        </div>
+
+        {/* AMAN + description + monogram row */}
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-4 lg:gap-8 mb-6 sm:mb-8 items-end">
+          <div>
+            <div className="overflow-hidden mb-3 md:mb-4">
+              <h1 className="editorial-display text-[clamp(3rem,14vw,13rem)]" style={{ color: 'var(--text-bright)' }}>
+                {'AMAN'.split('').map((c, i) => (
+                  <motion.span
+                    key={i}
+                    className="inline-block"
+                    initial={{ y: '120%', opacity: 0, rotateX: -40 }}
+                    animate={{ y: '0%', opacity: 1, rotateX: 0 }}
+                    transition={{ delay: 0.6 + i * 0.07, duration: 0.9, ease }}
+                  >
+                    {c}
+                  </motion.span>
+                ))}
+              </h1>
+            </div>
+
+            <motion.div
+              className="max-w-sm sm:max-w-md"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.0, duration: 0.8, ease }}
+            >
+              <p className="font-sans text-sm sm:text-base md:text-lg leading-relaxed" style={{ color: 'var(--text-mid)' }}>
+                A results-driven <strong style={{ color: 'var(--text-bright)' }}>Senior Software Engineer</strong> with{' '}
+                <strong style={{ color: 'var(--royal)' }}>6+ years</strong> of experience building
+                high-performance, distributed systems.
+              </p>
+            </motion.div>
+          </div>
+
+          {/* Monogram — desktop only, in-flow */}
+          <div className="hidden lg:flex items-center justify-center">
+            <EditorialMonogram />
+          </div>
+        </div>
+
+        {/* Animated divider line */}
+        <motion.div
+          className="editorial-line mb-6 sm:mb-8"
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{ delay: 1.1, duration: 1.2, ease }}
+        />
+
+        {/* Bottom row */}
+        <motion.div
+          className="flex flex-col gap-5 sm:gap-6"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.3, duration: 0.7, ease }}
+        >
+          {/* Info line */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="flex flex-col gap-2">
+              <span className="font-sans text-xs font-medium tracking-wide" style={{ color: 'var(--text-mid)' }}>
+                SDE-3 · Bengaluru, India
+              </span>
+              <TypewriterRole />
+            </div>
+
+            {/* CTA button */}
+            <Link to="experience" smooth duration={600} offset={-80}>
+              <motion.button
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                className="btn-editorial flex items-center gap-3 text-[10px] px-5 sm:px-6 py-3 group"
+              >
+                <span>Explore Work</span>
+                <motion.span
+                  className="inline-block"
+                  animate={{ x: [0, 4, 0] }}
+                  transition={{ repeat: Infinity, duration: 1.5, ease: 'easeInOut' }}
+                >
+                  <HiArrowRight size={14} />
+                </motion.span>
+              </motion.button>
+            </Link>
+          </div>
+
+          {/* Social icons row */}
+          <div className="flex items-center gap-2">
+            {socialLinks.map(({ icon: Icon, href, label }, i) => (
               <motion.a
                 key={label}
                 href={href}
                 target="_blank"
                 rel="noopener noreferrer"
-                variants={staggerItem}
-                onHoverStart={() => soundEngine.hover()}
-                whileHover={{ scale: 1.12, y: -3 }}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.5 + i * 0.08, duration: 0.5, ease }}
+                whileHover={{ y: -4, borderColor: 'var(--royal)' }}
                 whileTap={{ scale: 0.9 }}
-                className="tron-icon glass-chip w-10 h-10 rounded-md flex items-center justify-center text-[var(--text-mid)]"
+                className="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center border transition-all duration-300"
+                style={{ borderColor: 'var(--border)', color: 'var(--text-mid)' }}
                 title={label}
               >
-                <Icon size={16} />
+                <Icon size={13} />
               </motion.a>
             ))}
           </div>
-          <motion.div
-            className="w-px h-8 hidden sm:block"
-            style={{ background: 'var(--border-soft)' }}
-            variants={staggerItem}
-          />
-          <motion.span
-            variants={staggerItem}
-            className="font-space-mono text-[9px] tracking-[0.25em] text-[var(--text-muted)] uppercase"
-          >
-            Bengaluru · India
-          </motion.span>
         </motion.div>
       </motion.div>
 
+      {/* Scroll indicator with bounce */}
       <motion.div
-        className="flex justify-center items-center order-2 py-6 md:py-10 w-full min-w-0"
-        variants={fadeRight}
-        initial="hidden"
-        animate="visible"
-        custom={0.35}
+        className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 2.0, duration: 0.5 }}
       >
-        <div className="arc-stage">
-          <div className="anim-float-y w-full">
-            <ArcIdentity />
-          </div>
-        </div>
+        <Link to="about" smooth duration={600} offset={-80} className="cursor-pointer">
+          <motion.div
+            animate={{ y: [0, 8, 0] }}
+            transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
+            className="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center border rounded-full transition-colors duration-300"
+            style={{ borderColor: 'var(--border)', color: 'var(--text-muted)' }}
+          >
+            <HiArrowDown size={14} />
+          </motion.div>
+        </Link>
       </motion.div>
-    </div>
-
-    <motion.div
-      className="absolute bottom-6 sm:bottom-10 left-1/2 -translate-x-1/2"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: 1.4 }}
-    >
-      <Link to="about" smooth duration={600} offset={-70} className="cursor-pointer">
-        <motion.div
-          onHoverStart={() => soundEngine.hover()}
-          whileHover={{ scale: 1.1 }}
-          className="glass-chip anim-float-y w-10 h-10 rounded-md flex items-center justify-center transition-colors"
-          style={{ color: 'var(--red)', animationDuration: '1.6s' }}
-        >
-          <HiArrowDown size={16} />
-        </motion.div>
-      </Link>
-    </motion.div>
-  </section>
-);
+    </section>
+  );
+};
 
 export default Hero;

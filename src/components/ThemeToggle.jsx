@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion';
 import { HiMoon, HiSun } from 'react-icons/hi';
 import { useTheme } from '../context/ThemeContext';
-import { soundEngine } from '../utils/soundEngine';
 
 const ThemeToggle = () => {
   const { theme, toggleTheme, isDark } = useTheme();
@@ -9,17 +8,13 @@ const ThemeToggle = () => {
   return (
     <motion.button
       type="button"
-      onClick={() => {
-        soundEngine.click();
-        toggleTheme();
-      }}
-      onMouseEnter={() => soundEngine.hover()}
+      onClick={toggleTheme}
       whileHover={{ scale: 1.08 }}
       whileTap={{ scale: 0.92 }}
       title={isDark ? 'Switch to light theme' : 'Switch to dark theme'}
       aria-label={isDark ? 'Switch to light theme' : 'Switch to dark theme'}
-      className="glass-chip relative w-10 h-10 rounded-xl flex items-center justify-center transition-colors"
-      style={{ color: 'var(--text-mid)' }}
+      className="w-9 h-9 flex items-center justify-center border transition-colors duration-300"
+      style={{ borderColor: 'var(--border)', color: 'var(--text-mid)' }}
     >
       <motion.span
         key={theme}
@@ -28,7 +23,7 @@ const ThemeToggle = () => {
         transition={{ duration: 0.2 }}
         className="flex items-center justify-center"
       >
-        {isDark ? <HiSun size={18} /> : <HiMoon size={18} />}
+        {isDark ? <HiSun size={16} /> : <HiMoon size={16} />}
       </motion.span>
     </motion.button>
   );
